@@ -1,0 +1,10 @@
+tcpip1=127.0.0.1
+tcpip2=127.0.0.1
+tcpserverPort=7000
+tcpserverPortAux=7002
+tcpbserverPort=7001
+udpPort=5432
+rmiServerip=127.0.0.1
+rmiServerPort1=1099
+rmiServerPort2=6001
+
