@@ -1,7 +1,7 @@
 package pt.uc.dei.rmi_server;
 
-import pt.uc.dei.tcp_server.TCPServer;
 import pt.uc.dei.tcp_server.Message;
+import pt.uc.dei.tcp_server.TCPServer;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -138,7 +138,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         }
 
     }
-
 
 
     public void ping() throws RemoteException {

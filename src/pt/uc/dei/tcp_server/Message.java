@@ -9,12 +9,11 @@ public class Message implements Serializable {
     public static final String CREATEMEETING = "createmeeting";
 
 
-
-    private String tipo="";
-    public String username="";
-    public String password="";
-    public String mail="";
-    public String data="";
+    private String tipo = "";
+    public String username = "";
+    public String password = "";
+    public String mail = "";
+    public String data = "";
     public int iduser;
     public Boolean result;
 
@@ -32,7 +31,7 @@ public class Message implements Serializable {
     }
 
     public void setTipo(String tipo) {
-        if(tipo != null)
+        if (tipo != null)
             tipo = tipo.toLowerCase();
         this.tipo = tipo;
     }

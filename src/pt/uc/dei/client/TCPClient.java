@@ -38,7 +38,6 @@ public class TCPClient {
         String username, password, mail;
 
 
-
         Properties props = new Properties();
 
         try {
@@ -181,7 +180,6 @@ public class TCPClient {
                 }
 
 
-
             }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(TCPClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -204,27 +202,26 @@ public class TCPClient {
     public static Socket connect(Properties props, int port) throws InterruptedException {
         //tentativa de se ligar a qualquer um dos servers tcp disponiveis
 
-            Socket socket = null;
-            List<String> lstIp = new ArrayList<String>(2);
-            lstIp.add(props.getProperty("tcpip1"));
-            lstIp.add(props.getProperty("tcpip2"));
+        Socket socket = null;
+        List<String> lstIp = new ArrayList<String>(2);
+        lstIp.add(props.getProperty("tcpip1"));
+        lstIp.add(props.getProperty("tcpip2"));
 
 
-            while(socket == null) {
+        while (socket == null) {
 
-                for(String ip : lstIp) {
-                    try {
-                        socket = (new Socket(ip, port));
-                    }
-                    catch (Exception ex) {
+            for (String ip : lstIp) {
+                try {
+                    socket = (new Socket(ip, port));
+                } catch (Exception ex) {
 
-                    }
-                    if(socket != null)
-                        break;
-
-                    Thread.sleep(2000);
                 }
+                if (socket != null)
+                    break;
+
+                Thread.sleep(2000);
             }
+        }
 
             /*
         } catch (UnknownHostException ex) {
@@ -268,19 +265,19 @@ public class TCPClient {
         out = aOut;
     }
 
-    public static void sendOut(Message mensagem){
+    public static void sendOut(Message mensagem) {
         try {
-            synchronized (out){
+            synchronized (out) {
 
-                  out.writeObject(mensagem);
-                  out.flush();
-                  out.reset();
+                out.writeObject(mensagem);
+                out.flush();
+                out.reset();
 
             }
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-   }
+    }
 
 
 }
@@ -322,7 +319,7 @@ class ReadData extends Thread {
                 Socket cs = null;
                 while (true) {
                     try {
-                        
+
                         //dar 5 segundos ao server para voltar
                         ReadData.sleep(5000);
                         cs = new Socket(props.getProperty("tcpip1"), Integer.parseInt(props.getProperty("tcpserverPort")));

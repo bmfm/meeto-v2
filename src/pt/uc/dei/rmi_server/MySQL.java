@@ -1,6 +1,5 @@
 package pt.uc.dei.rmi_server;
 
-import java.sql.Connection;
 import java.sql.*;
 
 public class MySQL {

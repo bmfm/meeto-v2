@@ -9,7 +9,8 @@ package pt.uc.dei.tcp_server; /**
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Properties;
@@ -18,7 +19,6 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
 
     //static Vector<pt.uc.dei.tcp_server.Connection> clients = new Vector<pt.uc.dei.tcp_server.Connection>();
-
 
 
     public TCPServerImpl() throws RemoteException {

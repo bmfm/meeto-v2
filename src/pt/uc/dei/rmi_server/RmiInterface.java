@@ -10,7 +10,7 @@ public interface RmiInterface extends Remote {
 
     public Message createMeeting(Message mensagem) throws RemoteException;
 
-    public  Message listMeetings(Message mensagem) throws RemoteException;
+    public Message listMeetings(Message mensagem) throws RemoteException;
 
     public Message register(Message mensagem) throws RemoteException;
 
