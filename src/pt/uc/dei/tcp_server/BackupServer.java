@@ -35,7 +35,6 @@ public class BackupServer {
             uSocket.setSoTimeout(5000);
             DatagramPacket request;
 
-            System.out.println("Entrou no ");
 
             while (true) {
 

@@ -44,11 +44,15 @@ public class TCPClient {
 
             props.load(new FileInputStream("support/property"));
 
-            Socket mainSocket = connect(props, Integer.parseInt(props.getProperty("tcpserverPort")));
+            Socket mainSocket = connect(props, Integer.parseInt(props.getProperty("tcpServerPort")));
 
             setS(mainSocket);
 
-            Socket secondarySocket = connect(props, Integer.parseInt(props.getProperty("tcpserverPortAux")));
+            Socket secondarySocket = connect(props, Integer.parseInt(props.getProperty("tcpServerPortAux")));
+
+            setS(secondarySocket);
+
+
             //tentativa de se ligar a qualquer um dos servers tcp disponiveis
          /*   try {
 
@@ -207,6 +211,11 @@ public class TCPClient {
         lstIp.add(props.getProperty("tcpip1"));
         lstIp.add(props.getProperty("tcpip2"));
 
+        //TODO não tenho de percorrer a porta também?.
+        // Creio que percebi. Parte-se do principio que independentemente do IP, a porta onde eles se ligam é a mesma. Certo?
+        //
+        //
+
 
         while (socket == null) {
 
@@ -222,33 +231,6 @@ public class TCPClient {
                 Thread.sleep(2000);
             }
         }
-
-            /*
-        } catch (UnknownHostException ex) {
-            try {
-
-                setS(new Socket(props.getProperty("tcpip2"), Integer.parseInt(props.getProperty("tcpbserverPort"))));
-            } catch (UnknownHostException ex1) {
-                System.out.println("Todos os servers down...volte mais tarde.");
-
-            } catch (IOException ex1) {
-                System.out.println("Todos os servers down...volte mais tarde.");
-            }
-
-
-        } catch (IOException ex) {
-            try {
-                setS(new Socket(props.getProperty("tcpip2"), Integer.parseInt(props.getProperty("tcpbserverPort"))));
-            } catch (UnknownHostException ex1) {
-                System.out.println("Todos os servers down...volte mais tarde.");
-
-            } catch (IOException ex1) {
-
-                System.out.println("Todos os servers down...volte mais tarde.");
-            }
-        }
-        */
-
 
         return socket;
     }
@@ -275,7 +257,7 @@ public class TCPClient {
 
             }
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 

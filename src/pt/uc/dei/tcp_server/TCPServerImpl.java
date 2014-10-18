@@ -18,9 +18,6 @@ import java.util.Properties;
 public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
 
-    //static Vector<pt.uc.dei.tcp_server.Connection> clients = new Vector<pt.uc.dei.tcp_server.Connection>();
-
-
     public TCPServerImpl() throws RemoteException {
         super();
     }
@@ -53,7 +50,6 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
                 System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
                 numero++;
                 Connection client = new Connection(clientSocket, numero);
-                //clients.add(client);
                 client.start();
             }
         } catch (IOException e) {

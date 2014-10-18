@@ -7,6 +7,21 @@ public class Message implements Serializable {
     public static final String LOG = "log";
     public static final String REG = "reg";
     public static final String CREATEMEETING = "createmeeting";
+    public static final String RECONNET = "reconnect";
+    public static final String POSTDISCUSSIONMESSAGE = "postdiscussionmessage";
+    public static final String INVITETOMEETING = "invitetomeeting";
+    public static final String LISTUPCOMINGMEETINGS = "listupcommingmeetings";
+    public static final String MEETINGOVERVIEW = "meetingoverview";
+    public static final String ACCEPTMEETING = "acceptmeeting";
+    public static final String DECLINEMEETING = "declinemeeting";
+    public static final String ADDAGENTAITEM = "addagendaitem";
+    public static final String MODIFYAGENDAITEM = "modiyagendaitem";
+    public static final String DELETEAGENDAITEM = "deleteagendaitem";
+    public static final String ADDCHATMESSAGE = "addchatmessage";
+    public static final String ADDKEYDECISION = "addkeydecision";
+    public static final String ASSIGNACTION = "assignaction";
+    public static final String SHOWTODOLIST = "showtodolist";
+    public static final String COMPLETEACTION = "completeaction";
 
 
     private String tipo = "";
@@ -17,8 +32,6 @@ public class Message implements Serializable {
     public int iduser;
     public Boolean result;
 
-
-    //geral
     public Message(String username, String password, String mail, String tipo) {
         setTipo(tipo);
         this.username = username;

@@ -66,6 +66,76 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     }
 
+    @Override
+    public Message postNewDiscussionMessage(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public Message inviteToMeeting(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public Message listUpcomingMeetings(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public Message meetingOverview(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public Message acceptMeeting(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public Message declineMeeting(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public Message addAgendaItem(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public Message modifyAgendaItem(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public Message deleteAgendaItem(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public Message addChatMessage(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public Message addKeyDecision(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public Message assignAction(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public Message showToDoList(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public Message completeAction(Message mensagem) throws RemoteException {
+        return null;
+    }
+
 
     public Message listMeetings(Message mensagem) throws RemoteException {
         mensagem.data = "ID Meeeting" + "\t" + "Meeting Name\n";

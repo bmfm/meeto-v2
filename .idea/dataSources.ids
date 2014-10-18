@@ -577,8 +577,8 @@
       <column name="description" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
       <column name="completed" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
       <primary-key name="PRIMARY" columns="idaction"/>
-      <foreign-key name="fk_action_member1" columns="idmember" ref-table="member" ref-schema="" ref-catalog="meeto" ref-columns="idmember" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="fk_action_meeting1" columns="idmeeting" ref-table="meeting" ref-schema="" ref-catalog="meeto" ref-columns="idmeeting" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_action_member1" columns="idmember" ref-table="member" ref-schema="" ref-catalog="meeto" ref-columns="idmember" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="fk_action_meeting1_idx" unique="false" columns="idmeeting"/>
       <index name="fk_action_member1_idx" unique="false" columns="idmember"/>
     </table>

@@ -90,14 +90,89 @@ public class Connection extends Thread {
                         sendOut(mensagem);
                         break;
 
+                    //tratamento da criacao de uma meeting
                     case (Message.CREATEMEETING):
                         mensagem = c.createMeeting(mensagem);
                         sendOut(mensagem);
                         break;
 
+                    //tratamento de user que ja se logou mas foi abaixo
+                    case (Message.RECONNET):
+                        this.username = mensagem.username;
+                        break;
+
+                    case (Message.POSTDISCUSSIONMESSAGE):
+                        mensagem = c.postNewDiscussionMessage(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.INVITETOMEETING):
+                        mensagem = c.inviteToMeeting(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.LISTUPCOMINGMEETINGS):
+                        mensagem = c.listUpcomingMeetings(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.MEETINGOVERVIEW):
+                        mensagem = c.meetingOverview(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.ACCEPTMEETING):
+                        mensagem = c.acceptMeeting(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.DECLINEMEETING):
+                        mensagem = c.declineMeeting(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.ADDAGENTAITEM):
+                        mensagem = c.addAgendaItem(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.MODIFYAGENDAITEM):
+                        mensagem = c.modifyAgendaItem(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.DELETEAGENDAITEM):
+                        mensagem = c.deleteAgendaItem(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.ADDCHATMESSAGE):
+                        mensagem = c.addChatMessage(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.ADDKEYDECISION):
+                        mensagem = c.addKeyDecision(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.ASSIGNACTION):
+                        mensagem = c.assignAction(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.SHOWTODOLIST):
+                        mensagem = c.showToDoList(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.COMPLETEACTION):
+                        mensagem = c.completeAction(mensagem);
+                        sendOut(mensagem);
+                        break;
+
 
                 }
-
 
             }
 
@@ -110,7 +185,6 @@ public class Connection extends Thread {
         } catch (NotBoundException e) {
             System.out.println("Not bound error!");
         }
-
     }
 
 
