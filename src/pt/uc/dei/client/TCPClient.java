@@ -46,7 +46,6 @@ public class TCPClient {
             props.load(new FileInputStream("support/property"));
 
             Socket mainSocket = connect(props, Integer.parseInt(props.getProperty("tcpServerPort")));
-
             setS(mainSocket);
 
             System.out.println("ligou-se ao main socket");
@@ -54,41 +53,13 @@ public class TCPClient {
             //estamos a tentar ligar a  dois sockets no tcp server...nao deveríamos estar a criar duas threads em vez disso?
             //supostamente o tcp server aceita um cliente por socket..
 
-            Socket secondarySocket = connect(props, Integer.parseInt(props.getProperty("tcpServerPortAux")));
+            //Socket secondarySocket = connect(props, Integer.parseInt(props.getProperty("tcpServerPortAux")));
 
-            setS(secondarySocket);
+            //setS(secondarySocket);
 
-            System.out.println("ligou-se ao segundo");
-
-            //tentativa de se ligar a qualquer um dos servers tcp disponiveis
-         /*   try {
-
-                setS(new Socket(props.getProperty("tcpip1"), Integer.parseInt(props.getProperty("tcpserverPort"))));
-
-            } catch (UnknownHostException ex) {
-                try {
-
-                    setS(new Socket(props.getProperty("tcpip2"), Integer.parseInt(props.getProperty("tcpbserverPort"))));
-                } catch (UnknownHostException ex1) {
-                    System.out.println("Todos os servers down...volte mais tarde.");
-
-                } catch (IOException ex1) {
-                    System.out.println("Todos os servers down...volte mais tarde.");
-                }
+            //System.out.println("ligou-se ao segundo");
 
 
-            } catch (IOException ex) {
-                try {
-                    setS(new Socket(props.getProperty("tcpip2"), Integer.parseInt(props.getProperty("tcpbserverPort"))));
-                } catch (UnknownHostException ex1) {
-                    System.out.println("Todos os servers down...volte mais tarde.");
-
-                } catch (IOException ex1) {
-
-                    System.out.println("Todos os servers down...volte mais tarde.");
-                }
-            }
-*/
             setOut(new ObjectOutputStream(s.getOutputStream()));
             setIn(new ObjectInputStream(s.getInputStream()));
 
