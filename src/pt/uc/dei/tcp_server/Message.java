@@ -11,7 +11,7 @@ public class Message implements Serializable {
     public static final String RECONNET = "reconnect";
     public static final String POSTDISCUSSIONMESSAGE = "postdiscussionmessage";
     public static final String INVITETOMEETING = "invitetomeeting";
-    public static final String LISTUPCOMINGMEETINGS = "listupcommingmeetings";
+    public static final String LISTUPCOMINGMEETINGS = "listupcomingmeetings";
     public static final String MEETINGOVERVIEW = "meetingoverview";
     public static final String ACCEPTMEETING = "acceptmeeting";
     public static final String DECLINEMEETING = "declinemeeting";

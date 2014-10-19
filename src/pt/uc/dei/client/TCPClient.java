@@ -167,14 +167,11 @@ public class TCPClient {
                 if (op == 2) {
                     if (out != null) {
 
-                        Message mensagem = new Message(username_logged, null, null, "createMeeting");
-
-
+                        Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
                         sendOut(mensagem);
-
-
                         mensagem = (Message) in.readObject();
                         System.out.println(mensagem.data);
+
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
 

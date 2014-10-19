@@ -185,7 +185,8 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
 
     public Message listUpcomingMeetings(Message mensagem) throws RemoteException {
-        mensagem.data = "ID Meeeting" + "\t" + "Meeting Name\n";
+        mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tTime\t\t\tLocation\n ";
+
 
         ResultSet rs = sql.doQuery("SELECT * FROM meeting;");
         try {
