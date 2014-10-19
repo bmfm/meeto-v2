@@ -69,7 +69,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         List<String> inviteeslist = Arrays.asList(mensagem.list.split(","));
         mensagem.result = false;
-        if ((sql.doUpdate("INSERT INTO meeting (title,objective,date,time,location) VALUES ('" + mensagem.data + "','" + mensagem.desiredoutcome + "','" + mensagem.date + "'" + mensagem.time + "'" + mensagem.location + "');")) == 1) {
+        if ((sql.doUpdate("INSERT INTO meeting (title,objective,date,time,location) VALUES ('" + mensagem.data + "','" + mensagem.desiredoutcome + "','" + mensagem.date + "','" + mensagem.time + "','" + mensagem.location + "');")) == 1) {
 
             ResultSet rs = sql.doQuery("SELECT MAX(idmeeting) FROM meeting;");
             try {
@@ -166,7 +166,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     public synchronized Message listMembers(Message mensagem) throws RemoteException {
 
         mensagem.data = "ID User" + "\t\t" + "Name\n";
-        ResultSet rs = sql.doQuery("SELECT idmember,username FROM member");
+        ResultSet rs = sql.doQuery("select * from member where username NOT LIKE '" + mensagem.username + "'");
         try {
             while (rs.next()) {
                 int idmember = rs.getInt("idmember");
@@ -245,7 +245,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     public synchronized Message getUsernameId(Message mensagem) throws RemoteException {
 
-        ResultSet rs = sql.doQuery("SELECT idmember from members where username='" + mensagem.username + "'");
+        ResultSet rs = sql.doQuery("SELECT idmember from member where username='" + mensagem.username + "'");
         try {
             rs.next();
             mensagem.iduser = rs.getInt(1);

@@ -132,6 +132,7 @@ public class TCPClient {
                         String desoutcome = scs.nextLine();
                         mensagem.desiredoutcome = desoutcome;
                         System.out.println("Date (YYYY-MM-DD):");
+                        //TODO proteget a insercao de datas e horas. try catch? exepction que dá é: IllegalArgument
                         String d = scs.nextLine();
                         mensagem.date = java.sql.Date.valueOf(d);
                         System.out.println("Time (HH:MM):");
