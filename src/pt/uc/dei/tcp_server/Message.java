@@ -1,6 +1,8 @@
 package pt.uc.dei.tcp_server;
 
 import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Time;
 
 public class Message implements Serializable {
 
@@ -15,7 +17,7 @@ public class Message implements Serializable {
     public static final String ACCEPTMEETING = "acceptmeeting";
     public static final String DECLINEMEETING = "declinemeeting";
     public static final String ADDAGENTAITEM = "addagendaitem";
-    public static final String MODIFYAGENDAITEM = "modiyagendaitem";
+    public static final String MODIFYAGENDAITEM = "modifyagendaitem";
     public static final String DELETEAGENDAITEM = "deleteagendaitem";
     public static final String ADDCHATMESSAGE = "addchatmessage";
     public static final String ADDKEYDECISION = "addkeydecision";
@@ -29,8 +31,14 @@ public class Message implements Serializable {
     public String password = "";
     public String mail = "";
     public String data = "";
+    public Date date;
+    public Time time;
+    public String desiredoutcome = "";
     public int iduser;
     public Boolean result;
+    public String list;
+    public String location = "";
+    public int dataint = 0;
 
     public Message(String username, String password, String mail, String tipo) {
         setTipo(tipo);

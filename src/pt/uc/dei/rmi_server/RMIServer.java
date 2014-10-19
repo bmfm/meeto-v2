@@ -10,8 +10,12 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runnable {
@@ -57,87 +61,130 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     }
 
 
-    public Message createMeeting(Message mensagem) throws RemoteException {
+    public synchronized Message createMeeting(Message mensagem) throws RemoteException {
+        //saber o id do user que esta a criar a meeting
+        Message msgid = getUsernameId(mensagem);
+        mensagem.dataint = msgid.iduser;
+        int idmeeting = 0;
 
-        mensagem.result = true;
+        List<String> inviteeslist = Arrays.asList(mensagem.list.split(","));
+        mensagem.result = false;
+        if ((sql.doUpdate("INSERT INTO meeting (title,objective,date,time,location) VALUES ('" + mensagem.data + "','" + mensagem.desiredoutcome + "','" + mensagem.date + "'" + mensagem.time + "'" + mensagem.location + "');")) == 1) {
+
+            ResultSet rs = sql.doQuery("SELECT MAX(idmeeting) FROM meeting;");
+            try {
+                rs.next();
+                idmeeting = rs.getInt(1);
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            //colocar o criador da meeting na tabela meeting_member antes de tratar dos outros
+            sql.doUpdate("INSERT INTO meeting_member (idmeeting,idmember) VALUES ('" + idmeeting + "','" + mensagem.dataint + "');");
+
+            //colcoar os restantes na tabela meeting_member
+            for (int i = 0; i < inviteeslist.size(); i++) {
+                if ((sql.doUpdate("INSERT INTO meeting_member (idmeeting,idmember) VALUES ('" + idmeeting + "','" + inviteeslist.get(i) + "');")) == 1) {
+                    mensagem.result = true;
+                    return mensagem;
+                }
+
+            }
+
+
+        }
+        return mensagem;
+    }
+
+
+    @Override
+    public synchronized Message postNewDiscussionMessage(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public synchronized Message inviteToMeeting(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public synchronized Message meetingOverview(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public synchronized Message acceptMeeting(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public synchronized Message declineMeeting(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public synchronized Message addAgendaItem(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public synchronized Message modifyAgendaItem(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public synchronized Message deleteAgendaItem(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public synchronized Message addChatMessage(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public synchronized Message addKeyDecision(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public synchronized Message assignAction(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public synchronized Message showToDoList(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public synchronized Message completeAction(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+
+    public synchronized Message listMembers(Message mensagem) throws RemoteException {
+
+        mensagem.data = "ID User" + "\t\t" + "Name\n";
+        ResultSet rs = sql.doQuery("SELECT idmember,username FROM member");
+        try {
+            while (rs.next()) {
+                int idmember = rs.getInt("idmember");
+                String user = rs.getString("username");
+                mensagem.data += idmember + "\t\t" + user + "\n";
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
 
         return mensagem;
 
     }
 
-    @Override
-    public Message postNewDiscussionMessage(Message mensagem) throws RemoteException {
-        return null;
-    }
 
-    @Override
-    public Message inviteToMeeting(Message mensagem) throws RemoteException {
-        return null;
-    }
-
-    @Override
     public Message listUpcomingMeetings(Message mensagem) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public Message meetingOverview(Message mensagem) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public Message acceptMeeting(Message mensagem) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public Message declineMeeting(Message mensagem) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public Message addAgendaItem(Message mensagem) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public Message modifyAgendaItem(Message mensagem) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public Message deleteAgendaItem(Message mensagem) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public Message addChatMessage(Message mensagem) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public Message addKeyDecision(Message mensagem) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public Message assignAction(Message mensagem) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public Message showToDoList(Message mensagem) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public Message completeAction(Message mensagem) throws RemoteException {
-        return null;
-    }
-
-
-    public Message listMeetings(Message mensagem) throws RemoteException {
         mensagem.data = "ID Meeeting" + "\t" + "Meeting Name\n";
 
         ResultSet rs = sql.doQuery("SELECT * FROM meeting;");
@@ -145,7 +192,11 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             while (rs.next()) {
                 int meetingid = rs.getInt("idmeeting");
                 String meetingdesc = rs.getString("title");
-                mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\n";
+                String obj = rs.getString("objective");
+                Date d = rs.getDate("date");
+                Time t = rs.getTime("time");
+                String loc = rs.getString("location");
+                mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + t + "\t\t\t" + loc;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -198,9 +249,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         try {
             rs.next();
             mensagem.iduser = rs.getInt(1);
-
             return mensagem;
-
 
         } catch (SQLException e) {
             e.printStackTrace();

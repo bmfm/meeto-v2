@@ -6,6 +6,7 @@ import pt.uc.dei.tcp_server.Message;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.sql.Time;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -139,28 +140,46 @@ public class TCPClient {
             read.start();
             while (true) {
 
-                System.out.print("1-Create meeting\n2-List all meetings\n3-View pending invitations\n4-View pending tasks\n5-Get this user Id\n>");
+                System.out.print("1-Create meeting\n2-List all upcoming meetings\n3-View pending invitations\n4-View pending tasks\n5-Get this user Id\n>");
                 op = sci.nextInt();
 
 
-                //Create Topic
+                //Create meeting
                 if (op == 1) {
                     if (out != null) {
                         Message mensagem = new Message(username_logged, null, null, "createMeeting");
 
-                        System.out.println("Insira o titulo:");
+                        System.out.println("Meeting title:");
                         String title = scs.nextLine();
                         mensagem.data = title;
-                        //TODO create meeting
+                        System.out.println("Desired outcome:");
+                        String desoutcome = scs.nextLine();
+                        mensagem.desiredoutcome = desoutcome;
+                        System.out.println("Date (YYYY-MM-DD):");
+                        String d = scs.nextLine();
+                        mensagem.date = java.sql.Date.valueOf(d);
+                        System.out.println("Time (HH:MM):");
+                        Time t = Time.valueOf(scs.nextLine());
+                        mensagem.time = t;
+                        System.out.println("Location:");
+                        String loc = scs.nextLine();
+                        mensagem.location = loc;
+                        //TODO parar com o tipo de martelada que vem a seguir (mensagem2....)
+                        System.out.println("Select members to invite (separate id's with a comma)");
+                        Message mensagem2 = new Message(username_logged, null, null, "listMembers");
+                        sendOut(mensagem2);
+                        mensagem2 = (Message) in.readObject();
+                        System.out.println(mensagem2.data);
+                        String invitees = scs.nextLine();
+                        mensagem.list = invitees;
                         sendOut(mensagem);
                         mensagem = (Message) in.readObject();
                         if (mensagem.result) {
-                            System.out.println("Tópico inserido com sucesso");
-
+                            System.out.println("Meeting criado com sucesso!");
                         } else {
-                            System.out.println("Não é possível inserir. Topico já existente");
-
+                            System.out.println("Ocorreu um erro, por favor volte a tentar.");
                         }
+
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
                     }
