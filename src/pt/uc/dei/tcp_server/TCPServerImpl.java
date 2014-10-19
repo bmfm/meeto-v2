@@ -39,8 +39,8 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
         try {
 
             ServerSocket listenSocket;
-            listenSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpserverPort")));
-            System.out.println("TCP Server ready! A Escuta no porto " + props.getProperty("tcpserverPort"));
+            listenSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPort")));
+            System.out.println("TCP Server ready! A Escuta no porto " + props.getProperty("tcpServerPort"));
             System.out.println("LISTEN SOCKET=" + listenSocket);
 
 
@@ -49,8 +49,11 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
                 Socket clientSocket = listenSocket.accept(); // BLOQUEANTE
                 System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
                 numero++;
-                Connection client = new Connection(clientSocket, numero);
-                client.start();
+                Connection clientMain = new Connection(clientSocket, numero);
+                //Connection clientSecondary = new Connection(clientSocket, numero);
+                clientMain.start();
+                //clientSecondary.start();
+
             }
         } catch (IOException e) {
             System.out.println("Listen:" + e.getMessage());

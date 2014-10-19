@@ -49,10 +49,16 @@ public class TCPClient {
 
             setS(mainSocket);
 
+            System.out.println("ligou-se ao main socket");
+
+            //estamos a tentar ligar a  dois sockets no tcp server...nao deveríamos estar a criar duas threads em vez disso?
+            //supostamente o tcp server aceita um cliente por socket..
+
             Socket secondarySocket = connect(props, Integer.parseInt(props.getProperty("tcpServerPortAux")));
 
             setS(secondarySocket);
 
+            System.out.println("ligou-se ao segundo");
 
             //tentativa de se ligar a qualquer um dos servers tcp disponiveis
          /*   try {
