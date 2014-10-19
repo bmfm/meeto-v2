@@ -24,6 +24,7 @@ public class Message implements Serializable {
     public static final String SHOWTODOLIST = "showtodolist";
     public static final String COMPLETEACTION = "completeaction";
     public static final String LISTMEMBERS = "listmembers";
+    public static final String LISTALLMEETINGS = "listallmeetings";
 
 
     private String tipo = "";

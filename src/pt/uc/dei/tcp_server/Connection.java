@@ -116,6 +116,11 @@ public class Connection extends Thread {
                         sendOut(mensagem);
                         break;
 
+                    case (Message.LISTALLMEETINGS):
+                        mensagem = c.listAllMeetings(mensagem);
+                        sendOut(mensagem);
+                        break;
+
                     case (Message.MEETINGOVERVIEW):
                         mensagem = c.meetingOverview(mensagem);
                         sendOut(mensagem);

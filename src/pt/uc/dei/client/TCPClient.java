@@ -116,7 +116,7 @@ public class TCPClient {
             //read.start();
             while (true) {
 
-                System.out.print("1-Create meeting\n2-List all upcoming meetings\n3-View pending invitations\n4-View pending tasks\n5-Get this user Id\n>");
+                System.out.print("1-Create meeting\n2-List upcoming meetings\n3-View pending invitations\n4-View pending tasks\n5-Get this user Id\n>");
                 op = sci.nextInt();
 
 
@@ -132,7 +132,7 @@ public class TCPClient {
                         String desoutcome = scs.nextLine();
                         mensagem.desiredoutcome = desoutcome;
                         System.out.println("Date (YYYY-MM-DD):");
-                        //TODO proteget a insercao de datas e horas. try catch? exepction que dá é: IllegalArgument
+                        //TODO proteger a insercao de datas e horas. com try catch torna-se mais simpatico? exception que dá é: IllegalArgument
                         String d = scs.nextLine();
                         mensagem.date = java.sql.Date.valueOf(d);
                         System.out.println("Time (HH:MM):");
@@ -163,7 +163,7 @@ public class TCPClient {
                 }
 
 
-                //List all topics
+                //List upcoming meetings
                 if (op == 2) {
                     if (out != null) {
 

@@ -1,11 +1,4 @@
-package pt.uc.dei.tcp_server; /**
- * Created with IntelliJ IDEA.
- * User: brunomartins
- * Date: 10/8/13
- * Time: 8:53 PM
- * To change this template use File | Settings | File Templates.
- */
-
+package pt.uc.dei.tcp_server;
 
 import java.io.FileInputStream;
 import java.io.IOException;

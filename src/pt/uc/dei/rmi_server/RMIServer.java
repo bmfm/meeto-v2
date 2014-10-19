@@ -22,7 +22,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     static TCPServer x;
     MySQL sql = new MySQL();
-    //Vector<String> online_users;
 
     public RMIServer() throws RemoteException {
         super();
@@ -47,7 +46,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         System.out.println("RMI Server ready.");
         new Thread(this).start();
-        //this.online_users = new Vector<String>();
     }
 
     public static void main(String[] args) {
@@ -184,9 +182,37 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     }
 
 
-    public Message listUpcomingMeetings(Message mensagem) throws RemoteException {
+    public synchronized Message listUpcomingMeetings(Message mensagem) throws RemoteException {
         mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tTime\t\t\tLocation\n ";
 
+        ResultSet rs = sql.doQuery("SELECT * FROM meeting;");
+        try {
+            while (rs.next()) {
+                int meetingid = rs.getInt("idmeeting");
+                String meetingdesc = rs.getString("title");
+                String obj = rs.getString("objective");
+                Date d = rs.getDate("date");
+
+                //TODO biblioteca do Joda resolve o problema do tempo e data mas esta a dar bode na seguinte linha...
+                //LocalDate currentDate = new LocalDate();
+                //LocalTime currentTime = new LocalTime();
+
+
+                Time t = rs.getTime("time");
+                String loc = rs.getString("location");
+                mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + t + "\t\t\t" + loc;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mensagem;
+
+    }
+
+    @Override
+    public Message listAllMeetings(Message mensagem) throws RemoteException {
+
+        mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tTime\t\t\tLocation\n ";
 
         ResultSet rs = sql.doQuery("SELECT * FROM meeting;");
         try {
@@ -203,6 +229,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             e.printStackTrace();
         }
         return mensagem;
+
 
     }
 

@@ -16,6 +16,8 @@ public interface RmiInterface extends Remote {
 
     public Message listUpcomingMeetings(Message mensagem) throws RemoteException;
 
+    public Message listAllMeetings(Message mensagem) throws RemoteException;
+
     public Message meetingOverview(Message mensagem) throws RemoteException;
 
     public Message acceptMeeting(Message mensagem) throws RemoteException;
