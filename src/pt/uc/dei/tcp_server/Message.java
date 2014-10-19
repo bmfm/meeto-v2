@@ -2,7 +2,6 @@ package pt.uc.dei.tcp_server;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.sql.Time;
 
 public class Message implements Serializable {
 
@@ -24,6 +23,7 @@ public class Message implements Serializable {
     public static final String ASSIGNACTION = "assignaction";
     public static final String SHOWTODOLIST = "showtodolist";
     public static final String COMPLETEACTION = "completeaction";
+    public static final String LISTMEMBERS = "listmembers";
 
 
     private String tipo = "";
@@ -32,7 +32,7 @@ public class Message implements Serializable {
     public String mail = "";
     public String data = "";
     public Date date;
-    public Time time;
+    public String time;
     public String desiredoutcome = "";
     public int iduser;
     public Boolean result;

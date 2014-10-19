@@ -171,6 +171,11 @@ public class Connection extends Thread {
                         sendOut(mensagem);
                         break;
 
+                    case (Message.LISTMEMBERS):
+                        mensagem = c.listMembers(mensagem);
+                        sendOut(mensagem);
+                        break;
+
 
                 }
 

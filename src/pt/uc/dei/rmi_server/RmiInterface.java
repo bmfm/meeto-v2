@@ -38,9 +38,7 @@ public interface RmiInterface extends Remote {
 
     public Message completeAction(Message mensagem) throws RemoteException;
 
-
-
-
+    public Message listMembers(Message mensagem) throws RemoteException;
 
     public Message register(Message mensagem) throws RemoteException;
 

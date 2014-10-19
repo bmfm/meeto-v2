@@ -6,7 +6,6 @@ import pt.uc.dei.tcp_server.Message;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.sql.Time;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,7 +32,7 @@ public class TCPClient {
         System.out.println("TCP Client");
         Scanner sci = new Scanner(System.in);
         Scanner scs = new Scanner(System.in);
-        message_all = new Vector<Message>();
+
         int op;
 
         String username, password, mail;
@@ -114,7 +113,7 @@ public class TCPClient {
 
 
             //ciclo com menu principal
-            read.start();
+            //read.start();
             while (true) {
 
                 System.out.print("1-Create meeting\n2-List all upcoming meetings\n3-View pending invitations\n4-View pending tasks\n5-Get this user Id\n>");
@@ -136,7 +135,7 @@ public class TCPClient {
                         String d = scs.nextLine();
                         mensagem.date = java.sql.Date.valueOf(d);
                         System.out.println("Time (HH:MM):");
-                        Time t = Time.valueOf(scs.nextLine());
+                        String t = scs.nextLine();
                         mensagem.time = t;
                         System.out.println("Location:");
                         String loc = scs.nextLine();
