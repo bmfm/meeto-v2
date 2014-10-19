@@ -168,7 +168,10 @@ public class TCPClient {
                     if (out != null) {
 
                         Message mensagem = new Message(username_logged, null, null, "createMeeting");
+
+
                         sendOut(mensagem);
+
 
                         mensagem = (Message) in.readObject();
                         System.out.println(mensagem.data);
