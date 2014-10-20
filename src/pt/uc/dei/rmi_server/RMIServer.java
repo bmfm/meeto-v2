@@ -200,7 +200,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
                 Time t = rs.getTime("time");
                 String loc = rs.getString("location");
-                mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + t + "\t\t\t" + loc;
+                mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + t + "\t\t\t" + loc + "\n";
             }
         } catch (SQLException e) {
             e.printStackTrace();

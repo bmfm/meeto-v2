@@ -6,7 +6,10 @@ import pt.uc.dei.tcp_server.Message;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,9 +17,12 @@ public class TCPClient {
 
     static String username_logged;
     static Socket s = null;
+    static Socket saux = null;
     static ObjectInputStream in = null;
     static ObjectOutputStream out = null;
-    static Vector<Message> message_all;
+    static ObjectInputStream inAux = null;
+    static ObjectOutputStream outAux = null;
+
     ReadData read = null;
 
     public static void main(String[] args) throws InterruptedException {
@@ -49,24 +55,27 @@ public class TCPClient {
 
             System.out.println("ligou-se ao main socket");
 
-            //estamos a tentar ligar a  dois sockets no tcp server...nao deveríamos estar a criar duas threads em vez disso?
-            //supostamente o tcp server aceita um cliente por socket..
-
-            //Socket secondarySocket = connect(props, Integer.parseInt(props.getProperty("tcpServerPortAux")));
-
-            //setS(secondarySocket);
-
-            //System.out.println("ligou-se ao segundo");
-
 
             setOut(new ObjectOutputStream(s.getOutputStream()));
             setIn(new ObjectInputStream(s.getInputStream()));
 
+            Socket secondarySocket = connect(props, Integer.parseInt(props.getProperty("tcpServerPortAux")));
+
+            setSaux(secondarySocket);
+
+            setOutAux(new ObjectOutputStream(saux.getOutputStream()));
+            setInAux(new ObjectInputStream(saux.getInputStream()));
+
+            System.out.println("ligou-se ao segundo");
+
+
             //thread que trata de receber mensagens
-            read = new ReadData(in);
+            read = new ReadData(in, inAux);
 
             //ciclo com menus de register e login
             System.out.println("Ligado ao Servidor...");
+
+
             while (true) {
                 System.out.print("1 - Register\n2 - Login\n>");
                 op = sci.nextInt();
@@ -113,13 +122,18 @@ public class TCPClient {
 
 
             //ciclo com menu principal
-            //read.start();
+
+
+            read.start();
+
+
+
+
             while (true) {
+
 
                 System.out.print("1-Create meeting\n2-List upcoming meetings\n3-View pending invitations\n4-View pending tasks\n5-Get this user Id\n>");
                 op = sci.nextInt();
-
-
                 //Create meeting
                 if (op == 1) {
                     if (out != null) {
@@ -235,6 +249,10 @@ public class TCPClient {
         s = aS;
     }
 
+    public static void setSaux(Socket aS) {
+        saux = aS;
+    }
+
     public static void setIn(ObjectInputStream aIn) {
         in = aIn;
     }
@@ -242,6 +260,16 @@ public class TCPClient {
     public static void setOut(ObjectOutputStream aOut) {
         out = aOut;
     }
+
+    public static void setInAux(ObjectInputStream aIn) {
+        inAux = aIn;
+    }
+
+    public static void setOutAux(ObjectOutputStream aOut) {
+        outAux = aOut;
+    }
+
+
 
     public static void sendOut(Message mensagem) {
         try {
@@ -257,17 +285,38 @@ public class TCPClient {
         }
     }
 
+    public static void sendOutAux(Message mensagem) {
+
+        try {
+            synchronized (outAux) {
+
+                outAux.writeObject(mensagem);
+                outAux.flush();
+                outAux.reset();
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 
 }
 
 class ReadData extends Thread {
 
-    private static ObjectInputStream in;
+    ObjectInputStream in;
+    ObjectInputStream inAux;
 
 
-    public ReadData(ObjectInputStream in) {
+    public ReadData(ObjectInputStream in, ObjectInputStream inAux) {
         this.in = in;
+        this.inAux = inAux;
+
     }
+
     //=============================
 
     @Override
@@ -277,7 +326,15 @@ class ReadData extends Thread {
                 while (true) {
 
                     //espera por uma mensagem
-                    Message mensagem = (Message) in.readObject();
+                    Message mensagemAux = (Message) inAux.readObject();
+
+                    //print pedido request de credito
+                    if (mensagemAux.getTipo().equalsIgnoreCase("print")) {
+
+                        System.out.println(mensagemAux.data);
+
+                    }
+
 
 
                 }

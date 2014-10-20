@@ -31,27 +31,47 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
         try {
 
-            ServerSocket listenSocket;
-            listenSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPort")));
-            System.out.println("TCP Server ready! A Escuta no porto " + props.getProperty("tcpServerPort"));
-            System.out.println("LISTEN SOCKET=" + listenSocket);
+            ServerSocket listenMainSocket;
+            ServerSocket listenAuxSocket;
+            listenMainSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPort")));
+            System.out.println("TCP Server ready! Main socket à escuta no porto " + props.getProperty("tcpServerPort"));
+            System.out.println("LISTEN SOCKET=" + listenMainSocket);
+            listenAuxSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPortAux")));
+            System.out.println("TCP Server ready! Seconday socket à escuta no porto " + props.getProperty("tcpServerPortAux"));
+            System.out.println("LISTEN SOCKET=" + listenAuxSocket);
 
 
             while (true) {
 
-                Socket clientSocket = listenSocket.accept(); // BLOQUEANTE
+                Socket clientSocket = listenMainSocket.accept(); // BLOQUEANTE
                 System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
                 numero++;
                 Connection clientMain = new Connection(clientSocket, numero);
-                //Connection clientSecondary = new Connection(clientSocket, numero);
                 clientMain.start();
-                //clientSecondary.start();
+                Socket clientAuxSocket = listenAuxSocket.accept();
+                System.out.println("CLIENT_SOCKET (created at accept())=" + clientAuxSocket);
+                Events clientEvents = new Events(clientAuxSocket, numero);
+
+                clientEvents.start();
 
             }
         } catch (IOException e) {
             System.out.println("Listen:" + e.getMessage());
 
         }
+    }
+
+
+    public void mainSocket() {
+
+
+    }
+
+    public void secondarySocket() {
+
+
+
+
     }
 
 
