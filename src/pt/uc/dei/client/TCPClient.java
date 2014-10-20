@@ -126,9 +126,6 @@ public class TCPClient {
 
             read.start();
 
-
-
-
             while (true) {
 
 
@@ -148,7 +145,7 @@ public class TCPClient {
                         System.out.println("Date (YYYY-MM-DD):");
                         //TODO proteger a insercao de datas e horas. com try catch torna-se mais simpatico? exception que dá é: IllegalArgument
                         String d = scs.nextLine();
-                        mensagem.date = java.sql.Date.valueOf(d);
+                        mensagem.date = d;
                         System.out.println("Time (HH:MM):");
                         String t = scs.nextLine();
                         mensagem.time = t;

@@ -10,10 +10,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -67,7 +65,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         List<String> inviteeslist = Arrays.asList(mensagem.list.split(","));
         mensagem.result = false;
-        if ((sql.doUpdate("INSERT INTO meeting (title,objective,date,time,location) VALUES ('" + mensagem.data + "','" + mensagem.desiredoutcome + "','" + mensagem.date + "','" + mensagem.time + "','" + mensagem.location + "');")) == 1) {
+        if ((sql.doUpdate("INSERT INTO meeting (title,objective,date,location) VALUES ('" + mensagem.data + "','" + mensagem.desiredoutcome + "','" + mensagem.date + " " + mensagem.time + "','" + mensagem.location + "');")) == 1) {
 
             ResultSet rs = sql.doQuery("SELECT MAX(idmeeting) FROM meeting;");
             try {
@@ -176,31 +174,21 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             e.printStackTrace();
         }
 
-
         return mensagem;
-
     }
 
-
     public synchronized Message listUpcomingMeetings(Message mensagem) throws RemoteException {
-        mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tTime\t\t\tLocation\n ";
+        mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tLocation\n ";
 
-        ResultSet rs = sql.doQuery("SELECT * FROM meeting;");
+        ResultSet rs = sql.doQuery("SELECT * FROM meeting where date > now();");
         try {
             while (rs.next()) {
                 int meetingid = rs.getInt("idmeeting");
                 String meetingdesc = rs.getString("title");
                 String obj = rs.getString("objective");
-                Date d = rs.getDate("date");
-
-                //TODO biblioteca do Joda resolve o problema do tempo e data mas esta a dar bode na seguinte linha...
-                //LocalDate currentDate = new LocalDate();
-                //LocalTime currentTime = new LocalTime();
-
-
-                Time t = rs.getTime("time");
+                String d = rs.getString("date");
                 String loc = rs.getString("location");
-                mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + t + "\t\t\t" + loc + "\n";
+                mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + loc + "\n";
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -212,7 +200,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     @Override
     public Message listAllMeetings(Message mensagem) throws RemoteException {
 
-        mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tTime\t\t\tLocation\n ";
+        mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tLocation\n ";
 
         ResultSet rs = sql.doQuery("SELECT * FROM meeting;");
         try {
@@ -220,10 +208,10 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
                 int meetingid = rs.getInt("idmeeting");
                 String meetingdesc = rs.getString("title");
                 String obj = rs.getString("objective");
-                Date d = rs.getDate("date");
-                Time t = rs.getTime("time");
+                String d = rs.getString("date");
+
                 String loc = rs.getString("location");
-                mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + t + "\t\t\t" + loc;
+                mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + loc;
             }
         } catch (SQLException e) {
             e.printStackTrace();

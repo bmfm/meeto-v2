@@ -1,7 +1,6 @@
 package pt.uc.dei.tcp_server;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 public class Message implements Serializable {
 
@@ -32,7 +31,7 @@ public class Message implements Serializable {
     public String password = "";
     public String mail = "";
     public String data = "";
-    public Date date;
+    public String date;
     public String time;
     public String desiredoutcome = "";
     public int iduser;

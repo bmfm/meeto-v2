@@ -577,8 +577,8 @@
       <column name="description" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
       <column name="completed" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
       <primary-key name="PRIMARY" columns="idaction"/>
-      <foreign-key name="fk_action_member1" columns="idmember" ref-table="member" ref-schema="" ref-catalog="meeto" ref-columns="idmember" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="fk_action_meeting1" columns="idmeeting" ref-table="meeting" ref-schema="" ref-catalog="meeto" ref-columns="idmeeting" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_action_member1" columns="idmember" ref-table="member" ref-schema="" ref-catalog="meeto" ref-columns="idmember" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="fk_action_meeting1_idx" unique="false" columns="idmeeting"/>
       <index name="fk_action_member1_idx" unique="false" columns="idmember"/>
     </table>
@@ -614,10 +614,9 @@
     </table>
     <table name="meeting" schema="" catalog="meeto" type="TABLE">
       <column name="idmeeting" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="title" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12" remarks="CQk="/>
-      <column name="objective" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="date" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
-      <column name="time" sqlType="TIME" precision="8" scale="0" nullable="false" jdbcType="92"/>
+      <column name="title" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12" remarks="CQk="/>
+      <column name="objective" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="location" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="idmeeting"/>
       <exported-key name="fk_action_meeting1" table="action" schema="" catalog="meeto" columns="idmeeting"/>
