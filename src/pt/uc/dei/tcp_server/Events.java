@@ -42,6 +42,10 @@ public class Events extends Thread {
 
     public void run() {
 
+        //TODO uma vez que esta thread é criada assim que um user se liga, pode ficar logo à espera de uma mensagem do user. User envia logo o seu username.
+        //TODO Assim que recebe o username cria uma ligacao ao RMI server e pergunta se tem lá alguma coisa pendente em nome dele.
+        //TODO Implementar a lógica do user online : hashmaps com o user como key e socket como value
+
         Message mensagem = new Message(null, null, null, "print");
         mensagem.data = "Mensagem enviada a partir do events";
         try {

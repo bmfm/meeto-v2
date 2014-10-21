@@ -6,6 +6,7 @@ import pt.uc.dei.tcp_server.Message;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -23,16 +24,23 @@ public class TCPClient {
     static ObjectInputStream inAux = null;
     static ObjectOutputStream outAux = null;
 
+
     ReadData read = null;
 
-    public static void main(String[] args) throws InterruptedException {
+    static EmbeddedHelper embDB = new EmbeddedHelper();
+
+    public static void main(String[] args) throws InterruptedException, SQLException, ClassNotFoundException {
         TCPClient client = new TCPClient();
         try {
+
+            embDB.startupEmbeddedDB();
             client.startupClient();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     private void startupClient() throws IOException, InterruptedException {
         System.out.println("TCP Client");
@@ -220,8 +228,6 @@ public class TCPClient {
 
         //TODO não tenho de percorrer a porta também?.
         // Creio que percebi. Parte-se do principio que independentemente do IP, a porta onde eles se ligam é a mesma. Certo?
-        //
-        //
 
 
         while (socket == null) {
@@ -301,6 +307,13 @@ public class TCPClient {
 
     }
 
+    public static void saveToEmbeddedDB(Message mensagem) {
+
+        embDB.doUpdate("INSERT INTO system_message (username,type,data,date,time,desiredoutcome,list,location,timestamp,delivered) VALUES ()");
+
+
+    }
+
 
 }
 
@@ -324,7 +337,7 @@ class ReadData extends Thread {
             try {
                 while (true) {
 
-                    //espera por uma mensagem
+                    //espera por uma mensagem do socket alternativo
                     Message mensagemAux = (Message) inAux.readObject();
 
                     //print pedido request de credito
@@ -333,8 +346,6 @@ class ReadData extends Thread {
                         System.out.println(mensagemAux.data);
 
                     }
-
-
 
                 }
             } catch (ClassNotFoundException ex) {
@@ -351,18 +362,28 @@ class ReadData extends Thread {
                 ObjectInputStream cin = null;
                 ObjectOutputStream cout = null;
                 Socket cs = null;
+                Socket csaux = null;
+                ObjectInputStream cinAux = null;
+                ObjectOutputStream coutAux = null;
                 while (true) {
                     try {
 
                         //dar 5 segundos ao server para voltar
                         ReadData.sleep(5000);
-                        cs = new Socket(props.getProperty("tcpip1"), Integer.parseInt(props.getProperty("tcpserverPort")));
+                        cs = new Socket(props.getProperty("tcpip1"), Integer.parseInt(props.getProperty("tcpServerPort")));
+                        csaux = new Socket(props.getProperty("tcpip1"), Integer.parseInt(props.getProperty("tcpServerPortAux")));
                         cout = new ObjectOutputStream(cs.getOutputStream());
                         cin = new ObjectInputStream(cs.getInputStream());
+                        coutAux = new ObjectOutputStream(cs.getOutputStream());
+                        cinAux = new ObjectInputStream(cs.getInputStream());
                         TCPClient.setS(cs);
                         TCPClient.setOut(cout);
                         TCPClient.setIn(cin);
+                        TCPClient.setSaux(csaux);
+                        TCPClient.setInAux(cinAux);
+                        TCPClient.setOutAux(coutAux);
                         this.in = cin;
+                        this.inAux = cinAux;
                         Message mensagem = new Message(TCPClient.username_logged, null, null, "reconnect");
                         cout.writeObject(mensagem);
 

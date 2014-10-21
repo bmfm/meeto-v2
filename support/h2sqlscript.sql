@@ -1,5 +1,3 @@
-DROP TABLE IF EXISTS `system_message`;
-
 CREATE TABLE IF NOT EXISTS `system_message` (
   `idsystem_message` DATETIME    NOT NULL,
   `idmember`         INT         NULL DEFAULT NULL,

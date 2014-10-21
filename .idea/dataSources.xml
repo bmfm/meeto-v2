@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1006262598">
+  <component name="DataSourceManagerImpl" format="xml" hash="2431931322">
     <data-source source="LOCAL" name="MySQL - meeto@localhost" uuid="402e791d-f0d1-4e41-8939-7ac8f459ba15">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
@@ -18,19 +18,12 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name="H2 -@localhost" uuid="b4942f1d-8d02-45e2-853a-5b12ea6990d8">
+    <data-source source="LOCAL" name="H2 -" uuid="25c4b56e-918a-423d-8b4e-991724d48818">
       <driver-ref>h2.embedded</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
-      <jdbc-url>jdbc:h2:file:data/meeto</jdbc-url>
-      <user-name>sa</user-name>
-      <schema-pattern>MEETO.PUBLIC</schema-pattern>
-      <default-schemas>MEETO.PUBLIC</default-schemas>
-      <libraries>
-        <library>
-          <url>file://$PROJECT_DIR$/lib/h2-1.3.175.jar</url>
-        </library>
-      </libraries>
+      <jdbc-url>jdbc:h2:file:</jdbc-url>
+      <libraries />
     </data-source>
   </component>
 </project>
