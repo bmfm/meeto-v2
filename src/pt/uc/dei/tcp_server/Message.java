@@ -39,6 +39,9 @@ public class Message implements Serializable {
     public String list;
     public String location = "";
     public int dataint = 0;
+    public String timestamp;
+    public int delivered;
+
 
     public Message(String username, String password, String mail, String tipo) {
         setTipo(tipo);
@@ -46,6 +49,85 @@ public class Message implements Serializable {
         this.password = password;
         this.mail = mail;
     }
+
+
+    public Message(String username, String tipo, String data, String date, String time, String desiredoutcome, String list, String location) {
+
+
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getDesiredoutcome() {
+        return desiredoutcome;
+    }
+
+    public void setDesiredoutcome(String desiredoutcome) {
+        this.desiredoutcome = desiredoutcome;
+    }
+
+    public Boolean getResult() {
+        return result;
+    }
+
+    public void setResult(Boolean result) {
+        this.result = result;
+    }
+
+    public String getList() {
+        return list;
+    }
+
+    public void setList(String list) {
+        this.list = list;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public int getDataint() {
+        return dataint;
+    }
+
+    public void setDataint(int dataint) {
+        this.dataint = dataint;
+    }
+
 
     public String getTipo() {
         return tipo;
@@ -55,5 +137,23 @@ public class Message implements Serializable {
         if (tipo != null)
             tipo = tipo.toLowerCase();
         this.tipo = tipo;
+    }
+
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+
+    public int getDelivered() {
+        return delivered;
+    }
+
+    public void setDelivered(int delivered) {
+        this.delivered = delivered;
     }
 }

@@ -272,6 +272,8 @@ public class TCPClient {
         try {
             synchronized (out) {
 
+                java.util.Date date = new java.util.Date();
+                mensagem.setTimestamp(String.valueOf(date.getTime()));
                 out.writeObject(mensagem);
                 out.flush();
                 out.reset();

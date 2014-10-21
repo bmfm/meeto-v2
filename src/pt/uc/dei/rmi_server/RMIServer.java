@@ -57,6 +57,13 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     }
 
 
+    public synchronized void setSysMsg(Message mensagem) {
+
+
+    }
+
+
+
     public synchronized Message createMeeting(Message mensagem) throws RemoteException {
         //saber o id do user que esta a criar a meeting
         Message msgid = getUsernameId(mensagem);
@@ -78,14 +85,15 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             //colocar o criador da meeting na tabela meeting_member antes de tratar dos outros
             sql.doUpdate("INSERT INTO meeting_member (idmeeting,idmember) VALUES ('" + idmeeting + "','" + mensagem.dataint + "');");
 
-            //colcoar os restantes na tabela meeting_member
+            //colocar os restantes na tabela meeting_member
             for (int i = 0; i < inviteeslist.size(); i++) {
                 if ((sql.doUpdate("INSERT INTO meeting_member (idmeeting,idmember) VALUES ('" + idmeeting + "','" + inviteeslist.get(i) + "');")) == 1) {
                     mensagem.result = true;
-                    return mensagem;
+
                 }
 
             }
+            return mensagem;
 
 
         }

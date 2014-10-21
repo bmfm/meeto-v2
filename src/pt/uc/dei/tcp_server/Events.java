@@ -39,6 +39,7 @@ public class Events extends Thread {
         }
     }
 
+
     public void run() {
 
         Message mensagem = new Message(null, null, null, "print");
