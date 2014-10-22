@@ -1,6 +1,7 @@
 package pt.uc.dei.tcp_server;
 
 import java.io.Serializable;
+import java.net.Socket;
 
 public class Message implements Serializable {
 
@@ -24,6 +25,8 @@ public class Message implements Serializable {
     public static final String COMPLETEACTION = "completeaction";
     public static final String LISTMEMBERS = "listmembers";
     public static final String LISTALLMEETINGS = "listallmeetings";
+    public static final String SENDTOHASH = "sendtohash";
+    public static final String CHECKONLINE = "checkonline";
 
 
     private String tipo = "";
@@ -41,8 +44,18 @@ public class Message implements Serializable {
     public int dataint = 0;
     public String timestamp;
     public int delivered;
+    public Socket socket;
+
+    //mensagem para o user ser colocado na Hashtable (juntamente com o seu socket)
+    public Message(String username, Socket socket, String tipo) {
+        setTipo(tipo);
+        this.username = username;
+        this.socket = socket;
 
 
+    }
+
+    //mensagem geral para operacoes request-reply na thread connection
     public Message(String username, String password, String mail, String tipo) {
         setTipo(tipo);
         this.username = username;
@@ -51,6 +64,7 @@ public class Message implements Serializable {
     }
 
 
+    //mensagem para colocar tudo o que o user introduziu na tabela system_message para efeitos de confirmação de recepção
     public Message(String username, String tipo, String data, String date, String time, String desiredoutcome, String list, String location) {
 
 

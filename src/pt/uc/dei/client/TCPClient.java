@@ -131,13 +131,17 @@ public class TCPClient {
 
             //ciclo com menu principal
 
-
+            //thread que vai tratar de receber coisas que nao sao requested pelo utilizador
             read.start();
+
+            //assim que o user faz login com sucesso, envia logo uma mensagem para a thread de events para esta guardar o socket e o username do member na Hashtable de users online
+            Message msg = new Message(username_logged, null, null, "sendtohash");
+            sendOutAux(msg);
 
             while (true) {
 
 
-                System.out.print("1-Create meeting\n2-List upcoming meetings\n3-View pending invitations\n4-View pending tasks\n5-Get this user Id\n>");
+                System.out.print("1-Create meeting\n2-List upcoming meetings\n3-View pending invitations\n4-View pending tasks\n5-Join Meetings\n6-List online users\n");
                 op = sci.nextInt();
                 //Create meeting
                 if (op == 1) {
@@ -193,6 +197,97 @@ public class TCPClient {
 
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
+
+                    }
+
+                }
+
+                if (op == 3) {
+                    if (out != null) {
+
+                        Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
+                        sendOut(mensagem);
+                        mensagem = (Message) in.readObject();
+                        System.out.println(mensagem.data);
+
+                    } else {
+                        System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
+
+                    }
+
+                }
+
+                if (op == 4) {
+                    if (out != null) {
+
+                        Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
+                        sendOut(mensagem);
+                        mensagem = (Message) in.readObject();
+                        System.out.println(mensagem.data);
+
+                    } else {
+                        System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
+
+                    }
+
+                }
+
+                if (op == 5) {
+                    if (out != null) {
+
+                        Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
+                        sendOut(mensagem);
+                        mensagem = (Message) in.readObject();
+                        System.out.println(mensagem.data);
+
+                    } else {
+                        System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
+
+                    }
+
+                }
+
+                //List online users
+                if (op == 6) {
+                    if (out != null) {
+
+                        Message mensagem = new Message(username_logged, null, null, "checkonline");
+                        sendOutAux(mensagem);
+                        // mensagem = (Message) inAux.readObject();
+                        // System.out.println(mensagem.data);
+
+                    } else {
+                        System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
+
+                    }
+
+                }
+
+                if (op == 7) {
+                    if (out != null) {
+
+                        Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
+                        sendOut(mensagem);
+                        mensagem = (Message) in.readObject();
+                        System.out.println(mensagem.data);
+
+                    } else {
+                        System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
+
+                    }
+
+                    if (op == 3) {
+                        if (out != null) {
+
+                            Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
+                            sendOut(mensagem);
+                            mensagem = (Message) in.readObject();
+                            System.out.println(mensagem.data);
+
+                        } else {
+                            System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
+
+                        }
 
                     }
 
@@ -309,6 +404,8 @@ public class TCPClient {
 
     public static void saveToEmbeddedDB(Message mensagem) {
 
+        //TODO tratar do delivery dos dados -> embedded e system_msg do lado do rmi
+
         embDB.doUpdate("INSERT INTO system_message (username,type,data,date,time,desiredoutcome,list,location,timestamp,delivered) VALUES ()");
 
 
@@ -340,12 +437,22 @@ class ReadData extends Thread {
                     //espera por uma mensagem do socket alternativo
                     Message mensagemAux = (Message) inAux.readObject();
 
-                    //print pedido request de credito
+
                     if (mensagemAux.getTipo().equalsIgnoreCase("print")) {
 
                         System.out.println(mensagemAux.data);
 
                     }
+
+                    if (mensagemAux.getTipo().equalsIgnoreCase("checkonline")) {
+
+
+                        System.out.println(mensagemAux.data);
+                    }
+
+
+
+
 
                 }
             } catch (ClassNotFoundException ex) {

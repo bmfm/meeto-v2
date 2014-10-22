@@ -6,10 +6,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Hashtable;
 import java.util.Properties;
 
 public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
+
+    //Hashtable que vai conter os users online
+    static Hashtable<String, Thread> membersonline = new Hashtable<>();
 
     public TCPServerImpl() throws RemoteException {
         super();
@@ -17,7 +21,6 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
 
     public static void main(String args[]) {
-
 
         int numero = 0;
         Properties props = new Properties();
@@ -27,7 +30,6 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
 
         try {
 
@@ -40,13 +42,13 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
             System.out.println("TCP Server ready! Seconday socket à escuta no porto " + props.getProperty("tcpServerPortAux"));
             System.out.println("LISTEN SOCKET=" + listenAuxSocket);
 
-
             while (true) {
 
-                Socket clientSocket = listenMainSocket.accept(); // BLOQUEANTE
+                Socket clientSocket = listenMainSocket.accept();
                 System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
                 numero++;
                 Connection clientMain = new Connection(clientSocket, numero);
+
                 clientMain.start();
                 Socket clientAuxSocket = listenAuxSocket.accept();
                 System.out.println("CLIENT_SOCKET (created at accept())=" + clientAuxSocket);

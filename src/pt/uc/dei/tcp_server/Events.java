@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Enumeration;
 
 public class Events extends Thread {
 
@@ -46,13 +47,40 @@ public class Events extends Thread {
         //TODO Assim que recebe o username cria uma ligacao ao RMI server e pergunta se tem lá alguma coisa pendente em nome dele.
         //TODO Implementar a lógica do user online : hashmaps com o user como key e socket como value
 
-        Message mensagem = new Message(null, null, null, "print");
-        mensagem.data = "Mensagem enviada a partir do events";
-        try {
-            Thread.sleep(10000);
-            sendOut(mensagem);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while (true) {
+
+            try {
+
+                Message mensagemAux = (Message) in.readObject();
+
+                switch (mensagemAux.getTipo()) {
+
+
+                    case (Message.SENDTOHASH):
+                        TCPServerImpl.membersonline.put(mensagemAux.username, this);
+                        break;
+
+
+                    case (Message.CHECKONLINE):
+                        mensagemAux.data = "Members currently online:\n";
+                        Enumeration e = TCPServerImpl.membersonline.keys();
+                        while (e.hasMoreElements()) {
+
+                            mensagemAux.data += e.nextElement();
+
+                        }
+                        sendOut(mensagemAux);
+                        break;
+
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
         }
 
 
