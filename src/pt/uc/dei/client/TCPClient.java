@@ -134,7 +134,7 @@ public class TCPClient {
             //thread que vai tratar de receber coisas que nao sao requested pelo utilizador
             read.start();
 
-            //assim que o user faz login com sucesso, envia logo uma mensagem para a thread de events para esta guardar o socket e o username do member na Hashtable de users online
+            //assim que o user faz login com sucesso, envia logo uma mensagem para a thread de events para esta guardar o username do member na Hashtable de users online (juntamente com a própria thread)
             Message msg = new Message(username_logged, null, null, "sendtohash");
             sendOutAux(msg);
 

@@ -106,6 +106,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         return null;
     }
 
+
     @Override
     public synchronized Message inviteToMeeting(Message mensagem) throws RemoteException {
         return null;
@@ -115,6 +116,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     public synchronized Message meetingOverview(Message mensagem) throws RemoteException {
         return null;
     }
+
 
     @Override
     public synchronized Message acceptMeeting(Message mensagem) throws RemoteException {
@@ -164,6 +166,42 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     @Override
     public synchronized Message completeAction(Message mensagem) throws RemoteException {
         return null;
+    }
+
+    public synchronized Message viewPendingInvitations(Message mensagem) throws RemoteException {
+        int resultado;
+        Message msgid = getUsernameId(mensagem);
+        mensagem.dataint = msgid.iduser;
+        ResultSet rs = sql.doQuery("select * from meeting_member where idmember =" + mensagem.dataint + "' and accepted=NULL");
+        try {
+            rs.next();
+            resultado = rs.getInt(1);
+            if (resultado != 1) {
+                mensagem.data = "No pending invitations!";
+                return mensagem;
+            } else {
+                //TODO ESTA BODEGA
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        mensagem.data = "ID User" + "\t\t" + "Name\n";
+
+        try {
+
+            while (rs.next()) {
+                int idmember = rs.getInt("idmember");
+                String user = rs.getString("username");
+                mensagem.data += idmember + "\t\t" + user + "\n";
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return mensagem;
+
+
     }
 
 
