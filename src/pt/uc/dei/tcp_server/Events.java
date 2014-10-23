@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Enumeration;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Events extends Thread {
 
@@ -13,6 +14,7 @@ public class Events extends Thread {
     Socket clientSocket;
     int thread_number;
     String username = null;
+    LinkedBlockingQueue queue = new LinkedBlockingQueue();
 
     public Events(Socket aClientSocket, int numero) {
         this.thread_number = numero;
@@ -48,9 +50,9 @@ public class Events extends Thread {
 
     public void run() {
 
-        //TODO uma vez que esta thread é criada assim que um user se liga, pode ficar logo à espera de uma mensagem do user. User envia logo o seu username.
+
         //TODO Assim que recebe o username cria uma ligacao ao RMI server e pergunta se tem lá alguma coisa pendente em nome dele.
-        //TODO Implementar a lógica do user online : hashmaps com o user como key e socket como value
+
 
         while (true) {
 
@@ -83,6 +85,8 @@ public class Events extends Thread {
                         break;
 
                     case (Message.CHECKINVITATIONS):
+
+
                         break;
 
                     case (Message.CHECKCHATMESSAGES):

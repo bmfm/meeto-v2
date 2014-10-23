@@ -174,7 +174,7 @@ public class TCPClient {
                         sendOut(mensagem);
                         mensagem = (Message) in.readObject();
                         if (mensagem.result) {
-                            System.out.println("Meeting criado com sucesso!");
+                            System.out.println("Meeting successfully created!");
                             Message invmsg = new Message(username_logged, null, null, "sendInvitations");
                             sendOutAux(invmsg);
 
@@ -192,10 +192,12 @@ public class TCPClient {
                 if (op == 2) {
                     if (out != null && outAux != null) {
 
+
                         Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
                         sendOut(mensagem);
                         mensagem = (Message) in.readObject();
                         System.out.println(mensagem.data);
+                        System.out.println("Do you wish to ");
 
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
@@ -204,13 +206,47 @@ public class TCPClient {
 
                 }
 
+                //View pending invitations
+
                 if (op == 3) {
                     if (out != null && outAux != null) {
 
-                        Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
+                        int opnotifications;
+                        String meetings;
+
+
+                        Message mensagem = new Message(username_logged, null, null, "viewpendinginvitations");
                         sendOut(mensagem);
                         mensagem = (Message) in.readObject();
                         System.out.println(mensagem.data);
+                        if (!mensagem.data.equalsIgnoreCase("No pending notifications!\n")) {
+                            System.out.println("Do you wish to (1)Accept, (2)Decline or (3)Exit?\n");
+                            opnotifications = sci.nextInt();
+                            if (opnotifications == 1) {
+                                System.out.println("Enter the id of the meetings you wish to accept, separated by commas:\n");
+                                meetings = scs.nextLine();
+                                Message acceptmsg = new Message(username_logged, null, null, "acceptmeeting");
+                                acceptmsg.list = meetings;
+                                sendOut(acceptmsg);
+                                acceptmsg = (Message) in.readObject();
+                                if (acceptmsg.result) {
+                                    System.out.println("Meetings accepted.");
+                                }
+
+                            }
+                            if (opnotifications == 2) {
+                                System.out.println("Enter the id of the meetings you wish to decline, separated by commas:\n");
+                                meetings = scs.nextLine();
+                                Message declinemsg = new Message(username_logged, null, null, "declinemeeting");
+                                declinemsg.list = meetings;
+                                sendOut(declinemsg);
+                                declinemsg = (Message) in.readObject();
+                                if (declinemsg.result) {
+                                    System.out.println("Meetings declined.");
+                                }
+
+                            }
+                        }
 
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
@@ -364,9 +400,7 @@ public class TCPClient {
         Message checkmyinvitations = new Message(username_logged, null, null, "viewpendingnotifications");
         sendOutAux(checkmyinvitations);
 
-
         //TODO verificar se perdeu alguma chat msg enquanto estava offline
-
 
     }
 

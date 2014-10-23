@@ -181,6 +181,10 @@ public class Connection extends Thread {
                         sendOut(mensagem);
                         break;
 
+                    case (Message.VIEWPENDINGINVITATIONS):
+                        mensagem = c.viewPendingInvitations(mensagem);
+                        sendOut(mensagem);
+
 
                 }
 

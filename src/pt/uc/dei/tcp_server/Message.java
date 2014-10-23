@@ -30,6 +30,7 @@ public class Message implements Serializable {
     public static final String SENDINVITATIONS = "sendinvitations";
     public static final String CHECKINVITATIONS = "checkinvitations";
     public static final String CHECKCHATMESSAGES = "checkchatmessages";
+    public static final String VIEWPENDINGINVITATIONS = "viewpendingninvitations";
 
 
     private String tipo = "";

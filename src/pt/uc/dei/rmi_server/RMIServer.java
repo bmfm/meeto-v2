@@ -133,19 +133,18 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         List<String> acceptlist = Arrays.asList(mensagem.list.split(","));
 
-
+        mensagem.result = false;
         //aceitar as meetings escolhidas
         for (int i = 0; i < acceptlist.size(); i++) {
             if ((sql.doUpdate("UPDATE meeting_member SET accepted='1' where idmember='" + mensagem.dataint + "'and idmeeting='" + acceptlist.get(i) + "'")) == 1)
-                ;
+
             {
+
                 mensagem.result = true;
             }
 
         }
         return mensagem;
-
-
     }
 
     @Override
@@ -156,11 +155,11 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         List<String> declinelist = Arrays.asList(mensagem.list.split(","));
 
-
+        mensagem.result = false;
         //recusar as meetings escolhidas
         for (int i = 0; i < declinelist.size(); i++) {
             if ((sql.doUpdate("UPDATE meeting_member SET accepted='0' where idmember='" + mensagem.dataint + "'and idmeeting='" + declinelist.get(i) + "'")) == 1)
-                ;
+
             {
                 mensagem.result = true;
             }
