@@ -27,6 +27,9 @@ public class Message implements Serializable {
     public static final String LISTALLMEETINGS = "listallmeetings";
     public static final String SENDTOHASH = "sendtohash";
     public static final String CHECKONLINE = "checkonline";
+    public static final String SENDINVITATIONS = "sendinvitations";
+    public static final String CHECKINVITATIONS = "checkinvitations";
+    public static final String CHECKCHATMESSAGES = "checkchatmessages";
 
 
     private String tipo = "";

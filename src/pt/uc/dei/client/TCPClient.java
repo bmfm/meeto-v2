@@ -131,21 +131,20 @@ public class TCPClient {
 
             //ciclo com menu principal
 
-            //thread que vai tratar de receber coisas que nao sao requested pelo utilizador
+            //thread que vai tratar de receber coisas que nao sao necessariamente requested pelo utilizador
             read.start();
+            startUpOperations();
 
-            //assim que o user faz login com sucesso, envia logo uma mensagem para a thread de events para esta guardar o username do member na Hashtable de users online (juntamente com a própria thread)
-            Message msg = new Message(username_logged, null, null, "sendtohash");
-            sendOutAux(msg);
 
             while (true) {
 
 
                 System.out.print("1-Create meeting\n2-List upcoming meetings\n3-View pending invitations\n4-View pending tasks\n5-Join Meetings\n6-List online users\n");
                 op = sci.nextInt();
+
                 //Create meeting
                 if (op == 1) {
-                    if (out != null) {
+                    if (out != null && outAux != null) {
                         Message mensagem = new Message(username_logged, null, null, "createMeeting");
 
                         System.out.println("Meeting title:");
@@ -176,6 +175,9 @@ public class TCPClient {
                         mensagem = (Message) in.readObject();
                         if (mensagem.result) {
                             System.out.println("Meeting criado com sucesso!");
+                            Message invmsg = new Message(username_logged, null, null, "sendInvitations");
+                            sendOutAux(invmsg);
+
                         } else {
                             System.out.println("Ocorreu um erro, por favor volte a tentar.");
                         }
@@ -188,7 +190,7 @@ public class TCPClient {
 
                 //List upcoming meetings
                 if (op == 2) {
-                    if (out != null) {
+                    if (out != null && outAux != null) {
 
                         Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
                         sendOut(mensagem);
@@ -203,7 +205,7 @@ public class TCPClient {
                 }
 
                 if (op == 3) {
-                    if (out != null) {
+                    if (out != null && outAux != null) {
 
                         Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
                         sendOut(mensagem);
@@ -218,7 +220,7 @@ public class TCPClient {
                 }
 
                 if (op == 4) {
-                    if (out != null) {
+                    if (out != null && outAux != null) {
 
                         Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
                         sendOut(mensagem);
@@ -233,7 +235,7 @@ public class TCPClient {
                 }
 
                 if (op == 5) {
-                    if (out != null) {
+                    if (out != null && outAux != null) {
 
                         Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
                         sendOut(mensagem);
@@ -249,12 +251,11 @@ public class TCPClient {
 
                 //List online users
                 if (op == 6) {
-                    if (out != null) {
+                    if (out != null && outAux != null) {
 
                         Message mensagem = new Message(username_logged, null, null, "checkonline");
                         sendOutAux(mensagem);
-                        // mensagem = (Message) inAux.readObject();
-                        // System.out.println(mensagem.data);
+
 
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
@@ -264,7 +265,7 @@ public class TCPClient {
                 }
 
                 if (op == 7) {
-                    if (out != null) {
+                    if (out != null && outAux != null) {
 
                         Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
                         sendOut(mensagem);
@@ -273,21 +274,6 @@ public class TCPClient {
 
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
-
-                    }
-
-                    if (op == 3) {
-                        if (out != null) {
-
-                            Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
-                            sendOut(mensagem);
-                            mensagem = (Message) in.readObject();
-                            System.out.println(mensagem.data);
-
-                        } else {
-                            System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
-
-                        }
 
                     }
 
@@ -303,9 +289,10 @@ public class TCPClient {
             Logger.getLogger(TCPClient.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
-            if (s != null) {
+            if (s != null && saux != null) {
                 try {
                     s.close();
+                    saux.close();
                 } catch (IOException e) {
                     System.out.println("close:" + e.getMessage());
                 }
@@ -365,6 +352,22 @@ public class TCPClient {
 
     public static void setOutAux(ObjectOutputStream aOut) {
         outAux = aOut;
+    }
+
+    public static void startUpOperations() throws IOException, ClassNotFoundException {
+
+        //assim que o user faz login com sucesso, envia logo uma mensagem para a thread de events para esta guardar o username do member na Hashtable de users online (juntamente com a própria thread)
+        Message msgtohash = new Message(username_logged, null, null, "sendtohash");
+        sendOutAux(msgtohash);
+
+        //verificar as invitations que possui
+        Message checkmyinvitations = new Message(username_logged, null, null, "viewpendingnotifications");
+        sendOutAux(checkmyinvitations);
+
+
+        //TODO verificar se perdeu alguma chat msg enquanto estava offline
+
+
     }
 
 
@@ -450,9 +453,15 @@ class ReadData extends Thread {
                         System.out.println(mensagemAux.data);
                     }
 
+                    if (mensagemAux.getTipo().equalsIgnoreCase("viewpendingnotifications")) {
+                        if (!mensagemAux.data.equalsIgnoreCase("No pending invitations!")) {
+                            System.out.println("While you were away, you were invited to the following meetings:\n");
+                            System.out.println(mensagemAux.data);
+                            System.out.println("Please select 'View pending invitations' from the menu to accept or decline");
 
+                        }
 
-
+                    }
 
                 }
             } catch (ClassNotFoundException ex) {

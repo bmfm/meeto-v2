@@ -40,6 +40,11 @@ public class Events extends Thread {
         }
     }
 
+    public synchronized void sendMsg(Message msg) {
+
+
+    }
+
 
     public void run() {
 
@@ -71,6 +76,20 @@ public class Events extends Thread {
                         }
                         sendOut(mensagemAux);
                         break;
+
+                    case (Message.SENDINVITATIONS):
+
+
+                        break;
+
+                    case (Message.CHECKINVITATIONS):
+                        break;
+
+                    case (Message.CHECKCHATMESSAGES):
+
+                        break;
+
+
 
                 }
 

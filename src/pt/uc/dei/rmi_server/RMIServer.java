@@ -82,8 +82,8 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            //colocar o criador da meeting na tabela meeting_member antes de tratar dos outros
-            sql.doUpdate("INSERT INTO meeting_member (idmeeting,idmember) VALUES ('" + idmeeting + "','" + mensagem.dataint + "');");
+            //colocar o criador da meeting na tabela meeting_member (como accepted naturalmente) antes de tratar dos outros
+            sql.doUpdate("INSERT INTO meeting_member (idmeeting,idmember,accepted) VALUES ('" + idmeeting + "','" + mensagem.dataint + "'+'1');");
 
             //colocar os restantes na tabela meeting_member
             for (int i = 0; i < inviteeslist.size(); i++) {
@@ -93,6 +93,8 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
                 }
 
             }
+
+            //enviar mensagem para
             return mensagem;
 
 
@@ -113,6 +115,12 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     }
 
     @Override
+    public synchronized Message sendInvitations(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+
+    @Override
     public synchronized Message meetingOverview(Message mensagem) throws RemoteException {
         return null;
     }
@@ -120,12 +128,46 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     @Override
     public synchronized Message acceptMeeting(Message mensagem) throws RemoteException {
-        return null;
+        Message msgid = getUsernameId(mensagem);
+        mensagem.dataint = msgid.iduser;
+
+        List<String> acceptlist = Arrays.asList(mensagem.list.split(","));
+
+
+        //aceitar as meetings escolhidas
+        for (int i = 0; i < acceptlist.size(); i++) {
+            if ((sql.doUpdate("UPDATE meeting_member SET accepted='1' where idmember='" + mensagem.dataint + "'and idmeeting='" + acceptlist.get(i) + "'")) == 1)
+                ;
+            {
+                mensagem.result = true;
+            }
+
+        }
+        return mensagem;
+
+
     }
 
     @Override
     public synchronized Message declineMeeting(Message mensagem) throws RemoteException {
-        return null;
+
+        Message msgid = getUsernameId(mensagem);
+        mensagem.dataint = msgid.iduser;
+
+        List<String> declinelist = Arrays.asList(mensagem.list.split(","));
+
+
+        //recusar as meetings escolhidas
+        for (int i = 0; i < declinelist.size(); i++) {
+            if ((sql.doUpdate("UPDATE meeting_member SET accepted='0' where idmember='" + mensagem.dataint + "'and idmeeting='" + declinelist.get(i) + "'")) == 1)
+                ;
+            {
+                mensagem.result = true;
+            }
+
+        }
+        return mensagem;
+
     }
 
     @Override
@@ -160,7 +202,9 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     @Override
     public synchronized Message showToDoList(Message mensagem) throws RemoteException {
-        return null;
+
+        return mensagem;
+
     }
 
     @Override
@@ -168,37 +212,38 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         return null;
     }
 
+    @Override
     public synchronized Message viewPendingInvitations(Message mensagem) throws RemoteException {
         int resultado;
         Message msgid = getUsernameId(mensagem);
         mensagem.dataint = msgid.iduser;
-        ResultSet rs = sql.doQuery("select * from meeting_member where idmember =" + mensagem.dataint + "' and accepted=NULL");
+        ResultSet rs = sql.doQuery("select * from meeting_member where idmember =" + mensagem.dataint + "' and accepted==NULL");
         try {
-            rs.next();
-            resultado = rs.getInt(1);
-            if (resultado != 1) {
-                mensagem.data = "No pending invitations!";
-                return mensagem;
-            } else {
-                //TODO ESTA BODEGA
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        mensagem.data = "ID User" + "\t\t" + "Name\n";
-
-        try {
-
             while (rs.next()) {
-                int idmember = rs.getInt("idmember");
-                String user = rs.getString("username");
-                mensagem.data += idmember + "\t\t" + user + "\n";
-            }
 
+                resultado = rs.getInt(1);
+                if (resultado != 1) {
+
+                    ResultSet rset = sql.doQuery("select (idmeeting.meeting,title.meeting,objective.meeting,date.meeting,location.meeting) from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = " + mensagem.dataint + "' and accepted==NULL");
+                    mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tLocation\n ";
+                    while (rset.next()) {
+
+                        int meetingid = rs.getInt("idmeeting");
+                        String meetingdesc = rs.getString("title");
+                        String obj = rs.getString("objective");
+                        String d = rs.getString("date");
+                        String loc = rs.getString("location");
+                        mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + loc + "\n";
+                    }
+
+                } else {
+                    mensagem.data = "No pending invitations!";
+
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return mensagem;
 
 

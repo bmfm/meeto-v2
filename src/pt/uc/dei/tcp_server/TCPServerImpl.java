@@ -64,19 +64,6 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
     }
 
 
-    public void mainSocket() {
-
-
-    }
-
-    public void secondarySocket() {
-
-
-
-
-    }
-
-
     public void ping() throws RemoteException {
 
     }
