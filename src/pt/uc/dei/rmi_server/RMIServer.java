@@ -63,7 +63,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     }
 
 
-
     public synchronized Message createMeeting(Message mensagem) throws RemoteException {
         //saber o id do user que esta a criar a meeting
         Message msgid = getUsernameId(mensagem);
@@ -342,7 +341,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //TODO colocar este user como online usando hashmap
         mensagem.result = true;
         return mensagem;
 

@@ -74,6 +74,7 @@ public class Connection extends Thread {
 
                 switch (mensagem.getTipo()) {
 
+
                     //tratamento de um register
                     case (Message.REG):
                         mensagem = c.register(mensagem);

@@ -15,9 +15,12 @@ public class Events extends Thread {
     int thread_number;
     String username = null;
     LinkedBlockingQueue queue = new LinkedBlockingQueue();
+    TCPServerImpl tcpServer;
 
-    public Events(Socket aClientSocket, int numero) {
+    public Events(Socket aClientSocket, int numero, TCPServerImpl tcpServer) {
         this.thread_number = numero;
+        this.tcpServer = tcpServer;
+
 
         try {
             this.clientSocket = aClientSocket;
@@ -51,8 +54,6 @@ public class Events extends Thread {
     public void run() {
 
 
-        //TODO Assim que recebe o username cria uma ligacao ao RMI server e pergunta se tem lá alguma coisa pendente em nome dele.
-
 
         while (true) {
 
@@ -64,13 +65,14 @@ public class Events extends Thread {
 
 
                     case (Message.SENDTOHASH):
-                        TCPServerImpl.membersonline.put(mensagemAux.username, this);
+
+                        tcpServer.put(mensagemAux.username, this);
                         break;
 
-
+                    //TODO passar isto para a connection possivelmente
                     case (Message.CHECKONLINE):
                         mensagemAux.data = "Members currently online:\n";
-                        Enumeration e = TCPServerImpl.membersonline.keys();
+                        Enumeration e = tcpServer.keys();
                         while (e.hasMoreElements()) {
 
                             mensagemAux.data += e.nextElement();
