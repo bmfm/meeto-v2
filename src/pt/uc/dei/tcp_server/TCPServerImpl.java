@@ -186,6 +186,7 @@ class UDPSender extends Thread {
         try {
             uSocket = new DatagramSocket();
             byte[] m = "I AM ALIVE".getBytes();
+            //TODO mudar para ir trocando de ip constantemente
             InetAddress aHost = InetAddress.getByName(props.getProperty("tcpip2"));
             DatagramPacket msg = new DatagramPacket(m, m.length, aHost, Integer.parseInt(props.getProperty("udpPort")));
             while (true) {
