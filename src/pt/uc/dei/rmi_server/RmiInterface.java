@@ -50,8 +50,6 @@ public interface RmiInterface extends Remote {
 
     public Message login(Message mensagem) throws RemoteException;
 
-    public Message getUsernameId(Message mensagem) throws RemoteException;
-
     public void ping() throws RemoteException;
 
     public void subscribe(TCPServer client) throws RemoteException;

@@ -12,14 +12,18 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runnable {
+    List<Message> msgsToSend = new ArrayList<Message>();
+    List<String> userToSend = new ArrayList<String>();
 
-    static TCPServer x;
+    HashSet<String> membersonline = new HashSet<>();
+
+
+    static TCPServer tcpServer;
     MySQL sql = new MySQL();
+
 
     public RMIServer() throws RemoteException {
         super();
@@ -43,6 +47,8 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         r.rebind("rmi://" + props.getProperty("rmiServerip") + "/core", this);
 
         System.out.println("RMI Server ready.");
+
+
         new Thread(this).start();
     }
 
@@ -64,6 +70,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
 
     public synchronized Message createMeeting(Message mensagem) throws RemoteException {
+        List<Message> msgToSend = new ArrayList<>();
         //saber o id do user que esta a criar a meeting
         Message msgid = getUsernameId(mensagem);
         mensagem.dataint = msgid.iduser;
@@ -87,17 +94,19 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             //colocar os restantes na tabela meeting_member
             for (int i = 0; i < inviteeslist.size(); i++) {
                 if ((sql.doUpdate("INSERT INTO meeting_member (idmeeting,idmember) VALUES ('" + idmeeting + "','" + inviteeslist.get(i) + "');")) == 1) {
+                    //TODO ADICIONAR AS MSGS A LISTA E ENVIAR COM O METODO DO TCPSERVER
                     mensagem.result = true;
 
                 }
 
             }
 
-            //enviar mensagem para
+            //TODO enviar mensagem para TCPSERVER
             return mensagem;
 
 
         }
+
         return mensagem;
     }
 
@@ -367,8 +376,9 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     }
 
+    //
     public void subscribe(TCPServer client) throws RemoteException {
-        x = client;
+        tcpServer = client;
         //new RMIServer();
 
     }
@@ -377,15 +387,14 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         while (true)
             try {
-                if (x != null) {
-                    x.ping();
+                if (tcpServer != null) {
+                    tcpServer.ping();
                     System.out.println("Ligado ao servidor TCP. Pingando...");
                     Thread.sleep(3000);
                 }
 
 
-            } catch (InterruptedException e) {
-            } catch (RemoteException e) {
+            } catch (InterruptedException | RemoteException e) {
                 e.printStackTrace();
             }
     }

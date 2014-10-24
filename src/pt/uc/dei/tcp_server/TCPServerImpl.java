@@ -2,8 +2,7 @@ package pt.uc.dei.tcp_server;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Collection;
@@ -15,7 +14,7 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
 
     //Hashtable que vai conter os users online
-    private Hashtable<String, Thread> membersonline = new Hashtable<>();
+    private Hashtable<String, Events> membersonline = new Hashtable<>();
     private boolean master = false;
 
     public TCPServerImpl() throws RemoteException {
@@ -28,6 +27,15 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
         tcpimp.init(args);
 
     }
+
+
+    private void validateIfMaster() throws NotMasterException {
+        if (!master) {
+            throw new NotMasterException();
+        }
+    }
+
+
 
     public void init(String args[]) {
 
@@ -82,7 +90,7 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
     }
 
 
-    public synchronized Collection<Thread> values() {
+    public synchronized Collection<Events> values() {
         return membersonline.values();
     }
 
@@ -90,11 +98,11 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
         return membersonline.keys();
     }
 
-    public synchronized Thread put(String key, Thread value) {
+    public synchronized Events put(String key, Events value) {
         return membersonline.put(key, value);
     }
 
-    public synchronized Thread get(Object key) {
+    public synchronized Events get(Object key) {
         return membersonline.get(key);
     }
 
@@ -110,9 +118,90 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
         return membersonline.containsValue(value);
     }
 
-    public void ping() throws RemoteException {
+    public synchronized void ping() throws RemoteException {
+
+    }
+
+    //metodo chamado pelo RMI para enviar uma mensagem para varios utilizadores ou várias mensagens para um só utilizador.
+
+    public synchronized void sendMsg(Message[] messages, String[] usernames) throws RemoteException, NotMasterException {
+        validateIfMaster();
+        for (Message m : messages) {
+            for (String u : usernames) {
+
+                Events threadEvent = membersonline.get(u);
+                threadEvent.putMsgIntoQueue(m);
+            }
+
+        }
+
+    }
+
+    //vararg yeah
+    public synchronized void msgToMany(Message m, String... u) throws RemoteException, NotMasterException {
+        Message[] msgs = new Message[1];
+        msgs[0] = m;
+        this.sendMsg(msgs, u);
+
+
+    }
+
+    public void msgsToOne(String u, Message... m) throws RemoteException, NotMasterException {
+        String[] user = new String[1];
+        user[0] = u;
+        this.sendMsg(m, user);
+    }
+
+    public void switchToMaster(boolean isMaster) {
+        master = isMaster;
 
     }
 
 
 }
+
+class UDPSender extends Thread {
+
+    TCPServerImpl tcpServer = null;
+
+
+    public UDPSender(TCPServerImpl tcpServer) {
+
+        this.tcpServer = tcpServer;
+
+
+    }
+
+    public void run() {
+
+        Properties props = new Properties();
+
+        try {
+            props.load(new FileInputStream("property"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        DatagramSocket uSocket;
+        try {
+            uSocket = new DatagramSocket();
+            byte[] m = "I AM ALIVE".getBytes();
+            InetAddress aHost = InetAddress.getByName(props.getProperty("tcpip2"));
+            DatagramPacket msg = new DatagramPacket(m, m.length, aHost, Integer.parseInt(props.getProperty("udpPort")));
+            while (true) {
+                uSocket.send(msg);
+                //envia pings de 3 em 3 segundos
+                this.currentThread().sleep(3000);
+
+            }
+        } catch (SocketException e) {
+            tcpServer.switchToMaster(true);
+        } catch (IOException e) {
+            tcpServer.switchToMaster(true);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+//TODO ESPETAR UDP RECEiVER

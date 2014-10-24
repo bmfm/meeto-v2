@@ -14,7 +14,7 @@ public class Events extends Thread {
     Socket clientSocket;
     int thread_number;
     String username = null;
-    LinkedBlockingQueue queue = new LinkedBlockingQueue();
+    LinkedBlockingQueue<Message> queue = new LinkedBlockingQueue<>();
     TCPServerImpl tcpServer;
 
     public Events(Socket aClientSocket, int numero, TCPServerImpl tcpServer) {
@@ -45,8 +45,8 @@ public class Events extends Thread {
         }
     }
 
-    public synchronized void sendMsg(Message msg) {
-
+    public void putMsgIntoQueue(Message msg) {
+        queue.offer(msg);
 
     }
 
@@ -65,7 +65,9 @@ public class Events extends Thread {
 
 
                     case (Message.SENDTOHASH):
+                        //assim que envia a mensagem para o tcpserver para o user ser colocado na Hashtable de user online, é logo definido o username da thread em si, para mais tarde utilizar o sendMsg()
 
+                        this.username = mensagemAux.username;
                         tcpServer.put(mensagemAux.username, this);
                         break;
 
@@ -100,9 +102,7 @@ public class Events extends Thread {
                 }
 
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
 
