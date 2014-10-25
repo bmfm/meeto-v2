@@ -45,17 +45,16 @@
 \center % Center everything on the page
 
 \textsc{\LARGE Universidade de Coimbra}\\[1.5cm] % Name of your university/college
-\textsc{\Large Licenciatura Engenharia Informática\\2013-2014}\\[0.5cm] % Major heading such as course name
+\textsc{\Large Licenciatura Engenharia Informática\\2014-2015}\\[0.5cm] % Major heading such as course name
 
 \HRule \\[0.4cm]
-{\huge \bfseries Sistemas Distribuídos - Project 1}\\[0.4cm] % Title of your document
+{\huge \bfseries Sistemas Distribuídos - Projeto 1}\\[0.4cm] % Title of your document
 \HRule \\[1.5cm]
 
 \begin{minipage}{0.8\textwidth}
 
 \begin{flushleft} \large
 \emph{Autores:}\\
-Gustavo \textsc{Fresco} - Nº2006105289\\ % Your name
 Bruno \textsc{Martins} - Nº2007183389
 \end{flushleft}
 
@@ -86,11 +85,11 @@ Bruno \textsc{Martins} - Nº2007183389
 
 \section{Introdução} % Major section
 \label{sec:intro}
-O presente relatório destina-se a apresentar a descrição do projecto 1 da cadeira de Sistemas Distribuídos intitulada \emph{IdeaBroker – Idea Management and Trading}.\\
+O presente relatório destina-se a apresentar a descrição do projecto 1 da cadeira de Sistemas Distribuídos intitulado \emph{Meeto – Collaboration and Social Networking}.\\
 
-Ideias são um conceito poderoso. A maneira pela qual eles são organizados na Web não é a melhor, pois raramente é estruturado. Este projeto tem como objetivo organizar as idéias de uns contra os outros, com a capacidade de fornecer aos usuários uma visão geral sobre um tema específico, bem como uma indicação de quanto cada ideia vale a pena.\\
+Reuniões são necessárias quando diversas pessoas trabalham em conjunto. Alunos reunem-se para coordenar o seu esforço nos trabalhos práticos; trabalhadores reunem-se para discutir o estado dos projectos e gestores reunem-se para tomar decisões chave relacionadas com as suas organizações e por aí fora. É necessário um sistema que impeça as pessoas de gastarem tempo desnecessário em reuniões. Afinal de contas, tempo é o nosso recurso mais valioso.
 
-Ideias são submetidos pelos usuários, e outros usuários são capazes de concordar e discordar com essas ideias, submetendo os argumentos a favor e contra. Tais argumentos são, naturalmente, as ideias também. Dessa forma, ideias, pensamentos e opiniões são significativamente ligados uns aos outros (ao contrário dos botões atualmente típicos que fornecem nenhum raciocínio). - \textbf{Figura \ref{figure1}.}
+Este projecto consiste então numa implementação de um sistema de gestão de reuniões, onde os utilizadores podem criar reuniões, convidar participantes, ter uma sala de chat para cada tópico da reunião e no final adicionar decisões chave a cada reunião. É também possível relacionar pessoas a certas tarefas - uma vez que uma reunião sem atribuição de tarefas concretas aos seus elementos de pouco serve.
 
 \begin{figure}[!ht]
   	\centering
@@ -121,29 +120,33 @@ Esta aplicação encontra-se subdividida numa série de classes, cada uma respon
 
 \begin{description}
 	\item[RMIServer:] \hfill \\
-	Dentro da classe \textbf{RMIServer} encontram-se os métodos essenciais da aplicação: registo, login, createTopic, listAllTopics, listOwnIdeas, viewSharesFromIdea, etc. Dentro do RMIServer é executado o callback, que chama o método Ping() para verificação de ligação, caso o servidor a que este se encontra a fazer callback caia, o RMIServer irá então realizar \textbf{rebind()} para o servidor Backup. Relativamente as threads, o RMI tem a sua própria thread para executar. 
-	\item[CoreRMI:] \hfill \\
-	O CoreRMI é a nossa interface dos métodos existentes dentro da RMIServer.
+	Dentro da classe \textbf{RMIServer} encontram-se os métodos essenciais da aplicação: registo, login, createMeeting, listAllMeetings, acceptMeeting, meetingOverview, addAgendaItem etc. É aqui que é criado o registry e onde é instanciado o objecto para ligação à base de dados MySQL. Dentro do RMIServer são também chamados vários métodos do TCPServer (callback), entre eles o \textbf{msgToMany} que trata de enviar uma mensagem a vários destinatários e o \textbf{msgsToOne} que envia diversas mensagens para o mesmo utilizador. Relativamente a threads, o RMI faz uma gestão interna automática das mesmas.
+	Aqui encontra-se também um HashSet com os utilizadores actualmente ligados ao sistema.
+	\item[RmiInterface:] \hfill \\
+	O RmiInterface, tal como o próprio nome indica, é a interface dos métodos existentes dentro da RMIServer.
+	\item[MySQL:] \hfill \\
+	Classe onde se encontram os métodos para ligação à base de dados MySQL e para correcta execução dos diferentes tipos de queries.
 	\item[TCPServer:] \hfill \\
-	Existe duas threads dentro do TCPServer: uma a  pingar para o RMI e a outra a enviar pings através do UDP para o BackupServer.
-	\item[BackupServer:] \hfill \\
-	Dentro desta classe encontra-se o servidor secundário TCP, que se encontra à escuta, à espera que o servidor TCP Principal caía.
+	Interface dos métodos existentes dentro do TCPServerImpl
+	\item[TCPServerImpl:] \hfill \\
+	Implementa os métodos da interface e é aqui onde os clientes se ligam (abrindo dois sockets e mais duas threads para cada um). Possui 2 threads internas (UDP Sender e UDP Receiver) e guarda a relação entre users e threads numa HashTable. Correndo o ficheiro duas vezes simula a arquitectura desejada (tcp server primário e tcp server de backup).	
 	\item[TCPClient:] \hfill \\
-	Este cliente estabelece a ligação com o servidor através de Sockets TCP (recorrendo a streams de dados) promovendo não só a construção dos menus (menu de login, inicial, etc.) como também a arquitetura da aplicação melhorando, deste modo, a comunicabilidade com o servidor. É responsável por providenciar informação e dados através da criação de mensagens e pelo envio de imagens, como também requisita serviços à aplicação, como por exemplo listar ideias existentes, ou comprar shares.
+	Este cliente estabelece a ligação com o servidor através de dois Sockets TCP (uma para pedidos request-reply e outro para eventos em "tempo real") promovendo não só a construção dos menus (menu de login, inicial, etc.) como também a arquitetura da aplicação melhorando, deste modo, a comunicação com o servidor. É responsável por providenciar informação e dados através da criação de mensagens, como também requisita serviços à aplicação, como por exemplo listar meetings existentes, ou comprar aceitar convites.
+	Possui internamente uma thread para ler dados que surjam sem ser necessário uma interacção do utilizador com o sistema.
+
 \end{description}
 
-Estes objetos são responsáveis por estabelecer grande parte da interoperabilidade desta aplicação embora sejam necessárias as restantes classes que suportam a estrutura por detrás deste sistema.\\ 
+Estas classes são responsáveis por estabelecer grande parte da interoperabilidade desta aplicação embora sejam necessárias as restantes que suportam a estrutura por detrás deste sistema.\\ 
 
 
 
 
 Relativamente ao armazenamento de dados na Base de Dados, foram criadas as tabelas:
 \begin{description}
-	\item[Person:] \hfill \\
-	\textbf{id\_person, login, pass, email, money, online}\\
-	A tabela \emph{Person} é a responsável por armazenar os dados dos users, assim como também a quantidade de dinheiro que possui (10000 por default) e tem um campo \underline{Online} que é um boolean que indica se este se encontra online ou não no sistema.
-	
-	\item[Ideias:] \hfill \\
+	\item[member:] \hfill \\
+	\textbf{idmember, username, pass, email}\\
+	A tabela \emph{member} é a responsável por armazenar os dados dos membros.	
+	\item[meeting:] \hfill \\
 	\textbf{id\_ideia, id\_person, description, attach}\\
 	A tabela \textbf{Ideias} além de ter o seu próprio id, também guarda o id da pessoa responsável pela mesma. Tem também um campo com uma breve descrição e um campo attach que é um \textbf{BLOB}, no qual são guardados os ficheiros de anexo.
 	\item[Shares:] \hfill \\
@@ -164,7 +167,7 @@ Relativamente ao armazenamento de dados na Base de Dados, foram criadas as tabel
 \end{description}
 
 
-\begin{figure}[ht]
+\begin{figure}[!ht]
   	\centering
   	\includegraphics[scale=0.5]{ERdiagram.png}
   	\caption{Diagrama Entidade Relacionamento}
@@ -276,8 +279,8 @@ Implementámos uma thread com uma duração de 5 segundos que corresponde ao tem
 %--------------------------------------------------------------------------
 %	Strict Order Implementation
 %--------------------------------------------------------------------------
-\section{Strict Order Implementation}
-\label{sec:strict}
+\section{Causal Order Implementation}
+\label{sec:causal}
 Para implementar o nosso projecto, começamos por criar as respectivas ligações e a criação dos clientes. Inicialmente criamos somente o TCP Server, no qual colocamos todas as operações necessárias e mais tarde passamos estas mesmas para o servidor RMI. Foi também criado uma interface \emph{CORERmi}, na qual temos a declaração das funções necessárias ao longo da aplicação.
 Relativamente ao armazenamento de dados, optamos numa primeira instância por recorrer a ficheiros (tipo vector), mas logo percebemos que para existir uma maior segurança e fiabilidade de armazenamento de dados a melhor operação era recorrer a uma base de dados, nomeadamente o \emph{MySQL}. Relativamente à base de dados, foi feito uma análise cuidada das tabelas, campos e ligações a usar de acordo com as nossas necessidades.
 
@@ -407,7 +410,7 @@ Foram feitos diversos testes nas diversas funcionalidades da aplicação, de mod
 \label{sec:install}
 Para correr a aplicação irá necessitar dos seguintes requisitos:
 \begin{itemize}
-	\item Java 5 ou Superior
+	\item Java 8
 	\item Servidor com MySQL com a respectiva base de dados (o script de criação da base de dados encontra-se na raiz deste projecto dentro do ficheiro \emph{sd1\_2013.sql})
 \end{itemize}
 

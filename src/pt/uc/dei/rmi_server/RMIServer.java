@@ -18,6 +18,8 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     List<Message> msgsToSend = new ArrayList<Message>();
     List<String> userToSend = new ArrayList<String>();
 
+    //TODO será melhor colocar um HashSet com os users online ou fazer essa operação na base de dados com um campo apenas?
+
     HashSet<String> membersonline = new HashSet<>();
 
 

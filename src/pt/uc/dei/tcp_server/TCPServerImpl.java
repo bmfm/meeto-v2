@@ -1,6 +1,7 @@
 package pt.uc.dei.tcp_server;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.*;
 import java.rmi.RemoteException;
@@ -9,8 +10,12 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
+
+//TODO FAZER EXPORT DO CLASS DIAGRAM E METER NO RELATÓRIO
 
 
     //Hashtable que vai conter os users online
@@ -137,7 +142,7 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
     }
 
-    //vararg yeah
+    //mandar uma msg para diversos utilizadores
     public synchronized void msgToMany(Message m, String... u) throws RemoteException, NotMasterException {
         Message[] msgs = new Message[1];
         msgs[0] = m;
@@ -146,6 +151,8 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
     }
 
+
+    //mandar varias msgs para o memso utilizador
     public void msgsToOne(String u, Message... m) throws RemoteException, NotMasterException {
         String[] user = new String[1];
         user[0] = u;
@@ -205,4 +212,59 @@ class UDPSender extends Thread {
     }
 }
 
-//TODO ESPETAR UDP RECEiVER
+
+class UDPReceiver extends Thread {
+
+    static DatagramSocket uSocket;
+
+    static Properties props = new Properties();
+
+    public UDPReceiver() {
+
+    }
+
+    public void run() {
+
+        try {
+
+            props.load(new FileInputStream("support/property"));
+
+
+            byte[] buffer = new byte[1024];
+            uSocket = null;
+
+            uSocket = new DatagramSocket(Integer.parseInt(props.getProperty("udpPort")));
+            //Esperar 10 segundos pelo server tcp principal para lhe dar tempo para voltar up
+            uSocket.setSoTimeout(10000);
+            DatagramPacket request;
+
+
+            while (true) {
+
+                try {
+                    request = new DatagramPacket(buffer, buffer.length);
+
+                    uSocket.receive(request);
+                    System.out.println("Backup server waiting for his turn...");
+
+                } catch (IOException ex) {
+                    break;
+                }
+
+            }
+        } catch (SocketException ex) {
+            Logger.getLogger(BackupServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("[Primary TCP server has crashed!]");
+        System.out.println("[Backup TCP Server has just started!]");
+        uSocket.close();
+
+    }
+
+
+}
