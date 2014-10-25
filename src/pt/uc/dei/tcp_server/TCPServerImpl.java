@@ -18,7 +18,7 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 //TODO FAZER EXPORT DO CLASS DIAGRAM E METER NO RELATÓRIO
 
 
-    //Hashtable que vai conter os users online
+    //Hashtable que vai guardar a relação de users com as suas threads
     private Hashtable<String, Events> membersonline = new Hashtable<>();
     private boolean master = false;
 
@@ -192,6 +192,7 @@ class UDPSender extends Thread {
         DatagramSocket uSocket;
         try {
             uSocket = new DatagramSocket();
+            //TODO em vez de ser com I AM ALive, verificar primeiro o estado de master e enviar um ping consoante isso "I AM MASTER", "I AM SLAVE"
             byte[] m = "I AM ALIVE".getBytes();
             //TODO mudar para ir trocando de ip constantemente
             InetAddress aHost = InetAddress.getByName(props.getProperty("tcpip2"));

@@ -181,27 +181,23 @@ Todo o tipo de requests, acções e triggers no projecto são acionados a partir
 \label{sec:protocal_specs}
 
 \subsection{TCP}
-O servidor cria um ServerSocket, bloqueia no método accept e espera novos clientes. Quando um cliente se liga ao servidor, este estabelece um socket de comunicação com o mesmo e cria uma nova thread para “tratar” desse cliente. Desta forma, temos sempre o main bloqueado no listenSocket.accept à espera de novos clientes e preparado para criar uma thread por cliente (cada um tem a sua, Servidor Multithread).\\
-Os métodos de que o servidor precisa para tratar dos pedidos de um cliente TCP estão criados no RMI Server. Quando termina de efectuar a acção requisitada pelo cliente, ela envia o resultado para o mesmo através de DataStream S.
+
+Ao serem iniciados, os servers TCP criam dois ServerSockets e ficam à espera de ligações de clientes. Assim que estes se ligam, são criadas duas threads que irão tratar dos pedidos dos e para os clientes: A thread Connection, que irá servir principalmente para tipo de pedidos request reply (listagem de meetings, por exemplo), e a thread Events, que irá servir para enviar informação em "real-time" (thread para enviar mensagens que não são necessáriamente solicitadas pelos clientes). Estas threads façam o lookup do Registry do RMI e chamam os seus métodos consoante necessário.
+
+Aqui também se encontra uma Hastable que relaciona os membros online com as suas threads de Events - para o servidor RMI fazer callback do método que envia as mensagens (e.g chat) aos diversos utilizadores e o TCP Server saber que thread corresponde a cada user.
+
+É aqui também que é realizada a verificação do primary server e  do backup server através do método "validadeIfMaster" (que lança uma custom exception ~\textbf{NotMasterException} caso não seja.
 
 
 \subsection{UDP}
-A conexão UDP é estabelecida no início do funcionamento da aplicação de modo a assegurar o permanente controlo do estado de cada das entidades que supervisionam a gestão deste serviço. A diferença básica entre o UDP e o TCP é o fato de que o TCP ser um protocolo orientado à conexão e, portanto, inclui vários mecanismos para iniciar, manter e encerrar a comunicação, negociar tamanhos de pacotes, detectar e corrigir erros, evitar congestionamento do fluxo e permitir a retransmissão de pacotes corrompidos, independente da qualidade do meio físicos. No UDP não existem verificações, nem confirmações. 
-É portanto uma escolha adequada para fluxos de dados em tempo real, especialmente aqueles que admitem perda ou corrompimento de parte de seu conteúdo.
+
+Correndo o TCP server em máquinas diferentes (ou duas vezes na mesma máquina) consegue-se simular o comportamento de um server primário e de um server secundário. Estes comunicam entre sim através de duas threads: UDP Sender e UDP Receiver. Quando o UDP receiver deixa de receber heartbeats, espera alguns segundos até começar a receber clientes.
 
 
 \subsection{RMI}
-O Java RMI(Remote Method Invocation) usa uma metodologia diferente da do TCP. Ao contrário deste não é estabelecido directamente um canal de comunicação como no TCP em que o servidor está a escuta num determinado porto e para cada cliente cria um socket.
-Especificamente, neste projecto o RMI é o nosso main-server, sendo este responsável pelos métodos existentes em toda a sua envolvente.
-
-
-
-%--------------------------------------------------------------------------
-%	Architecture of File Transmission
-%--------------------------------------------------------------------------
-\section{Architecture of File Transmission}
-\label{sec:archi}
-O envio de ficheiros no nosso sistema foi feito recorrendo ao \emph{blob} na base de dados MySql. A base de dados, na tabela \emph{Ideias} tem um campo \emph{attach}, no qual está sendo armazenado os ficheiros pretendidos pelo utilizador. O utilizador ao introduzir uma ideia, é-lhe perguntado se este pretende associar um ficheiro a esta e de seguida coloca o path do ficheiro. Para fazer download de um attachment, o utilizador escolha mediante a apresentação da listagem de \emph{ideias}, aquele que pretende guardar. Este será guardado na raiz da aplicação de onde o programa se encontra a ser executado.
+O Java RMI(Remote Method Invocation) usa uma metodologia diferente da do TCP. Ao contrário deste, não é estabelecido directamente um canal de comunicação como no TCP em que o servidor está a escuta num determinado porto e para cada cliente cria um socket.
+Especificamente, neste projecto o RMI é o nosso main-server, sendo este responsável pelos métodos existentes em toda a sua envolvente. Torna-se assim também o nosso \textbf{single point of failure}.
+Assim que é iniciado é criado o registry para os diversos recursos do programa poderem chamar os seus métodos. 
 
 
 %--------------------------------------------------------------------------
@@ -210,15 +206,15 @@ O envio de ficheiros no nosso sistema foi feito recorrendo ao \emph{blob} na bas
 \section{Exception Handling}
 \label{sec:except}
 
-No que toca a tratamentos de excepção, foi assegurado que um Cliente reconecta ao mesmo servidor em caso de falha temporária do TCPServer (através de um tempo de espera), sendo a falha transitória e transparente para o usuário final.
+No que toca a tratamentos de excepção, foi assegurado que um Cliente reconecta ao mesmo servidor em caso de falha temporária do TCPServer (através de um tempo de espera), sendo a falha transparente para o usuário final.
 Através do uso de base de dados, o TCPClient não perde a ideia que está sendo escrita.
 O TCPServer reconecta em caso de perda de conectividade com o RMIServer e 
 a falha transitória da RMIServer é transparente para o usuário final.
-Também houve o cuidado da verificação e foi assegurado que não existem ideias duplicadas, mesmo em cenários de entrega.
+Também houve o cuidado da verificação e foi assegurado que não existem operações duplicadas. duplicadas.
 
 \subsection{A nível de Base de Dados}
 O tratamento de erros do nosso MySQL é baseado em condições, que por sua vez, são nomeadas e preparadas para serem executadas mediante ao atendimento de tais condições. 
-Além de tratarmos a violação de chaves primárias, foi tido em conta que os ids não assumam valores nulos (NULL), assim como houve um cuidado para que estes fossem auto-incrementáveis. Ao definir corretamente todas as relações e entidades fracas, foi possível haver um relacionamento directo entre entidades de diferentes campos (nomeadamente \emph{id\_person} na tabela \emph{person} com o \emph{id\_person} da tabela \emph{ideias}). Foi dado \textbf{cascade} em operações de \emph{update} e \emph{delete}, para que as ligações entre tabelas não fosse quebrada. Assim conseguimos garantir que ao apagar um \emph{ideia}, a tabela de relação com uma share é também destruída. 
+Além de tratarmos a violação de chaves primárias, foi tido em conta que os ids não assumam valores nulos (NULL), assim como houve um cuidado para que estes fossem auto-incrementáveis. Ao definir corretamente todas as relações e entidades fracas, foi possível haver um relacionamento directo entre entidades de diferentes campos. Foi dado \textbf{cascade} em operações de \emph{update} e \emph{delete}, para que os dados entre tabelas se mantenham coerentes. 
 
 
 \subsection{TCP}
@@ -238,8 +234,8 @@ No RMI foram dados os mesmos tratamentos de exceção utilizados no TCP.
 %--------------------------------------------------------------------------
 \section{FailOver}
 \label{sec:failover}
-O fail-over pressupõe a existência de dois servidores (primary e backup -> tipo 1 e 2 respetivamente) que comunicam entre si através de um canal UDP. Só assim é possível controlar o estado (ativo/inativo) de cada uma das entidades e efetuar a troca em caso de necessidade. Para tal, operámos um mecanismo de ping (3s) iniciado pelo servidor secundário que providencia informação essencial na gestão de erros. 
-Implementámos uma thread com uma duração de 5 segundos que corresponde ao tempo máximo de delay aceite pela aplicação. Se durante esse período a ‘entidade gestora’ em utilização não comunicar, os clientes serão redirecionados para o servidor secundário que assumirá o papel de principal.
+O fail-over pressupõe a existência de dois servidores (primary e backup) que comunicam entre si através de um canal UDP. Só assim é possível controlar o estado (ativo/inativo) de cada uma das entidades e efetuar a troca em caso de necessidade. Para tal, operámos um mecanismo de ping (3s).
+Implementámos uma thread com uma duração de 5 segundos que corresponde ao tempo máximo de delay aceite pela aplicação. Se durante esse período a  em utilização não comunicar, os clientes serão redirecionados para o servidor secundário que assumirá o papel de principal.
 
 \begin{figure}[!ht]
 	\centering
@@ -384,31 +380,34 @@ Foram feitos diversos testes nas diversas funcionalidades da aplicação, de mod
 Para correr a aplicação irá necessitar dos seguintes requisitos:
 \begin{itemize}
 	\item Java 8
-	\item Servidor com MySQL com a respectiva base de dados (o script de criação da base de dados encontra-se na raiz deste projecto dentro do ficheiro \emph{sd1\_2013.sql})
+	\item Servidor com MySQL com a respectiva base de dados (o script de criação da base de dados encontra-se na pasta support, ficheiro \emph{meetosqlscript.sql}
 \end{itemize}
 
-Após reunidos todos requisitos necessários, é necessário que o MySQL esteja a correr dentro da própria (localhost), ou no caso que esteja se encontre noutra máquina, que seja definido o respectivo IP e porta.
-Como foi mencionado anteriormente, deve-se correr o script \emph{sd1\_2013.sql} que contem todas as tabelas criadas bem como alguns dados.
-Por fim, deve-se executar-se por esta ordem a execução de Servidores da máquina:
+Após reunidos todos os requisitos necessários, é necessário que o MySQL esteja a correr dentro da própria (localhost), ou no caso que esteja se encontre noutra máquina, que seja definido o respectivo IP e porta.
+Como foi mencionado anteriormente, deve-se correr o script \emph{meetossqlcript.sql} que contem todas as tabelas criadas bem como alguns dados.
+Por fim, deve-se executar-se por esta ordem a execução de servidores da máquina:
 
 \begin{itemize}
 	\item 1 - RMIServer.java
- 	\item 2 - TCPServer.java
-	\item 3 - BackupServer.java
-	\item 4 - TCPClient.java
+ 	\item 2 - TCPServer.java (duas vezes para simular o comportamento de servidor primário e secundário)
+	\item 3 - TCPClient.java (quantas vezes necessário para criar vários clientes)
 \end{itemize}
-Relativamente ao IP de máquina onde os servidores e o cliente estão a correr, existe um ficheiro intitulado \textbf{Property} onde se pode alterar os endereços e as portas onde estes vão estar a correr.
+
+Relativamente ao IP de máquina onde os servidores e o cliente estão a correr, existe um ficheiro intitulado \emph{property} (support/property) onde se pode alterar os endereços e as portas onde estes vão estar a correr.
 
 \begin{verbatim}
 tcpip1=127.0.0.1
 tcpip2=127.0.0.1
-tcpserverPort=7000
-tcpserverPortAux=7002
-tcpbserverPort=7001
-udpPort=5000
+tcpServerPort=7000
+tcpServerPortAux=7001
+tcpBackupServerPort=7002
+tcpBackupserverPortAux=7003
+udpPort=5432
 rmiServerip=127.0.0.1
 rmiServerPort1=1099
 rmiServerPort2=6001
+
+
 \end{verbatim}
 
 

@@ -18,7 +18,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     List<Message> msgsToSend = new ArrayList<Message>();
     List<String> userToSend = new ArrayList<String>();
 
-    //TODO será melhor colocar um HashSet com os users online ou fazer essa operação na base de dados com um campo apenas?
+    //TODO colocar array de users online o array na base de dados
 
     HashSet<String> membersonline = new HashSet<>();
 
@@ -64,12 +64,9 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         }
     }
 
-
     public synchronized void setSysMsg(Message mensagem) {
 
-
     }
-
 
     public synchronized Message createMeeting(Message mensagem) throws RemoteException {
         List<Message> msgToSend = new ArrayList<>();
@@ -93,10 +90,11 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             //colocar o criador da meeting na tabela meeting_member (como accepted naturalmente) antes de tratar dos outros
             sql.doUpdate("INSERT INTO meeting_member (idmeeting,idmember,accepted) VALUES ('" + idmeeting + "','" + mensagem.dataint + "'+'1');");
 
+            mensagem.data = "You've been invited to a meeting!";
             //colocar os restantes na tabela meeting_member
             for (int i = 0; i < inviteeslist.size(); i++) {
                 if ((sql.doUpdate("INSERT INTO meeting_member (idmeeting,idmember) VALUES ('" + idmeeting + "','" + inviteeslist.get(i) + "');")) == 1) {
-                    //TODO ADICIONAR AS MSGS A LISTA E ENVIAR COM O METODO DO TCPSERVER
+
                     mensagem.result = true;
 
                 }
@@ -111,7 +109,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         return mensagem;
     }
-
 
     @Override
     public synchronized Message postNewDiscussionMessage(Message mensagem) throws RemoteException {
@@ -129,10 +126,43 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         return null;
     }
 
+    public synchronized String participantsInAMeeting(int idmeeting) {
+        String participants = "Participants:\n";
+        ResultSet rs = sql.doQuery("SELECT (member.username) FROM (member,meeting_member) where meeting_member.idmeeting='" + idmeeting + "'");
+        try {
+            while (rs.next()) {
+                String member = rs.getString("username");
+                participants += member + "\n";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return participants;
+    }
+
 
     @Override
     public synchronized Message meetingOverview(Message mensagem) throws RemoteException {
-        return null;
+
+        mensagem.data = participantsInAMeeting(mensagem.dataint);
+
+        ResultSet rs = sql.doQuery("SELECT * FROM meeting where date > now();");
+        try {
+            while (rs.next()) {
+                int meetingid = rs.getInt("idmeeting");
+                String meetingdesc = rs.getString("title");
+                String obj = rs.getString("objective");
+                String d = rs.getString("date");
+                String loc = rs.getString("location");
+                mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + loc + "\n";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mensagem;
+
+
     }
 
 

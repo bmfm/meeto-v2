@@ -139,7 +139,7 @@ public class TCPClient {
             while (true) {
 
 
-                System.out.print("1-Create meeting\n2-List upcoming meetings\n3-View pending invitations\n4-View pending tasks\n5-Join Meetings\n6-List online users\n");
+                System.out.print("1-Create meeting\n2-List upcoming meetings\n3-View pending invitations\n4-View pending tasks\n6-Join Meetings\n7-List online users\n");
                 op = sci.nextInt();
 
                 //Create meeting
@@ -188,7 +188,7 @@ public class TCPClient {
                 }
 
 
-                //List upcoming meetings
+                //List upcoming meetings and see their overview
                 if (op == 2) {
                     if (out != null && outAux != null) {
 
@@ -197,7 +197,22 @@ public class TCPClient {
                         sendOut(mensagem);
                         mensagem = (Message) in.readObject();
                         System.out.println(mensagem.data);
-                        System.out.println("Do you wish to ");
+                        System.out.println("Do you wish to see the overview of any? (1)Yes (2)No");
+                        int meetingop = sci.nextInt();
+                        if (meetingop == 1) {
+                            int overview;
+                            Message meetingtocheck = new Message(username_logged, null, null, "meetingoverview");
+                            System.out.println("Which one?:\n");
+                            overview = scs.nextInt();
+                            meetingtocheck.dataint = overview;
+                            sendOut(meetingtocheck);
+                            meetingtocheck = (Message) in.readObject();
+                            System.out.println(meetingtocheck.data);
+
+                        }
+
+
+
 
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
@@ -400,7 +415,7 @@ public class TCPClient {
         Message checkmyinvitations = new Message(username_logged, null, null, "viewpendingnotifications");
         sendOutAux(checkmyinvitations);
 
-        //TODO verificar se perdeu alguma chat msg enquanto estava offline
+        //TODO verificar se perdeu alguma CHAT msg enquanto estava offline
 
     }
 

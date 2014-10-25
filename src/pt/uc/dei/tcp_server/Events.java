@@ -50,6 +50,14 @@ public class Events extends Thread {
 
     }
 
+    public Message getMsgFromQueue() {
+
+        return null;
+
+    }
+
+
+    //Não terei de ter uma thread só para ler o conteúdo da blocking queue?
 
     public void run() {
 
