@@ -253,7 +253,7 @@ class UDPReceiver extends Thread {
 
             }
         } catch (SocketException ex) {
-            Logger.getLogger(BackupServer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UDPReceiver.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

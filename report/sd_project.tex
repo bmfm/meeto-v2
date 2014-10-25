@@ -139,33 +139,7 @@ Esta aplicação encontra-se subdividida numa série de classes, cada uma respon
 Estas classes são responsáveis por estabelecer grande parte da interoperabilidade desta aplicação embora sejam necessárias as restantes que suportam a estrutura por detrás deste sistema.\\ 
 
 
-
-
 Relativamente ao armazenamento de dados na Base de Dados, foram criadas as tabelas:
-\begin{description}
-	\item[member:] \hfill \\
-	\textbf{idmember, username, pass, email}\\
-	A tabela \emph{member} é a responsável por armazenar os dados dos membros.	
-	\item[meeting:] \hfill \\
-	\textbf{id\_ideia, id\_person, description, attach}\\
-	A tabela \textbf{Ideias} além de ter o seu próprio id, também guarda o id da pessoa responsável pela mesma. Tem também um campo com uma breve descrição e um campo attach que é um \textbf{BLOB}, no qual são guardados os ficheiros de anexo.
-	\item[Shares:] \hfill \\
-	\textbf{id\_person, id\_ideia, quantidade, price}\\
-	A tabela \textbf{Shares} é a responsável pela ligação entre as shares das ideias e da respectiva pessoa que a detém. Tem um campo destinado à quantidade de shares e o seu preço.
-	\item[Transactions:] \hfill \\
-	\textbf{id\_transaction, id\_ideia, id\_person,	quantidade, transaction\_price, status}\\
-	Na \textbf{Transactions} é registado as transações de ideias entre as diversas pessoas, bem como o preço a que esta foi transacionada e o seu status (se foi completado ou não).
-	\item[Relation:] \hfill \\
-	\textbf{id\_ideia1, id\_ideia2, value}\\
-	A tabela \textbf{Relation} faz a gestão entre as relações entre diferentes ideias e o valor da sua relação (1 - Positiva, 0 - Neutra, -1 - Negativa)
-	\item[Ideias\_Topic:] \hfill \\
-	\textbf{id\_topic, id\_ideia}\\
-	A tabela \textbf{Ideias\_Topic} é uma entidade fraca de ligação entre as tabelas \emph{ideas} e \emph{topic}
-	\item[Topic:] \hfill \\
-	\textbf{id\_topic, description}\\
-	A tabela \textbf{Topic} armazena além do seu respectivo ID, uma breve descrição da mesma.
-\end{description}
-
 
 \begin{figure}[!ht]
   	\centering
@@ -194,8 +168,7 @@ O seguinte diagrama representa o nosso esquema de Data Model.
 	\label{figure4}
 \end{figure}
 
-A comunicação entre client-server pressupõe uma eficiente troca de dados que podem ser ‘transmitidos’ diretamente através de Sockets (TCP). 
-Estruturámos a informação de forma eficiente e intuitiva construindo diversas classes capazes de representar este modelo de dados. Devido a esta separação em objetos das mensagens a transmitir entre as entidades executantes, optámos por utilizar ObjectStreams (para Sockets TCP) salvaguardando toda essa informação em ficheiros de objetos garantindo, assim, a fiabilidade e integridade dos dados em trânsito (Message).
+Todo o tipo de requests, acções e triggers no projecto são acionados a partir do instanciamento de variáveis da classe "Message" - são estes os objectos que circulam na rede. Possui diversos construtores que se podem usar consoante a acção a tomar. O tratamento correcto das mensagens é feito através da inspecção do parâmetro "type".
 
 
 
