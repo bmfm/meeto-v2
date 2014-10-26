@@ -128,7 +128,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     public synchronized String participantsInAMeeting(int idmeeting) {
         String participants = "Participants:\n";
-        ResultSet rs = sql.doQuery("SELECT (member.username) FROM (member,meeting_member) where meeting_member.idmeeting='" + idmeeting + "' and member.idmember=meeting_member.idmember");
+        ResultSet rs = sql.doQuery("SELECT member.username FROM (member,meeting_member) where meeting_member.idmeeting='" + idmeeting + "' and member.idmember=meeting_member.idmember");
         try {
             while (rs.next()) {
                 String member = rs.getString("username");
@@ -143,7 +143,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     public synchronized String agendaItemsInAMeeting(int idmeeting) {
         String agendaitems = "Agenda Items\t\tDescription\t\tKeydecision\n";
-        ResultSet rs = sql.doQuery("SELECT (item.name,item.description,item.keydecision) FROM (item,agenda) where agenda.idmeeting='" + idmeeting + "' and agenda.idagenda=item.idagenda");
+        ResultSet rs = sql.doQuery("SELECT item.name,item.description,item.keydecision FROM (item,agenda) where agenda.idmeeting='" + idmeeting + "' and agenda.idagenda=item.idagenda");
         try {
             while (rs.next()) {
                 String itemname = rs.getString("name");
@@ -161,7 +161,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     public synchronized String actionsInAMeeting(int idmeeting) {
         String actions = "Action description\t\tAsignee\t\tStatus\n";
-        ResultSet rs = sql.doQuery("SELECT (member.username,action.description,action.completed) FROM (action,member,meeting) where action.idmeeting='" + idmeeting + "' and member.username=action.username and meeting.idmeeting=action.idmeeting");
+        ResultSet rs = sql.doQuery("SELECT member.username,action.description,action.completed FROM (action,member,meeting) where action.idmeeting='" + idmeeting + "' and member.username=action.username and meeting.idmeeting=action.idmeeting");
         try {
             while (rs.next()) {
                 String actiondescription = rs.getString("username");
@@ -240,7 +240,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     public synchronized Message listMyMeetings(Message mensagem) throws RemoteException {
         Message msgid = getUsernameId(mensagem);
         mensagem.dataint = msgid.iduser;
-        ResultSet rs = sql.doQuery("select (meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location) from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = " + mensagem.dataint + "' and accepted=1");
+        ResultSet rs = sql.doQuery("select meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = '" + mensagem.dataint + "' and accepted=1");
         mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tLocation\n ";
         try {
             while (rs.next()) {
@@ -322,7 +322,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
                 resultado = rs.getInt(1);
                 if (resultado != 1) {
 
-                    ResultSet rset = sql.doQuery("select (meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location) from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = " + mensagem.dataint + "' and accepted==NULL");
+                    ResultSet rset = sql.doQuery("select meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = " + mensagem.dataint + "' and accepted==NULL");
                     mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tLocation\n ";
                     while (rset.next()) {
 
