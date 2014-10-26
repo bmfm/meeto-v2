@@ -60,6 +60,10 @@ public interface RmiInterface extends Remote {
 
     public void subscribe(TCPServer client) throws RemoteException;
 
+    public Message logout(Message mensagem) throws RemoteException;
+
+    public Message onlineUsers(Message mensagem) throws RemoteException;
+
 
 }
 

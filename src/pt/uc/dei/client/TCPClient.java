@@ -142,7 +142,7 @@ public class TCPClient {
             while (true) {
 
 
-                System.out.print("1-Create meeting\n2-List upcoming meetings\n3-List past meetings\n4-View pending invitations\n5-Join Meeting\n6-Show TODO-list\n7-List online users\n");
+                System.out.print("1-Create meeting\n2-List upcoming meetings\n3-List past meetings\n4-View pending invitations\n5-Join Meeting\n6-Show my TODO-list\n7-List online users\n8-Exit\n");
                 op = sci.nextInt();
 
                 //Create meeting
@@ -329,14 +329,6 @@ public class TCPClient {
                             itemJoined = 0;
                         }
 
-
-
-
-
-
-
-
-
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
 
@@ -372,7 +364,9 @@ public class TCPClient {
                     if (out != null && outAux != null) {
 
                         Message mensagem = new Message(username_logged, null, null, "checkonline");
-                        sendOutAux(mensagem);
+                        sendOut(mensagem);
+                        mensagem = (Message) in.readObject();
+                        System.out.println(mensagem.data);
 
 
                     } else {
@@ -381,14 +375,15 @@ public class TCPClient {
                     }
 
                 }
-
+                //exit and logout
                 if (op == 8) {
                     if (out != null && outAux != null) {
 
-                        Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
+                        System.out.println("See you soon!");
+                        Message mensagem = new Message(username_logged, null, null, "logout");
                         sendOut(mensagem);
-                        mensagem = (Message) in.readObject();
-                        System.out.println(mensagem.data);
+
+                        System.exit(0);
 
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");

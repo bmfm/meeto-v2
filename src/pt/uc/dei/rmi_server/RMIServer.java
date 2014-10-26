@@ -88,7 +88,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
                 e.printStackTrace();
             }
             //colocar o criador da meeting na tabela meeting_member (como accepted naturalmente) antes de tratar dos outros
-            sql.doUpdate("INSERT INTO meeting_member (idmeeting,idmember,accepted) VALUES ('" + idmeeting + "','" + mensagem.dataint + "'+'1');");
+            sql.doUpdate("INSERT INTO meeting_member (idmeeting,idmember,accepted) VALUES ('" + idmeeting + "','" + mensagem.dataint + "','1');");
 
             mensagem.data = "You've been invited to a meeting!";
             //colocar os restantes na tabela meeting_member
@@ -161,11 +161,11 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     public synchronized String actionsInAMeeting(int idmeeting) {
         String actions = "Action description\t\tAsignee\t\tStatus\n";
-        ResultSet rs = sql.doQuery("SELECT member.username,action.description,action.completed FROM (action,member,meeting) where action.idmeeting='" + idmeeting + "' and member.username=action.username and meeting.idmeeting=action.idmeeting");
+        ResultSet rs = sql.doQuery("SELECT member.username,action.description,action.completed FROM (action,member,meeting) where action.idmeeting='" + idmeeting + "' and member.idmember=action.idmember and meeting.idmeeting=action.idmeeting");
         try {
             while (rs.next()) {
-                String actiondescription = rs.getString("username");
-                String assignee = rs.getString("description");
+                String assignee = rs.getString("username");
+                String actiondescription = rs.getString("description");
                 String status = String.valueOf(rs.getInt("completed"));
                 if ("0".equals(status)) {
                     status = "Not yet completed";
@@ -300,6 +300,27 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     @Override
     public synchronized Message showToDoList(Message mensagem) throws RemoteException {
+
+        Message msgid = getUsernameId(mensagem);
+        mensagem.dataint = msgid.iduser;
+        mensagem.data = "Description:\t\tCompleted:\n";
+        ResultSet rs = sql.doQuery("select action.description,action.completed from (action,meeting,member) where action.idmember =" + mensagem.dataint + "' and action.idmember=member.idmember");
+        try {
+            while (rs.next()) {
+                String actiondescription = rs.getString("description");
+                String status = String.valueOf(rs.getInt("completed"));
+                if ("0".equals(status)) {
+                    status = "Not yet completed";
+                } else {
+                    status = "Closed";
+                }
+                mensagem.data += actiondescription + "\t\t" + status + "\n";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
 
         return mensagem;
 
@@ -451,7 +472,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     public synchronized Message login(Message mensagem) throws RemoteException {
         int resultado;
         mensagem.result = false;
-        ResultSet rs = sql.doQuery("select count(*) from member where username = '" + mensagem.username + "' and password = '" + mensagem.password + "'");
+        ResultSet rs = sql.doQuery("select count(*) from member where username = '" + mensagem.username + "' and password = '" + mensagem.password + "' and online = 0;");
         try {
             rs.next();
             resultado = rs.getInt(1);
@@ -462,6 +483,35 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             e.printStackTrace();
         }
         mensagem.result = true;
+        sql.doUpdate("UPDATE member SET online=1 where username='" + mensagem.username + "'");
+        return mensagem;
+
+    }
+
+    public synchronized Message logout(Message mensagem) throws RemoteException {
+        int idusr;
+        Message msgid = getUsernameId(mensagem);
+        idusr = msgid.iduser;
+
+        System.out.println(idusr);
+        sql.doUpdate("UPDATE member SET online=0 where id_person='" + idusr + "'");
+
+        return mensagem;
+    }
+
+    @Override
+    public Message onlineUsers(Message mensagem) throws RemoteException {
+        mensagem.data = "Members currently online:\n";
+
+        ResultSet rs = sql.doQuery("SELECT username FROM member where online=1;");
+        try {
+            while (rs.next()) {
+                String member = rs.getString("username");
+                mensagem.data += member + "\n";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return mensagem;
 
     }

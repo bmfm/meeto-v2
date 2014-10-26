@@ -178,6 +178,7 @@ public class Connection extends Thread {
                         sendOut(mensagem);
                         break;
 
+
                     case (Message.ASSIGNACTION):
                         mensagem = c.assignAction(mensagem);
                         sendOut(mensagem);
@@ -202,6 +203,9 @@ public class Connection extends Thread {
                         mensagem = c.viewPendingInvitations(mensagem);
                         sendOut(mensagem);
 
+                    case (Message.CHECKONLINE):
+                        mensagem = c.onlineUsers(mensagem);
+                        sendOut(mensagem);
 
                 }
 
