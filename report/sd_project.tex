@@ -209,8 +209,8 @@ Além de tratarmos a violação de chaves primárias, foi tido em conta que os i
 
 \subsection{TCP}
 De modo a tornar esta aplicação ao mesmo tempo transparente a erros e eficiente no seu tratamento procurámos controlar as exceções provenientes dos mecanismos de conexão (Sockets, RMI registry, etc.). Estes problemas advêm de falhas de ligação entre o servidor e o cliente, de uma ruptura do socket TCP, etc.
-Implementámos diversas rotinas para gerir estas exceções (try/catch (IO Exception, Remote Exception)) em ambas as ‘extremidades’ da aplicação. As threads responsáveis por estas funções (ConnectBackupServer, UDP) permitem não só isolar o tratamento destas situações, podendo o cliente continuar a usar a aplicação (com algumas restrições), como também restabelecer as ligações entre as entidades executantes ou, em caso de insucesso, ativar um backup. 
-Quando o servidor deixa de funcionar correctamente, vai ser detectada uma falha. O cliente irá então tentar voltar a conectar-se, sendo a função udpsender() a responsável pelas tentativas.
+Implementámos diversas rotinas para gerir estas exceções (try/catch (IO Exception, Remote Exception)) em ambas as ‘extremidades’ da aplicação. As threads responsáveis por estas funções  permitem não só isolar o tratamento destas situações, podendo o cliente continuar a usar a aplicação (com algumas restrições), como também restabelecer as ligações entre as entidades executantes ou, em caso de falha, ativar um backup. 
+Quando o servidor deixa de funcionar correctamente, vai ser detectada uma falha. O cliente irá então tentar voltar a conectar-se, sendo a thread UDP Sender a responsável pelas tentativas.
 Na tentativa do Cliente se conectar ao Servidor, este efetua uma espera de um intervalos de 3 segundos entre cada tentativa de conexão. Entretanto, caso o cliente tente realizar algum pedido, a thread destinada à escrita de teclado fica bloqueada até este realizar re-connect.
 
 \subsection{RMI}
@@ -307,16 +307,13 @@ Foram feitos diversos testes nas diversas funcionalidades da aplicação, de mod
 		\hline
 		2 & User acede ao menu e escolhe a opção 1 & aparece o passo seguinte & antes de escolher a opção, aparece uma listagem de opções & PASS\\
 		\hline
-		3 & Introduz os detalhes da meeting & wfsgg & nada apontar & PASS\\
+		3 & Introduz os detalhes da meeting & aparece o passo seguinte & nada apontar & PASS\\
 		\hline
-		4 & Escolhe a opção de sim relativamente ao anexo & Passa ao passo seguinte & é introduzido a path do anexo & PASS\\
+		4 & Escolhe vários utilizadores para a meeting & Output "Meeting successfully created"! & nada a apontar & PASS\\
 		\hline
-		5 & --- & Passa À seguinte pergunta relativamente a adicionar a ideia a um tópico & pergunta se deseja introduzir um novo tópico ou usar os existentes & PASS\\
+		5 & Escolhe a opção 2 do menu & A meeting acaba de criar encontra-se na lista & nada a apontar & PASS\\
 		\hline
-		6 & Escolhe a opção de usar tópicos existentes & Lista todos os tópicos existentes & nada apontar & PASS\\
-		\hline
-		7 & Vai introduzir os tópicos 1 e 2 e por fim clica em 0 para finalizar & Ir pedindo mais tópicos enquanto não se clica na tecla 0 & É introduzida a associação da ideia com o tópico, com sucesso & PASS\\
-		\hline
+		
 	\end{tabular}
 \end{table}
 \pagebreak
@@ -386,12 +383,7 @@ rmiServerip=127.0.0.1
 rmiServerPort1=1099
 rmiServerPort2=6001
 
-
 \end{verbatim}
-
-
-E... pronto! É só escolher as operações pretendidas!
-
 
 
 \end{document}

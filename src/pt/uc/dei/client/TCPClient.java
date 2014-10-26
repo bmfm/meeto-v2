@@ -568,7 +568,6 @@ public class TCPClient {
                         System.out.println("An error occured. Please try again.");
                     }
 
-
                     break;
 
                 //modify
@@ -582,6 +581,13 @@ public class TCPClient {
                     System.out.println("Which one do tou wish to modify?\n");
                     modifyitems.dataint = sci.nextInt();
                     sendOut(modifyitems);
+                    modifyitems = (Message) in.readObject();
+                    if (modifyitems.result) {
+                        System.out.println("Modified.");
+                    } else {
+                        System.out.println("An error occured. Please try again");
+                    }
+
                     break;
 
                 //delete
