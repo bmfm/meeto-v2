@@ -472,7 +472,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     public synchronized Message login(Message mensagem) throws RemoteException {
         int resultado;
         mensagem.result = false;
-        ResultSet rs = sql.doQuery("select count(*) from member where username = '" + mensagem.username + "' and password = '" + mensagem.password + "' and online = 0;");
+        ResultSet rs = sql.doQuery("select count(*) from member where username = '" + mensagem.username + "' and password = '" + mensagem.password + "' and online = 0");
         try {
             rs.next();
             resultado = rs.getInt(1);
