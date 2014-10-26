@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Enumeration;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Events extends Thread {
@@ -48,22 +47,43 @@ public class Events extends Thread {
     public void putMsgIntoQueue(Message msg) {
         queue.offer(msg);
 
-    }
-
-    public Message getMsgFromQueue() {
-
-        return null;
 
     }
 
+    //Não terei de ter uma 'thread só para ler o conteúdo da blocking queue?
+    //Possivelmente o trabalho desta thread será só mesmo
+    //estar a olhar para a LinkedBlokingQueue e assim que lá tiver alguma coisa enviar para o cliente respectivo.
+    //Tudo o resto poderá ir para a connection
 
-    //Não terei de ter uma thread só para ler o conteúdo da blocking queue?
+
 
     public void run() {
+        try {
+            Message mensagemAux = (Message) in.readObject();
+            this.username = mensagemAux.username;
+            tcpServer.put(mensagemAux.username, this);
+            while (true) {
+                Message msg = queue.take();
+
+                switch (msg.getTipo()) {
+
+                    case (Message.ADDCHATMESSAGE):
+
+                        break;
+
+                }
+
+
+            }
+
+
+        } catch (IOException | ClassNotFoundException | InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
 
-        while (true) {
+       /* while (true) {
 
             try {
 
@@ -114,7 +134,7 @@ public class Events extends Thread {
                 e.printStackTrace();
             }
 
-        }
+        }*/
 
 
     }

@@ -23,11 +23,15 @@ public class TCPClient {
     static ObjectOutputStream out = null;
     static ObjectInputStream inAux = null;
     static ObjectOutputStream outAux = null;
-
+    Scanner sci = new Scanner(System.in);
+    Scanner scs = new Scanner(System.in);
 
     ReadData read = null;
 
     static EmbeddedHelper embDB = new EmbeddedHelper();
+
+    int itemJoined;
+
 
     public static void main(String[] args) throws InterruptedException, SQLException, ClassNotFoundException {
         TCPClient client = new TCPClient();
@@ -44,8 +48,7 @@ public class TCPClient {
 
     private void startupClient() throws IOException, InterruptedException {
         System.out.println("TCP Client");
-        Scanner sci = new Scanner(System.in);
-        Scanner scs = new Scanner(System.in);
+
 
         int op;
 
@@ -139,7 +142,7 @@ public class TCPClient {
             while (true) {
 
 
-                System.out.print("1-Create meeting\n2-List upcoming meetings\n3-View pending invitations\n4-View pending tasks\n6-Join Meetings\n7-List online users\n");
+                System.out.print("1-Create meeting\n2-List upcoming meetings\n3-List past meetings\n4-View pending invitations\n5-Join Meeting\n6-Show TODO-list\n7-List online users\n");
                 op = sci.nextInt();
 
                 //Create meeting
@@ -221,9 +224,41 @@ public class TCPClient {
 
                 }
 
+                // View past meetings
+                if (op == 3) {
+                    if (out != null && outAux != null) {
+
+                        Message mensagem = new Message(username_logged, null, null, "listpastmeetings");
+                        sendOut(mensagem);
+                        mensagem = (Message) in.readObject();
+                        System.out.println(mensagem.data);
+                        System.out.println("Do you wish to see the overview of any? (1)Yes (2)No");
+                        int meetingop = sci.nextInt();
+                        if (meetingop == 1) {
+                            int overview;
+                            Message meetingtocheck = new Message(username_logged, null, null, "meetingoverview");
+                            System.out.println("Which one?:\n");
+                            overview = scs.nextInt();
+                            meetingtocheck.dataint = overview;
+                            sendOut(meetingtocheck);
+                            meetingtocheck = (Message) in.readObject();
+                            System.out.println(meetingtocheck.data);
+
+                        }
+
+                    } else {
+                        System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
+
+                    }
+
+                }
+
+
+
+
                 //View pending invitations
 
-                if (op == 3) {
+                if (op == 4) {
                     if (out != null && outAux != null) {
 
                         int opnotifications;
@@ -270,13 +305,37 @@ public class TCPClient {
 
                 }
 
-                if (op == 4) {
-                    if (out != null && outAux != null) {
 
-                        Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
+                // join meeting
+                if (op == 5) {
+                    if (out != null && outAux != null) {
+                        int meetingtojoin;
+                        System.out.println("This is a list of your accepted meetings:\n");
+
+                        Message mensagem = new Message(username_logged, null, null, "listMyMeetings");
                         sendOut(mensagem);
                         mensagem = (Message) in.readObject();
                         System.out.println(mensagem.data);
+                        System.out.println("Which meeting do you wish to join? (0 to exit)");
+                        meetingtojoin = sci.nextInt();
+                        if (meetingtojoin != 0) {
+
+                            //Message msgjoin = new Message(username_logged,null,null,"joinmeeting");
+                            //msgjoin.dataint = meetingtojoin;
+                            //sendOut(msgjoin);
+                            //msgjoin = (Message) in.readObject();
+                            meetingMenu(meetingtojoin);
+                            //voltar a 0 quando sai da meeting para nao receber msgs da conversação
+                            itemJoined = 0;
+                        }
+
+
+
+
+
+
+
+
 
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
@@ -285,13 +344,21 @@ public class TCPClient {
 
                 }
 
-                if (op == 5) {
+                // show to do list
+                if (op == 6) {
                     if (out != null && outAux != null) {
 
-                        Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
+                        Message mensagem = new Message(username_logged, null, null, "showtodolist");
                         sendOut(mensagem);
                         mensagem = (Message) in.readObject();
                         System.out.println(mensagem.data);
+                        System.out.println("Do you wish to complete any task? (0 to exit)");
+                        Message completeaction = new Message(username_logged, null, null, "completeaction");
+                        completeaction.dataint = sci.nextInt();
+                        if (completeaction.dataint != 0) {
+                            sendOut(completeaction);
+                        }
+
 
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
@@ -301,7 +368,7 @@ public class TCPClient {
                 }
 
                 //List online users
-                if (op == 6) {
+                if (op == 7) {
                     if (out != null && outAux != null) {
 
                         Message mensagem = new Message(username_logged, null, null, "checkonline");
@@ -315,7 +382,7 @@ public class TCPClient {
 
                 }
 
-                if (op == 7) {
+                if (op == 8) {
                     if (out != null && outAux != null) {
 
                         Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
@@ -349,6 +416,130 @@ public class TCPClient {
                 }
             }
         }
+    }
+
+    private void meetingMenu(int meetingJoined) throws IOException, ClassNotFoundException {
+        String opt = "";
+        while (!("0".equals(opt))) {
+            System.out.println("Welcome to the meeting, " + username_logged + "!\n");
+            System.out.println("Please select one of the following options (0 to quit):\n");
+            System.out.println("1-List Agenda Items\n2-Add Agenda Items\n3-Modify Agenda Items\n4-Delete Agenda Items\n");
+            opt = scs.nextLine();
+            switch (opt) {
+
+                //list
+                case "1":
+                    Message listitems = new Message(username_logged, null, null, "listAgendaItems");
+                    listitems.dataint = meetingJoined;
+                    sendOut(listitems);
+                    listitems = (Message) in.readObject();
+                    System.out.println(listitems.data);
+                    System.out.println("Do you wish to enter any agenda item? (0 to exit)\n");
+                    int listop;
+                    listop = sci.nextInt();
+                    if (listop != 0) {
+                        itemJoined = listop;
+                        agendaItemMenu(listitems.name);
+                        //voltar a colocar o itemJoined a 0 para quando sair
+                        itemJoined = 0;
+                    }
+                    break;
+
+                //add
+                case "2":
+
+                    Message additems = new Message(username_logged, null, null, "addAgendaItem");
+                    System.out.println("Nome:");
+                    additems.name = scs.nextLine();
+                    System.out.println("Description:");
+                    additems.description = scs.nextLine();
+                    sendOut(additems);
+
+                    break;
+
+                //modify
+                case "3":
+                    Message listi = new Message(username_logged, null, null, "listAgendaItems");
+                    listi.dataint = meetingJoined;
+                    sendOut(listi);
+                    listi = (Message) in.readObject();
+                    System.out.println(listi.data);
+                    Message modifyitems = new Message(username_logged, null, null, "modifyagendaitem");
+                    System.out.println("Which one do tou wish to modify?\n");
+                    modifyitems.dataint = sci.nextInt();
+                    sendOut(modifyitems);
+                    break;
+
+                //delete
+                case "4":
+
+                    //TODO meter protecçoes (resultado do result deve chegar) para quando se tenta eliminar um agenda item que já não existe por exemplo
+
+                    Message listToDelete = new Message(username_logged, null, null, "listAgendaItems");
+                    listToDelete.dataint = meetingJoined;
+                    sendOut(listToDelete);
+                    listToDelete = (Message) in.readObject();
+                    System.out.println(listToDelete.data);
+                    Message deleteItem = new Message(username_logged, null, null, "deleteagendaitem");
+                    System.out.println("Which one do tou wish to delete?\n");
+                    deleteItem.dataint = sci.nextInt();
+                    sendOut(deleteItem);
+
+
+            }
+        }
+
+    }
+
+    private void agendaItemMenu(String itemname) throws IOException, ClassNotFoundException {
+        String opt = "";
+        while (!("0".equals(opt))) {
+            System.out.println("You are now in the " + itemname + " room\n");
+            System.out.println("Please select one of the following options (0 to quit):\n");
+            System.out.println("1-Add Message\n" +
+                    "2-Add key decision\n" +
+                    "3-Assign task to user\n");
+
+            opt = scs.nextLine();
+            switch (opt) {
+
+                case "1":
+
+                    System.out.println("Insert your message to add to the discussion:\n");
+                    Message chatMsg = new Message(username_logged, null, null, "addchatmessage");
+                    chatMsg.data = scs.nextLine();
+                    chatMsg.dataint = itemJoined;
+                    sendOut(chatMsg);
+                    break;
+
+                case "2":
+                    System.out.println("Add a key decision to this item:\n");
+                    Message keyMsg = new Message(username_logged, null, null, "addkeydecision");
+                    keyMsg.keydecision = scs.nextLine();
+                    keyMsg.dataint = itemJoined;
+                    sendOut(keyMsg);
+
+
+                case "3":
+                    Message members = new Message(username_logged, null, null, "listallmembers");
+                    sendOut(members);
+                    members = (Message) in.readObject();
+                    System.out.println(members.data);
+                    Message assignAction = new Message(username_logged, null, null, "assignaction");
+                    System.out.println("User:");
+                    assignAction.dataint = sci.nextInt();
+
+                    System.out.println("Task:");
+                    assignAction.data = scs.nextLine();
+                    sendOut(assignAction);
+
+
+            }
+
+
+        }
+
+
     }
 
     public static Socket connect(Properties props, int port) throws InterruptedException {

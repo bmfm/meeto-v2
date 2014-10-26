@@ -16,7 +16,11 @@ public interface RmiInterface extends Remote {
 
     public Message listUpcomingMeetings(Message mensagem) throws RemoteException;
 
-    public Message listAllMeetings(Message mensagem) throws RemoteException;
+    public Message listPastMeetings(Message mensagem) throws RemoteException;
+
+    public Message listMyMeetings(Message mensagem) throws RemoteException;
+
+    public Message joinMeeting(Message mensagem) throws RemoteException;
 
     public Message sendInvitations(Message mensagem) throws RemoteException;
 
@@ -45,6 +49,8 @@ public interface RmiInterface extends Remote {
     public Message viewPendingInvitations(Message mensagem) throws RemoteException;
 
     public Message listMembers(Message mensagem) throws RemoteException;
+
+    public Message listAllMembers(Message mensagem) throws RemoteException;
 
     public Message register(Message mensagem) throws RemoteException;
 

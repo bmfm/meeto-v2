@@ -128,7 +128,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     public synchronized String participantsInAMeeting(int idmeeting) {
         String participants = "Participants:\n";
-        ResultSet rs = sql.doQuery("SELECT (member.username) FROM (member,meeting_member) where meeting_member.idmeeting='" + idmeeting + "'");
+        ResultSet rs = sql.doQuery("SELECT (member.username) FROM (member,meeting_member) where meeting_member.idmeeting='" + idmeeting + "' and member.idmember=meeting_member.idmember");
         try {
             while (rs.next()) {
                 String member = rs.getString("username");
@@ -141,25 +141,53 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         return participants;
     }
 
+    public synchronized String agendaItemsInAMeeting(int idmeeting) {
+        String agendaitems = "Agenda Items\t\tDescription\t\tKeydecision\n";
+        ResultSet rs = sql.doQuery("SELECT (item.name,item.description,item.keydecision) FROM (item,agenda) where agenda.idmeeting='" + idmeeting + "' and agenda.idagenda=item.idagenda");
+        try {
+            while (rs.next()) {
+                String itemname = rs.getString("name");
+                String itemdescription = rs.getString("description");
+                String keydecision = rs.getString("keydecision");
+                agendaitems += itemname + "\t\t" + itemdescription + "\t\t" + keydecision + "\n";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return agendaitems;
+    }
+
+    public synchronized String actionsInAMeeting(int idmeeting) {
+        String actions = "Action description\t\tAsignee\t\tStatus\n";
+        ResultSet rs = sql.doQuery("SELECT (member.username,action.description,action.completed) FROM (action,member,meeting) where action.idmeeting='" + idmeeting + "' and member.username=action.username and meeting.idmeeting=action.idmeeting");
+        try {
+            while (rs.next()) {
+                String actiondescription = rs.getString("username");
+                String assignee = rs.getString("description");
+                String status = String.valueOf(rs.getInt("completed"));
+                if ("0".equals(status)) {
+                    status = "Not yet completed";
+                } else {
+                    status = "Closed";
+                }
+                actions += actiondescription + "\t\t" + assignee + "\t\t" + status + "\n";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return actions;
+    }
+
 
     @Override
     public synchronized Message meetingOverview(Message mensagem) throws RemoteException {
 
         mensagem.data = participantsInAMeeting(mensagem.dataint);
-
-        ResultSet rs = sql.doQuery("SELECT * FROM meeting where date > now();");
-        try {
-            while (rs.next()) {
-                int meetingid = rs.getInt("idmeeting");
-                String meetingdesc = rs.getString("title");
-                String obj = rs.getString("objective");
-                String d = rs.getString("date");
-                String loc = rs.getString("location");
-                mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + loc + "\n";
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        mensagem.data += agendaItemsInAMeeting(mensagem.dataint);
+        mensagem.data += actionsInAMeeting(mensagem.dataint);
         return mensagem;
 
 
@@ -206,6 +234,37 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         }
         return mensagem;
+
+    }
+
+    public synchronized Message listMyMeetings(Message mensagem) throws RemoteException {
+        Message msgid = getUsernameId(mensagem);
+        mensagem.dataint = msgid.iduser;
+        ResultSet rs = sql.doQuery("select (meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location) from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = " + mensagem.dataint + "' and accepted=1");
+        mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tLocation\n ";
+        try {
+            while (rs.next()) {
+                int meetingid = rs.getInt("idmeeting");
+                String meetingdesc = rs.getString("title");
+                String obj = rs.getString("objective");
+                String d = rs.getString("date");
+                String loc = rs.getString("location");
+                mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + loc + "\n";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return mensagem;
+    }
+
+    @Override
+    public Message joinMeeting(Message mensagem) throws RemoteException {
+        return null;
+    }
+
+    public Message listAgendaItems(Message mensagem) throws RemoteException {
+        return null;
 
     }
 
@@ -263,7 +322,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
                 resultado = rs.getInt(1);
                 if (resultado != 1) {
 
-                    ResultSet rset = sql.doQuery("select (idmeeting.meeting,title.meeting,objective.meeting,date.meeting,location.meeting) from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = " + mensagem.dataint + "' and accepted==NULL");
+                    ResultSet rset = sql.doQuery("select (meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location) from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = " + mensagem.dataint + "' and accepted==NULL");
                     mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tLocation\n ";
                     while (rset.next()) {
 
@@ -288,7 +347,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     }
 
-
+    //listar todos menos o actual que está a fazer o pedido. Usado essencialmente aquando da criação da meeting
     public synchronized Message listMembers(Message mensagem) throws RemoteException {
 
         mensagem.data = "ID User" + "\t\t" + "Name\n";
@@ -306,6 +365,27 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         return mensagem;
     }
+
+    @Override
+    public synchronized Message listAllMembers(Message mensagem) throws RemoteException {
+
+        mensagem.data = "ID User" + "\t\t" + "Name\n";
+        ResultSet rs = sql.doQuery("select * from member");
+        try {
+            while (rs.next()) {
+                int idmember = rs.getInt("idmember");
+                String user = rs.getString("username");
+                mensagem.data += idmember + "\t\t" + user + "\n";
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return mensagem;
+    }
+
+
 
     public synchronized Message listUpcomingMeetings(Message mensagem) throws RemoteException {
         mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tLocation\n ";
@@ -328,20 +408,19 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     }
 
     @Override
-    public Message listAllMeetings(Message mensagem) throws RemoteException {
+    public Message listPastMeetings(Message mensagem) throws RemoteException {
 
         mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tLocation\n ";
 
-        ResultSet rs = sql.doQuery("SELECT * FROM meeting;");
+        ResultSet rs = sql.doQuery("SELECT * FROM meeting where date < now();");
         try {
             while (rs.next()) {
                 int meetingid = rs.getInt("idmeeting");
                 String meetingdesc = rs.getString("title");
                 String obj = rs.getString("objective");
                 String d = rs.getString("date");
-
                 String loc = rs.getString("location");
-                mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + loc;
+                mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + loc + "\n";
             }
         } catch (SQLException e) {
             e.printStackTrace();
