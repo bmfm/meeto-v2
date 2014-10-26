@@ -15,15 +15,12 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runnable {
+    static TCPServer tcpServer;
     List<Message> msgsToSend = new ArrayList<Message>();
-    List<String> userToSend = new ArrayList<String>();
 
     //TODO colocar array de users online o array na base de dados
-
+    List<String> userToSend = new ArrayList<String>();
     HashSet<String> membersonline = new HashSet<>();
-
-
-    static TCPServer tcpServer;
     MySQL sql = new MySQL();
 
 
@@ -224,6 +221,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         return mensagem;
     }
 
+
     @Override
     public synchronized Message declineMeeting(Message mensagem) throws RemoteException {
 
@@ -369,13 +367,15 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         int resultado;
         Message msgid = getUsernameId(mensagem);
         mensagem.dataint = msgid.iduser;
-        mensagem.data = "My pending invitations:\n";
+
         ResultSet rs = sql.doQuery("select * from meeting_member where idmember ='" + mensagem.dataint + "' and accepted IS NULL");
         try {
             while (rs.next()) {
 
                 resultado = rs.getInt(1);
                 if (resultado != 1) {
+
+                    mensagem.data = "My pending invitations:\n";
 
                     ResultSet rset = sql.doQuery("select distinct meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = '" + mensagem.dataint + "' and accepted IS NULL");
                     mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tLocation\n ";

@@ -1,16 +1,9 @@
 package pt.uc.dei.tcp_server;
 
-import pt.uc.dei.rmi_server.RmiInterface;
-
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.rmi.NotBoundException;
-import java.rmi.RMISecurityManager;
-import java.rmi.registry.LocateRegistry;
-import java.util.Properties;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Events extends Thread {
@@ -68,7 +61,7 @@ public class Events extends Thread {
 
         try {
 
-            Properties props = new Properties();
+            /*Properties props = new Properties();
 
 
             props.load(new FileInputStream("support/property"));
@@ -82,15 +75,16 @@ public class Events extends Thread {
             TCPServerImpl y = new TCPServerImpl();
             c.subscribe((TCPServer) y);
 
-
+*/
 
 
             Message mensagemAux = (Message) in.readObject();
             this.username = mensagemAux.username;
             tcpServer.put(mensagemAux.username, this);
-            Message checkmyinvitations = (Message) in.readObject();
-            checkmyinvitations = c.viewPendingInvitations(checkmyinvitations);
-            sendOut(checkmyinvitations);
+            System.out.println("Passou para a hashtabel");
+            //Message checkmyinvitations = (Message) in.readObject();
+            //checkmyinvitations = c.viewPendingInvitations(checkmyinvitations);
+            //sendOut(checkmyinvitations);
 
             //testes apenas
            /*     Enumeration e = tcpServer.keys();
@@ -101,6 +95,9 @@ public class Events extends Thread {
                 }*/
 
             while (true) {
+
+                System.out.println("entrou no consumer da queue");
+
                 Message msg = queue.take();
 
                 switch (msg.getTipo()) {
@@ -115,7 +112,7 @@ public class Events extends Thread {
             }
 
 
-        } catch (IOException | ClassNotFoundException | InterruptedException | NotBoundException e) {
+        } catch (IOException | ClassNotFoundException | InterruptedException e) {
             e.printStackTrace();
         }
 

@@ -23,13 +23,10 @@ public class TCPClient {
     static ObjectOutputStream out = null;
     static ObjectInputStream inAux = null;
     static ObjectOutputStream outAux = null;
+    static EmbeddedHelper embDB = new EmbeddedHelper();
     Scanner sci = new Scanner(System.in);
     Scanner scs = new Scanner(System.in);
-
     ReadData read = null;
-
-    static EmbeddedHelper embDB = new EmbeddedHelper();
-
     int itemJoined;
 
 
@@ -45,6 +42,114 @@ public class TCPClient {
         }
     }
 
+    public static Socket connect(Properties props, int port) throws InterruptedException {
+        //tentativa de se ligar a qualquer um dos servers tcp disponiveis
+
+        Socket socket = null;
+        List<String> lstIp = new ArrayList<String>(2);
+        lstIp.add(props.getProperty("tcpip1"));
+        lstIp.add(props.getProperty("tcpip2"));
+
+        //TODO percorrer porta?
+
+
+        while (socket == null) {
+
+            for (String ip : lstIp) {
+                try {
+                    socket = (new Socket(ip, port));
+                } catch (Exception ex) {
+
+                }
+                if (socket != null)
+                    break;
+
+                Thread.sleep(2000);
+            }
+        }
+
+        return socket;
+    }
+
+    public static void setS(Socket aS) {
+        s = aS;
+    }
+
+    public static void setSaux(Socket aS) {
+        saux = aS;
+    }
+
+    public static void setIn(ObjectInputStream aIn) {
+        in = aIn;
+    }
+
+    public static void setOut(ObjectOutputStream aOut) {
+        out = aOut;
+    }
+
+    public static void setInAux(ObjectInputStream aIn) {
+        inAux = aIn;
+    }
+
+    public static void setOutAux(ObjectOutputStream aOut) {
+        outAux = aOut;
+    }
+
+    public static void startUpOperations() throws IOException, ClassNotFoundException {
+
+        //assim que o user faz login com sucesso, envia logo uma mensagem para a thread de events para esta guardar o username do member na Hashtable de users online (juntamente com a própria thread)
+        Message msgtohash = new Message(username_logged, null, null, "sendtohash");
+        sendOutAux(msgtohash);
+
+        //verificar as invitations que possui
+        //Message checkmyinvitations = new Message(username_logged, null, null, "viewpendinginvitations");
+        //sendOutAux(checkmyinvitations);
+
+        //TODO verificar se perdeu alguma CHAT msg enquanto estava offline
+
+    }
+
+    public static void sendOut(Message mensagem) {
+        try {
+            synchronized (out) {
+
+                java.util.Date date = new java.util.Date();
+                mensagem.setTimestamp(String.valueOf(date.getTime()));
+                out.writeObject(mensagem);
+                out.flush();
+                out.reset();
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void sendOutAux(Message mensagem) {
+
+        try {
+            synchronized (outAux) {
+
+                outAux.writeObject(mensagem);
+                outAux.flush();
+                outAux.reset();
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public static void saveToEmbeddedDB(Message mensagem) {
+
+        //TODO tratar do delivery dos dados -> embedded e system_msg do lado do rmi
+
+        embDB.doUpdate("INSERT INTO system_message (username,type,data,date,time,desiredoutcome,list,location,timestamp,delivered) VALUES ()");
+
+
+    }
 
     private void startupClient() throws IOException, InterruptedException {
         System.out.println("TCP Client");
@@ -265,8 +370,9 @@ public class TCPClient {
                         Message mensagem = new Message(username_logged, null, null, "viewpendinginvitations");
                         sendOut(mensagem);
                         mensagem = (Message) in.readObject();
-                        System.out.println(mensagem.data);
-                        if (!mensagem.data.equalsIgnoreCase("No pending notifications!\n")) {
+
+                        if (!mensagem.data.equalsIgnoreCase("No pending notifications!")) {
+                            System.out.println(mensagem.data);
                             System.out.println("Do you wish to (1)Accept, (2)Decline or (3)Exit?\n");
                             opnotifications = sci.nextInt();
                             if (opnotifications == 1) {
@@ -553,115 +659,6 @@ public class TCPClient {
 
     }
 
-    public static Socket connect(Properties props, int port) throws InterruptedException {
-        //tentativa de se ligar a qualquer um dos servers tcp disponiveis
-
-        Socket socket = null;
-        List<String> lstIp = new ArrayList<String>(2);
-        lstIp.add(props.getProperty("tcpip1"));
-        lstIp.add(props.getProperty("tcpip2"));
-
-        //TODO percorrer porta?
-
-
-        while (socket == null) {
-
-            for (String ip : lstIp) {
-                try {
-                    socket = (new Socket(ip, port));
-                } catch (Exception ex) {
-
-                }
-                if (socket != null)
-                    break;
-
-                Thread.sleep(2000);
-            }
-        }
-
-        return socket;
-    }
-
-    public static void setS(Socket aS) {
-        s = aS;
-    }
-
-    public static void setSaux(Socket aS) {
-        saux = aS;
-    }
-
-    public static void setIn(ObjectInputStream aIn) {
-        in = aIn;
-    }
-
-    public static void setOut(ObjectOutputStream aOut) {
-        out = aOut;
-    }
-
-    public static void setInAux(ObjectInputStream aIn) {
-        inAux = aIn;
-    }
-
-    public static void setOutAux(ObjectOutputStream aOut) {
-        outAux = aOut;
-    }
-
-    public static void startUpOperations() throws IOException, ClassNotFoundException {
-
-        //assim que o user faz login com sucesso, envia logo uma mensagem para a thread de events para esta guardar o username do member na Hashtable de users online (juntamente com a própria thread)
-        Message msgtohash = new Message(username_logged, null, null, "sendtohash");
-        sendOutAux(msgtohash);
-
-        //verificar as invitations que possui
-        Message checkmyinvitations = new Message(username_logged, null, null, "viewpendinginvitations");
-        sendOutAux(checkmyinvitations);
-
-        //TODO verificar se perdeu alguma CHAT msg enquanto estava offline
-
-    }
-
-    public static void sendOut(Message mensagem) {
-        try {
-            synchronized (out) {
-
-                java.util.Date date = new java.util.Date();
-                mensagem.setTimestamp(String.valueOf(date.getTime()));
-                out.writeObject(mensagem);
-                out.flush();
-                out.reset();
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void sendOutAux(Message mensagem) {
-
-        try {
-            synchronized (outAux) {
-
-                outAux.writeObject(mensagem);
-                outAux.flush();
-                outAux.reset();
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    public static void saveToEmbeddedDB(Message mensagem) {
-
-        //TODO tratar do delivery dos dados -> embedded e system_msg do lado do rmi
-
-        embDB.doUpdate("INSERT INTO system_message (username,type,data,date,time,desiredoutcome,list,location,timestamp,delivered) VALUES ()");
-
-
-    }
-
 
 }
 
@@ -695,13 +692,13 @@ class ReadData extends Thread {
 
                     }
 
-                    if (mensagemAux.getTipo().equalsIgnoreCase("viewpendinginvitations")) {
+                    /*if (mensagemAux.getTipo().equalsIgnoreCase("viewpendinginvitations")) {
 
 
                         System.out.println(mensagemAux.data);
-                    }
+                    }*/
 
-                    if (mensagemAux.getTipo().equalsIgnoreCase("viewpendingnotifications")) {
+                    /*if (mensagemAux.getTipo().equalsIgnoreCase("viewpendingnotifications")) {
                         if (!mensagemAux.data.equalsIgnoreCase("No pending invitations!")) {
                             System.out.println("While you were away, you were invited to the following meetings:\n");
                             System.out.println(mensagemAux.data);
@@ -709,7 +706,7 @@ class ReadData extends Thread {
 
                         }
 
-                    }
+                    }*/
 
                 }
             } catch (ClassNotFoundException ex) {
