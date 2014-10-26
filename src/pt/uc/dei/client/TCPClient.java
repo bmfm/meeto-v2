@@ -102,8 +102,11 @@ public class TCPClient {
         sendOutAux(msgtohash);
 
         //verificar as invitations que possui
-        //Message checkmyinvitations = new Message(username_logged, null, null, "viewpendinginvitations");
-        //sendOutAux(checkmyinvitations);
+        Message checkmyinvitations = new Message(username_logged, null, null, "viewpendinginvitations");
+        sendOut(checkmyinvitations);
+        checkmyinvitations = (Message) in.readObject();
+        System.out.println(checkmyinvitations.data);
+
 
         //TODO verificar se perdeu alguma CHAT msg enquanto estava offline
 
@@ -356,8 +359,6 @@ public class TCPClient {
                 }
 
 
-
-
                 //View pending invitations
 
                 if (op == 4) {
@@ -601,6 +602,7 @@ public class TCPClient {
                     } else {
                         System.out.println("A problem occured. Someone else probably deleted it already. Please refresh\n");
                     }
+                    break;
 
             }
         }
@@ -635,6 +637,7 @@ public class TCPClient {
                     keyMsg.keydecision = scs.nextLine();
                     keyMsg.dataint = itemJoined;
                     sendOut(keyMsg);
+                    break;
 
 
                 case "3":
@@ -649,6 +652,7 @@ public class TCPClient {
                     System.out.println("Task:");
                     assignAction.data = scs.nextLine();
                     sendOut(assignAction);
+                    break;
 
 
             }
@@ -692,11 +696,11 @@ class ReadData extends Thread {
 
                     }
 
-                    /*if (mensagemAux.getTipo().equalsIgnoreCase("viewpendinginvitations")) {
+                    //if (mensagemAux.getTipo().equalsIgnoreCase("viewpendinginvitations")) {
 
 
-                        System.out.println(mensagemAux.data);
-                    }*/
+                    //  System.out.println(mensagemAux.data);
+                    //}
 
                     /*if (mensagemAux.getTipo().equalsIgnoreCase("viewpendingnotifications")) {
                         if (!mensagemAux.data.equalsIgnoreCase("No pending invitations!")) {

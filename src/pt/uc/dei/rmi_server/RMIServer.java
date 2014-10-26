@@ -352,7 +352,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         }
 
 
-
         return mensagem;
 
     }
@@ -439,7 +438,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         return mensagem;
     }
-
 
 
     public synchronized Message listUpcomingMeetings(Message mensagem) throws RemoteException {
@@ -584,8 +582,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
 
     }
-
-
 
 
     public void ping() throws RemoteException {

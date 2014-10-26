@@ -105,23 +105,13 @@ Este projecto consiste então numa implementação de um sistema de gestão de r
 %--------------------------------------------------------------------------
 \section{Internal architecture}
 \label{sub:internal}
-O esquema abaixo apresentado procura descrever de forma simples a arquitetura desenvolvida:
-\begin{figure}[!ht]
-  	\centering
-  	\includegraphics[scale=0.7]{sytem_arquitecture.png}
-  	\caption{Arquitectura do Sistema}
-	%\vspace{2cm}
-	\label{figure2}
-\end{figure}
-%\newpage
-%\vspace{0.5cm}
 
 Esta aplicação encontra-se subdividida numa série de classes, cada uma responsável por integrar esta aplicação num todo coerente, onde se destacam:
 
 \begin{description}
 	\item[RMIServer:] \hfill \\
 	Dentro da classe \textbf{RMIServer} encontram-se os métodos essenciais da aplicação: registo, login, createMeeting, listAllMeetings, acceptMeeting, meetingOverview, addAgendaItem etc. É aqui que é criado o registry e onde é instanciado o objecto para ligação à base de dados MySQL. Dentro do RMIServer são também chamados vários métodos do TCPServer (callback), entre eles o \textbf{msgToMany} que trata de enviar uma mensagem a vários destinatários e o \textbf{msgsToOne} que envia diversas mensagens para o mesmo utilizador. Relativamente a threads, o RMI faz uma gestão interna automática das mesmas.
-	Aqui encontra-se também um HashSet com os utilizadores actualmente ligados ao sistema.
+
 	\item[RmiInterface:] \hfill \\
 	O RmiInterface, tal como o próprio nome indica, é a interface dos métodos existentes dentro da RMIServer.
 	\item[MySQL:] \hfill \\
@@ -162,7 +152,7 @@ O seguinte diagrama representa o nosso esquema de Data Model.
 
 \begin{figure}[!ht]
   	\centering
-  	\includegraphics[scale=0.6]{ClassDiagram.png}
+  	\includegraphics[scale=0.2]{ClassDiagram.png}
   	\caption{Data Diagram}
 	%\vspace{2cm}
 	\label{figure4}
@@ -234,15 +224,7 @@ No RMI foram dados os mesmos tratamentos de exceção utilizados no TCP.
 %--------------------------------------------------------------------------
 \section{FailOver}
 \label{sec:failover}
-O fail-over pressupõe a existência de dois servidores (primary e backup) que comunicam entre si através de um canal UDP. Só assim é possível controlar o estado (ativo/inativo) de cada uma das entidades e efetuar a troca em caso de necessidade. Para tal, operámos um mecanismo de ping (3s).
-Implementámos uma thread com uma duração de 5 segundos que corresponde ao tempo máximo de delay aceite pela aplicação. Se durante esse período a  em utilização não comunicar, os clientes serão redirecionados para o servidor secundário que assumirá o papel de principal.
-
-\begin{figure}[!ht]
-	\centering
-		\includegraphics[scale=0.6]{failover.png}
-	\caption{Esquema de FailOver}
-	\label{fig:Pictures_failover}
-\end{figure}
+O fail-over pressupõe a existência de dois servidores (primary e backup) que comunicam entre si através de um canal UDP. Só assim é possível controlar o estado (ativo/inativo) de cada uma das entidades e efetuar a troca em caso de necessidade. Para tal, operámos um mecanismo de hearbeats (2s).Se depois de 10 segundos o server em utilização não comunicar, os clientes serão redirecionados para o servidor secundário que assumirá o papel de principal.
 
 \pagebreak
 %--------------------------------------------------------------------------
@@ -250,11 +232,8 @@ Implementámos uma thread com uma duração de 5 segundos que corresponde ao tem
 %--------------------------------------------------------------------------
 \section{Causal Order Implementation}
 \label{sec:causal}
-Para implementar o nosso projecto, começamos por criar as respectivas ligações e a criação dos clientes. Inicialmente criamos somente o TCP Server, no qual colocamos todas as operações necessárias e mais tarde passamos estas mesmas para o servidor RMI. Foi também criado uma interface \emph{CORERmi}, na qual temos a declaração das funções necessárias ao longo da aplicação.
-Relativamente ao armazenamento de dados, optamos numa primeira instância por recorrer a ficheiros (tipo vector), mas logo percebemos que para existir uma maior segurança e fiabilidade de armazenamento de dados a melhor operação era recorrer a uma base de dados, nomeadamente o \emph{MySQL}. Relativamente à base de dados, foi feito uma análise cuidada das tabelas, campos e ligações a usar de acordo com as nossas necessidades.
 
-Por fim, foi criado o servidor backup e a sua respectiva ligação UDP. Somente no fim da implementação dos mecanismos de \textbf{FailOver} e dos mecanismos de \textbf{tratamento de excepções}, é que nos concentramos na parte dos objectos / requisitos funcionais.
-
+Para implementar a ordem causal no projecto foi utilziada um LinkedBlockingQueue em cada thread de Events. Assim que o server RMI pretende enviar mensagens para N utilizadores, faz callback do método sendMsg do TCP Server. Este limita-se a ver se os destinatários estão na sua Hashtable e faz \textbf{offer} às mensagens para a LinkedBlockingQueue. A thread Events está então responsável por ler o conteúdo da LinkedBlockingQueue e enviar para o seu cliente.
 
 \pagebreak
 %--------------------------------------------------------------------------
@@ -310,25 +289,25 @@ Foram feitos diversos testes nas diversas funcionalidades da aplicação, de mod
 \pagebreak
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%---------------IDEIA
-\subsection{Teste de Submissão de Ideia}
+\subsection{Teste de criação de meeting}
 \begin{table}[ht!]
 	\begin{tabular}{|c|p{4cm}|p{4cm}|p{3cm}|p{1cm}|}
 		\hline
-		\multicolumn{5}{|l|}{\textbf{Test Name}: Teste de Submissão de Ideia}\\
+		\multicolumn{5}{|l|}{\textbf{Test Name}: Teste de Submissão de Meeting}\\
 		\hline
-		\multicolumn{5}{|p{14,5cm}|}{\textbf{Description}: É testada a funcionalidade de introduzir ideia}\\
+		\multicolumn{5}{|p{14,5cm}|}{\textbf{Description}: É testada a funcionalidade de introduzir meeting}\\
 		\hline
-		\multicolumn{5}{|p{14,5cm}|}{\textbf{Prerequisites}: O utilizador tem que já estar registado e já devem existir ideias}\\
+		\multicolumn{5}{|p{14,5cm}|}{\textbf{Prerequisites}: O utilizador tem que já estar registado}\\
 		\hline
-		\multicolumn{5}{|p{14,5cm}|}{\textbf{Setup}: O servidor irá fazer handle das ideias}\\
+		\multicolumn{5}{|p{14,5cm}|}{\textbf{Setup}: O servidor irá fazer handle das meetings}\\
 		\hline
 		\textbf{Step} & \textbf{Operator Action} & \textbf{Expected Results} & \textbf{Observed Results} & \textbf{P / F}\\
 		\hline
 		1 & logar User & Login efectuado com sucesso! & Nada apontar & PASS\\
 		\hline
-		2 & User acede ao menu e escolhe a opção 3 & aparece o passo seguinte & antes de escolher a opção, aparece uma listagem de opções & PASS\\
+		2 & User acede ao menu e escolhe a opção 1 & aparece o passo seguinte & antes de escolher a opção, aparece uma listagem de opções & PASS\\
 		\hline
-		3 & Introduz a conteúdo da ideia & Pergunta se deseja introduzir anexo & nada apontar & PASS\\
+		3 & Introduz os detalhes da meeting & wfsgg & nada apontar & PASS\\
 		\hline
 		4 & Escolhe a opção de sim relativamente ao anexo & Passa ao passo seguinte & é introduzido a path do anexo & PASS\\
 		\hline
@@ -353,7 +332,7 @@ Foram feitos diversos testes nas diversas funcionalidades da aplicação, de mod
 		\hline
 		\multicolumn{5}{|l|}{\textbf{Description}: Teste de Ligação ao Backup}\\
 		\hline
-		\multicolumn{5}{|p{14,5cm}|}{\textbf{Prerequisites}: Cliente tem de ter uma conta criada na aplicação e devem estar os dois servidores a correr (Principal e Backup). Será feita uma ligação normal entre cliente TCP e Servidor TCP. De seguida será quebrada a ligação do servidor principal TCP, esperando assim que o cliente se reconecte ao servidor backup}\\
+		\multicolumn{5}{|p{14,5cm}|}{\textbf{Prerequisites}: Cliente tem de ter uma conta criada na aplicação e devem estar os dois servidores a correr. Será feita uma ligação normal entre cliente TCP e Servidor TCP. De seguida será quebrada a ligação do servidor principal TCP, esperando assim que o cliente se reconecte ao servidor backup}\\
 		\hline
 		\multicolumn{5}{|l|}{\textbf{Setup}: Acesso normal À sua conta}\\
 		\hline
@@ -361,7 +340,7 @@ Foram feitos diversos testes nas diversas funcionalidades da aplicação, de mod
 		\hline
 		1 & Inserir username, password & Sistema aceita dados se a conta existir & São os esperados & PASS\\
 		\hline
-		2 & O servidor principal é desligado & Existe um período de espera da parte do cliente até este se ligar ao servidor backup, podendo ter existido uma pequena baixa da parte do principal & O servidor principal não vem à vida dentro o tempo de espera & PASS\\
+		2 & O servidor principal é desligado & Existe um período de espera da parte do cliente até este se ligar ao servidor backup, podendo ter existido um curto downtime da parte do principal & O servidor principal não vem up dentro o tempo de espera & PASS\\
 		\hline
 		3 & ---- & Ligação feita ao servidor backup & São os esperados & PASS\\
 		\hline

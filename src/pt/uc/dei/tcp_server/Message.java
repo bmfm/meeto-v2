@@ -36,6 +36,7 @@ public class Message implements Serializable {
     public static final String LISTMYMEETINGS = "listmymeetings";
     public static final String JOINMEETING = "joinmeeting";
     public static final String LOGOUT = "logout";
+    public static final String LISTAGENDAITEMS = "listagendaitems";
 
 
     private String tipo = "";

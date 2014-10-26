@@ -123,6 +123,11 @@ public class Connection extends Thread {
                         sendOut(mensagem);
                         break;
 
+                    case (Message.LISTAGENDAITEMS):
+                        mensagem = c.listAgendaItems(mensagem);
+                        sendOut(mensagem);
+                        break;
+
                     case (Message.INVITETOMEETING):
                         mensagem = c.inviteToMeeting(mensagem);
                         sendOut(mensagem);
@@ -208,10 +213,12 @@ public class Connection extends Thread {
                     case (Message.VIEWPENDINGINVITATIONS):
                         mensagem = c.viewPendingInvitations(mensagem);
                         sendOut(mensagem);
+                        break;
 
                     case (Message.CHECKONLINE):
                         mensagem = c.onlineUsers(mensagem);
                         sendOut(mensagem);
+                        break;
 
                 }
 
