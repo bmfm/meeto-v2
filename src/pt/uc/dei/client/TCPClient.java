@@ -215,13 +215,10 @@ public class TCPClient {
                         }
 
 
-
-
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
 
                     }
-
                 }
 
                 // View past meetings
@@ -339,18 +336,25 @@ public class TCPClient {
                 // show to do list
                 if (op == 6) {
                     if (out != null && outAux != null) {
-
+                        int optask;
                         Message mensagem = new Message(username_logged, null, null, "showtodolist");
                         sendOut(mensagem);
                         mensagem = (Message) in.readObject();
                         System.out.println(mensagem.data);
-                        System.out.println("Do you wish to complete any task? (0 to exit)");
-                        Message completeaction = new Message(username_logged, null, null, "completeaction");
-                        completeaction.dataint = sci.nextInt();
-                        if (completeaction.dataint != 0) {
+                        System.out.println("Do you wish to complete any task? (1) Yes (2) No\n");
+                        optask = sci.nextInt();
+                        if (optask == 1) {
+                            System.out.println("Which one:?\n");
+                            Message completeaction = new Message(username_logged, null, null, "completeaction");
+                            completeaction.dataint = sci.nextInt();
                             sendOut(completeaction);
+                            completeaction = (Message) in.readObject();
+                            if (completeaction.result) {
+                                System.out.println("Good job! Task completed.");
+                            } else {
+                                System.out.println("Sorry, an error occured");
+                            }
                         }
-
 
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
@@ -429,12 +433,12 @@ public class TCPClient {
                     sendOut(listitems);
                     listitems = (Message) in.readObject();
                     System.out.println(listitems.data);
-                    System.out.println("Do you wish to enter any agenda item? (0 to exit)\n");
+                    System.out.println("Do you wish to enter any agenda item? Enter its ID. (or 0 to exit)\n");
                     int listop;
                     listop = sci.nextInt();
                     if (listop != 0) {
                         itemJoined = listop;
-                        agendaItemMenu(listitems.name);
+                        agendaItemMenu(listop);
                         //voltar a colocar o itemJoined a 0 para quando sair
                         itemJoined = 0;
                     }
@@ -444,11 +448,19 @@ public class TCPClient {
                 case "2":
 
                     Message additems = new Message(username_logged, null, null, "addAgendaItem");
+                    additems.dataint = meetingJoined;
                     System.out.println("Nome:");
                     additems.name = scs.nextLine();
                     System.out.println("Description:");
                     additems.description = scs.nextLine();
                     sendOut(additems);
+                    additems = (Message) in.readObject();
+                    if (additems.result) {
+                        System.out.println("Item added to the agenda!");
+                    } else {
+                        System.out.println("An error occured. Please try again.");
+                    }
+
 
                     break;
 
@@ -468,8 +480,6 @@ public class TCPClient {
                 //delete
                 case "4":
 
-                    //TODO meter protecçoes (resultado do result deve chegar) para quando se tenta eliminar um agenda item que já não existe por exemplo
-
                     Message listToDelete = new Message(username_logged, null, null, "listAgendaItems");
                     listToDelete.dataint = meetingJoined;
                     sendOut(listToDelete);
@@ -479,17 +489,23 @@ public class TCPClient {
                     System.out.println("Which one do tou wish to delete?\n");
                     deleteItem.dataint = sci.nextInt();
                     sendOut(deleteItem);
-
+                    deleteItem = (Message) in.readObject();
+                    if (deleteItem.result) {
+                        System.out.println("Deleted!\n");
+                    } else {
+                        System.out.println("A problem occured. Someone else probably deleted it already. Please refresh\n");
+                    }
 
             }
         }
 
     }
 
-    private void agendaItemMenu(String itemname) throws IOException, ClassNotFoundException {
+    private void agendaItemMenu(int itemid) throws IOException, ClassNotFoundException {
         String opt = "";
         while (!("0".equals(opt))) {
-            System.out.println("You are now in the " + itemname + " room\n");
+
+            System.out.println("You are now in the item " + itemid + " room\n");
             System.out.println("Please select one of the following options (0 to quit):\n");
             System.out.println("1-Add Message\n" +
                     "2-Add key decision\n" +
@@ -545,8 +561,7 @@ public class TCPClient {
         lstIp.add(props.getProperty("tcpip1"));
         lstIp.add(props.getProperty("tcpip2"));
 
-        //TODO não tenho de percorrer a porta também?.
-        // Creio que percebi. Parte-se do principio que independentemente do IP, a porta onde eles se ligam é a mesma. Certo?
+        //TODO percorrer porta?
 
 
         while (socket == null) {
@@ -598,14 +613,12 @@ public class TCPClient {
         sendOutAux(msgtohash);
 
         //verificar as invitations que possui
-        Message checkmyinvitations = new Message(username_logged, null, null, "viewpendingnotifications");
+        Message checkmyinvitations = new Message(username_logged, null, null, "viewpendinginvitations");
         sendOutAux(checkmyinvitations);
 
         //TODO verificar se perdeu alguma CHAT msg enquanto estava offline
 
     }
-
-
 
     public static void sendOut(Message mensagem) {
         try {
@@ -682,7 +695,7 @@ class ReadData extends Thread {
 
                     }
 
-                    if (mensagemAux.getTipo().equalsIgnoreCase("checkonline")) {
+                    if (mensagemAux.getTipo().equalsIgnoreCase("viewpendinginvitations")) {
 
 
                         System.out.println(mensagemAux.data);

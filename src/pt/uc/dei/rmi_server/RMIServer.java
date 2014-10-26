@@ -52,6 +52,8 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
 
         new Thread(this).start();
+        //assim que o server começa,coloca o online status de todos os users a 0 para evitar ter users logados no sistema com a mesma conta
+        sql.doUpdate("UPDATE member SET online=0");
     }
 
     public static void main(String[] args) {
@@ -87,6 +89,11 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
+            //TODO colocar o "all other business" no final de cada agenda
+
+            //criar uma agenda vazia, só para gerar um idagenda
+            sql.doUpdate("INSERT INTO agenda (idmeeting) VALUES ('" + idmeeting + "');");
             //colocar o criador da meeting na tabela meeting_member (como accepted naturalmente) antes de tratar dos outros
             sql.doUpdate("INSERT INTO meeting_member (idmeeting,idmember,accepted) VALUES ('" + idmeeting + "','" + mensagem.dataint + "','1');");
 
@@ -186,7 +193,9 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     public synchronized Message meetingOverview(Message mensagem) throws RemoteException {
 
         mensagem.data = participantsInAMeeting(mensagem.dataint);
+        mensagem.data += ("\n\n");
         mensagem.data += agendaItemsInAMeeting(mensagem.dataint);
+        mensagem.data += ("\n\n");
         mensagem.data += actionsInAMeeting(mensagem.dataint);
         return mensagem;
 
@@ -240,7 +249,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     public synchronized Message listMyMeetings(Message mensagem) throws RemoteException {
         Message msgid = getUsernameId(mensagem);
         mensagem.dataint = msgid.iduser;
-        ResultSet rs = sql.doQuery("select meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = '" + mensagem.dataint + "' and accepted=1");
+        ResultSet rs = sql.doQuery("select distinct meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = '" + mensagem.dataint + "' and accepted=1");
         mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tLocation\n ";
         try {
             while (rs.next()) {
@@ -263,14 +272,37 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         return null;
     }
 
+    @Override
     public Message listAgendaItems(Message mensagem) throws RemoteException {
-        return null;
+        mensagem.data = "ID:\t\tName:\t\tDescription:\t\tKey decision:\n";
+
+        ResultSet rs = sql.doQuery("select item.iditem,item.name,item.description,item.keydecision from (agenda,item) where agenda.idagenda=item.idagenda and agenda.idmeeting='" + mensagem.dataint + "'");
+        try {
+            while (rs.next()) {
+                int iditem = rs.getInt("iditem");
+                String itemname = rs.getString("name");
+                String itemdesc = rs.getString("description");
+                String keydecision = rs.getString("keydecision");
+                mensagem.data += iditem + "\t\t" + itemname + "\t\t" + itemdesc + "\t\t" + keydecision + "\n";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return mensagem;
+
 
     }
 
     @Override
     public synchronized Message addAgendaItem(Message mensagem) throws RemoteException {
-        return null;
+        int idagenda = getAgendaId(mensagem.dataint);
+        mensagem.result = false;
+        if ((sql.doUpdate("INSERT INTO item (idagenda,name,description) VALUES ('" + idagenda + "','" + mensagem.name + "','" + mensagem.description + "')")) == 1) {
+            mensagem.result = true;
+        }
+
+        return mensagem;
     }
 
     @Override
@@ -303,10 +335,11 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         Message msgid = getUsernameId(mensagem);
         mensagem.dataint = msgid.iduser;
-        mensagem.data = "Description:\t\tCompleted:\n";
-        ResultSet rs = sql.doQuery("select action.description,action.completed from (action,meeting,member) where action.idmember =" + mensagem.dataint + "' and action.idmember=member.idmember");
+        mensagem.data = "ID Action:\t\tDescription:\t\tCompleted:\n";
+        ResultSet rs = sql.doQuery("select distinct action.idaction,action.description,action.completed from (action,meeting,member) where action.idmember ='" + mensagem.dataint + "' and action.idmember=member.idmember");
         try {
             while (rs.next()) {
+                int idaction = rs.getInt("idaction");
                 String actiondescription = rs.getString("description");
                 String status = String.valueOf(rs.getInt("completed"));
                 if ("0".equals(status)) {
@@ -314,7 +347,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
                 } else {
                     status = "Closed";
                 }
-                mensagem.data += actiondescription + "\t\t" + status + "\n";
+                mensagem.data += idaction + "\t\t" + actiondescription + "\t\t" + status + "\n";
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -336,22 +369,23 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         int resultado;
         Message msgid = getUsernameId(mensagem);
         mensagem.dataint = msgid.iduser;
-        ResultSet rs = sql.doQuery("select * from meeting_member where idmember =" + mensagem.dataint + "' and accepted==NULL");
+        mensagem.data = "My pending invitations:\n";
+        ResultSet rs = sql.doQuery("select * from meeting_member where idmember ='" + mensagem.dataint + "' and accepted IS NULL");
         try {
             while (rs.next()) {
 
                 resultado = rs.getInt(1);
                 if (resultado != 1) {
 
-                    ResultSet rset = sql.doQuery("select meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = " + mensagem.dataint + "' and accepted==NULL");
+                    ResultSet rset = sql.doQuery("select distinct meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = '" + mensagem.dataint + "' and accepted IS NULL");
                     mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tLocation\n ";
                     while (rset.next()) {
 
-                        int meetingid = rs.getInt("idmeeting");
-                        String meetingdesc = rs.getString("title");
-                        String obj = rs.getString("objective");
-                        String d = rs.getString("date");
-                        String loc = rs.getString("location");
+                        int meetingid = rset.getInt("idmeeting");
+                        String meetingdesc = rset.getString("title");
+                        String obj = rset.getString("objective");
+                        String d = rset.getString("date");
+                        String loc = rset.getString("location");
                         mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + loc + "\n";
                     }
 
@@ -494,7 +528,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         idusr = msgid.iduser;
 
         System.out.println(idusr);
-        sql.doUpdate("UPDATE member SET online=0 where id_person='" + idusr + "'");
+        sql.doUpdate("UPDATE member SET online=0 where idmember='" + idusr + "'");
 
         return mensagem;
     }
@@ -532,6 +566,27 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     }
 
+    public synchronized int getAgendaId(int idmeeting) throws RemoteException {
+
+        int agendaid = 0;
+        ResultSet rs = sql.doQuery("SELECT idagenda from agenda where idmeeting='" + idmeeting + "'");
+        try {
+            rs.next();
+            agendaid = rs.getInt(1);
+            return agendaid;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return agendaid;
+
+
+    }
+
+
+
 
     public void ping() throws RemoteException {
 
@@ -543,6 +598,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         //new RMIServer();
 
     }
+
 
     public void run() {
 

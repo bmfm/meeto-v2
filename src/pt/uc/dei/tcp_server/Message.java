@@ -31,10 +31,11 @@ public class Message implements Serializable {
     public static final String SENDINVITATIONS = "sendinvitations";
     public static final String CHECKINVITATIONS = "checkinvitations";
     public static final String CHECKCHATMESSAGES = "checkchatmessages";
-    public static final String VIEWPENDINGINVITATIONS = "viewpendingninvitations";
+    public static final String VIEWPENDINGINVITATIONS = "viewpendinginvitations";
     public static final String VERIFYMASTER = "verifymaster";
     public static final String LISTMYMEETINGS = "listmymeetings";
     public static final String JOINMEETING = "joinmeeting";
+    public static final String LOGOUT = "logout";
 
 
     private String tipo = "";

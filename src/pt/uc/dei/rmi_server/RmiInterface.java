@@ -30,6 +30,8 @@ public interface RmiInterface extends Remote {
 
     public Message declineMeeting(Message mensagem) throws RemoteException;
 
+    public Message listAgendaItems(Message mensagem) throws RemoteException;
+
     public Message addAgendaItem(Message mensagem) throws RemoteException;
 
     public Message modifyAgendaItem(Message mensagem) throws RemoteException;

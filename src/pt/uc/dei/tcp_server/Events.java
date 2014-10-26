@@ -1,9 +1,16 @@
 package pt.uc.dei.tcp_server;
 
+import pt.uc.dei.rmi_server.RmiInterface;
+
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.rmi.NotBoundException;
+import java.rmi.RMISecurityManager;
+import java.rmi.registry.LocateRegistry;
+import java.util.Properties;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Events extends Thread {
@@ -58,10 +65,41 @@ public class Events extends Thread {
 
 
     public void run() {
+
         try {
+
+            Properties props = new Properties();
+
+
+            props.load(new FileInputStream("support/property"));
+
+
+            System.getProperties().put("java.security.policy", "support/policy.all");
+            System.setSecurityManager(new RMISecurityManager());
+
+            //funciona apenas com lookup(core) mas torna-se um problema se o o cliente se tentar ligar ao servidor de backup
+            RmiInterface c = (RmiInterface) LocateRegistry.getRegistry(props.getProperty("rmiServerip"), Integer.parseInt(props.getProperty("rmiServerPort1"))).lookup("rmi://" + props.getProperty("rmiServerip") + "/core");
+            TCPServerImpl y = new TCPServerImpl();
+            c.subscribe((TCPServer) y);
+
+
+
+
             Message mensagemAux = (Message) in.readObject();
             this.username = mensagemAux.username;
             tcpServer.put(mensagemAux.username, this);
+            Message checkmyinvitations = (Message) in.readObject();
+            checkmyinvitations = c.viewPendingInvitations(checkmyinvitations);
+            sendOut(checkmyinvitations);
+
+            //testes apenas
+           /*     Enumeration e = tcpServer.keys();
+                while (e.hasMoreElements()) {
+
+                    System.out.println(e.nextElement());
+
+                }*/
+
             while (true) {
                 Message msg = queue.take();
 
@@ -77,7 +115,7 @@ public class Events extends Thread {
             }
 
 
-        } catch (IOException | ClassNotFoundException | InterruptedException e) {
+        } catch (IOException | ClassNotFoundException | InterruptedException | NotBoundException e) {
             e.printStackTrace();
         }
 

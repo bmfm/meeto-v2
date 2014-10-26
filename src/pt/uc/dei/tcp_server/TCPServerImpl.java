@@ -148,7 +148,6 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
         msgs[0] = m;
         this.sendMsg(msgs, u);
 
-
     }
 
 
@@ -162,6 +161,15 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
     public void switchToMaster(boolean isMaster) {
         master = isMaster;
 
+    }
+
+    private void printHash() {
+        Enumeration e = this.keys();
+        while (e.hasMoreElements()) {
+
+            System.out.println(e.nextElement());
+
+        }
     }
 
 

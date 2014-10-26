@@ -102,6 +102,12 @@ public class Connection extends Thread {
                         this.username = mensagem.username;
                         break;
 
+                    case (Message.LOGOUT):
+                        mensagem = c.logout(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+
                     case (Message.POSTDISCUSSIONMESSAGE):
                         mensagem = c.postNewDiscussionMessage(mensagem);
                         sendOut(mensagem);
