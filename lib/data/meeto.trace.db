@@ -1,0 +1,662 @@
+10-21 18:42:17 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE SCHEMA IF NOT EXISTS ""MEETO"" DEFAULT[*] CHARACTER SET UTF8 "; SQL statement:
+CREATE SCHEMA IF NOT EXISTS `meeto` DEFAULT CHARACTER SET utf8 [42000-175]
+10-21 18:42:17 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "USE[*] ""MEETO"" "; expected "UPDATE, {"; SQL statement:
+USE `meeto` [42001-175]
+10-21 18:42:17 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Schema "MEETO" not found; SQL statement:
+DROP TABLE IF EXISTS `meeto`.`system_message` [90079-175]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:332)
+	at org.h2.message.DbException.get(DbException.java:172)
+	at org.h2.message.DbException.get(DbException.java:149)
+	at org.h2.command.Parser.getSchema(Parser.java:637)
+	at org.h2.command.Parser.getSchema(Parser.java:644)
+	at org.h2.command.Parser.parseDrop(Parser.java:1298)
+	at org.h2.command.Parser.parsePrepared(Parser.java:357)
+	at org.h2.command.Parser.parse(Parser.java:298)
+	at org.h2.command.Parser.parse(Parser.java:270)
+	at org.h2.command.Parser.prepareCommand(Parser.java:235)
+	at org.h2.engine.Session.prepareLocal(Session.java:436)
+	at org.h2.engine.Session.prepareCommand(Session.java:379)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1138)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:168)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:156)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1321)
+	at org.h2.server.web.WebApp.query(WebApp.java:1010)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:972)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:959)
+	at org.h2.server.web.WebThread.process(WebThread.java:167)
+	at org.h2.server.web.WebThread.run(WebThread.java:94)
+	at java.lang.Thread.run(Thread.java:745)
+10-21 18:42:17 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Schema "MEETO" not found; SQL statement:
+CREATE TABLE IF NOT EXISTS `meeto`.`system_message` (
+  `idsystem_message` DATETIME NOT NULL,
+  `idmember` INT NULL DEFAULT NULL,
+  `username` VARCHAR(45) NULL DEFAULT NULL,
+  `type` VARCHAR(45) NULL DEFAULT NULL,
+  `data` LONGTEXT NULL DEFAULT NULL,
+  `date` VARCHAR(45) NULL DEFAULT NULL,
+  `time` VARCHAR(45) NULL DEFAULT NULL,
+  `desiredoutcome` VARCHAR(45) NULL DEFAULT NULL,
+  `list` VARCHAR(45) NULL DEFAULT NULL,
+  `location` VARCHAR(45) NULL DEFAULT NULL,
+  `timestamp` VARCHAR(45) NULL DEFAULT NULL,
+  `delivered` INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`idsystem_message`))
+ENGINE = InnoDB [90079-175]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:332)
+	at org.h2.message.DbException.get(DbException.java:172)
+	at org.h2.message.DbException.get(DbException.java:149)
+	at org.h2.command.Parser.getSchema(Parser.java:637)
+	at org.h2.command.Parser.getSchema(Parser.java:644)
+	at org.h2.command.Parser.parseCreateTable(Parser.java:5509)
+	at org.h2.command.Parser.parseCreate(Parser.java:4003)
+	at org.h2.command.Parser.parsePrepared(Parser.java:343)
+	at org.h2.command.Parser.parse(Parser.java:298)
+	at org.h2.command.Parser.parse(Parser.java:270)
+	at org.h2.command.Parser.prepareCommand(Parser.java:235)
+	at org.h2.engine.Session.prepareLocal(Session.java:436)
+	at org.h2.engine.Session.prepareCommand(Session.java:379)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1138)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:168)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:156)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1321)
+	at org.h2.server.web.WebApp.query(WebApp.java:1010)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:972)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:959)
+	at org.h2.server.web.WebThread.process(WebThread.java:167)
+	at org.h2.server.web.WebThread.run(WebThread.java:94)
+	at java.lang.Thread.run(Thread.java:745)
+10-21 18:43:09 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE SCHEMA IF NOT EXISTS ""MEETO"" DEFAULT[*] CHARACTER SET UTF8 "; SQL statement:
+CREATE SCHEMA IF NOT EXISTS `meeto` DEFAULT CHARACTER SET utf8 [42000-175]
+10-21 18:43:09 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "USE[*] ""MEETO"" "; expected "UPDATE, {"; SQL statement:
+USE `meeto` [42001-175]
+10-21 18:43:09 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Schema "MEETO" not found; SQL statement:
+DROP TABLE IF EXISTS `meeto`.`system_message` [90079-175]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:332)
+	at org.h2.message.DbException.get(DbException.java:172)
+	at org.h2.message.DbException.get(DbException.java:149)
+	at org.h2.command.Parser.getSchema(Parser.java:637)
+	at org.h2.command.Parser.getSchema(Parser.java:644)
+	at org.h2.command.Parser.parseDrop(Parser.java:1298)
+	at org.h2.command.Parser.parsePrepared(Parser.java:357)
+	at org.h2.command.Parser.parse(Parser.java:298)
+	at org.h2.command.Parser.parse(Parser.java:270)
+	at org.h2.command.Parser.prepareCommand(Parser.java:235)
+	at org.h2.engine.Session.prepareLocal(Session.java:436)
+	at org.h2.engine.Session.prepareCommand(Session.java:379)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1138)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:168)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:156)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1321)
+	at org.h2.server.web.WebApp.query(WebApp.java:1010)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:972)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:959)
+	at org.h2.server.web.WebThread.process(WebThread.java:167)
+	at org.h2.server.web.WebThread.run(WebThread.java:94)
+	at java.lang.Thread.run(Thread.java:745)
+10-21 18:43:09 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Schema "MEETO" not found; SQL statement:
+CREATE TABLE IF NOT EXISTS `meeto`.`system_message` (
+  `idsystem_message` DATETIME NOT NULL,
+  `idmember` INT NULL DEFAULT NULL,
+  `username` VARCHAR(45) NULL DEFAULT NULL,
+  `type` VARCHAR(45) NULL DEFAULT NULL,
+  `data` LONGTEXT NULL DEFAULT NULL,
+  `date` VARCHAR(45) NULL DEFAULT NULL,
+  `time` VARCHAR(45) NULL DEFAULT NULL,
+  `desiredoutcome` VARCHAR(45) NULL DEFAULT NULL,
+  `list` VARCHAR(45) NULL DEFAULT NULL,
+  `location` VARCHAR(45) NULL DEFAULT NULL,
+  `timestamp` VARCHAR(45) NULL DEFAULT NULL,
+  `delivered` INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`idsystem_message`))
+ENGINE = InnoDB [90079-175]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:332)
+	at org.h2.message.DbException.get(DbException.java:172)
+	at org.h2.message.DbException.get(DbException.java:149)
+	at org.h2.command.Parser.getSchema(Parser.java:637)
+	at org.h2.command.Parser.getSchema(Parser.java:644)
+	at org.h2.command.Parser.parseCreateTable(Parser.java:5509)
+	at org.h2.command.Parser.parseCreate(Parser.java:4003)
+	at org.h2.command.Parser.parsePrepared(Parser.java:343)
+	at org.h2.command.Parser.parse(Parser.java:298)
+	at org.h2.command.Parser.parse(Parser.java:270)
+	at org.h2.command.Parser.prepareCommand(Parser.java:235)
+	at org.h2.engine.Session.prepareLocal(Session.java:436)
+	at org.h2.engine.Session.prepareCommand(Session.java:379)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1138)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:168)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:156)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1321)
+	at org.h2.server.web.WebApp.query(WebApp.java:1010)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:972)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:959)
+	at org.h2.server.web.WebThread.process(WebThread.java:167)
+	at org.h2.server.web.WebThread.run(WebThread.java:94)
+	at java.lang.Thread.run(Thread.java:745)
+10-21 19:04:52 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP SCHEMA IF EXISTS 'meeto'"; expected "identifier"; SQL statement:
+DROP SCHEMA IF EXISTS 'meeto' [42001-175]
+10-21 19:04:52 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE SCHEMA IF NOT EXISTS 'meeto'[*] DEFAULT CHARACTER SET UTF8 "; expected "identifier"; SQL statement:
+CREATE SCHEMA IF NOT EXISTS 'meeto' DEFAULT CHARACTER SET utf8 [42001-175]
+10-21 19:04:52 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'meeto'[*].'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'meeto'.'system_message' [42001-175]
+10-21 19:04:52 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'meeto'[*].'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))
+ENGINE = INNODB "; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'meeto'.'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))
+ENGINE = InnoDB [42001-175]
+10-21 19:06:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'system_message' [42001-175]
+10-21 19:06:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'system_message'[*] (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message')) [42001-175]
+10-21 19:06:43 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'system_message' [42001-175]
+10-21 19:06:43 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'system_message'[*] (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message')) [42001-175]
+10-21 19:06:43 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'system_message' [42001-175]
+10-21 19:06:43 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'system_message'[*] (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message')) [42001-175]
+10-21 19:07:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'system_message' [42001-175]
+10-21 19:07:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'system_message'[*] (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message')) [42001-175]
+10-21 19:07:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'system_message' [42001-175]
+10-21 19:07:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'system_message'[*] (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message')) [42001-175]
+10-21 19:07:43 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'system_message' [42001-175]
+10-21 19:07:43 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'system_message'[*] (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message')) [42001-175]
+10-21 19:07:43 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'system_message' [42001-175]
+10-21 19:07:43 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'system_message'[*] (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message')) [42001-175]
+10-21 19:07:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'system_message' [42001-175]
+10-21 19:07:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'system_message'[*] (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message')) [42001-175]
+10-21 19:07:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'system_message' [42001-175]
+10-21 19:07:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'system_message'[*] (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message')) [42001-175]
+10-21 19:07:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'system_message' [42001-175]
+10-21 19:07:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'system_message'[*] (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message')) [42001-175]
+10-21 19:07:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'system_message' [42001-175]
+10-21 19:07:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'system_message'[*] (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message')) [42001-175]
+10-21 19:07:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'system_message' [42001-175]
+10-21 19:07:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'system_message'[*] (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message')) [42001-175]
+10-21 19:07:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'system_message' [42001-175]
+10-21 19:07:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'system_message'[*] (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message')) [42001-175]
+10-21 19:07:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'system_message' [42001-175]
+10-21 19:07:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'system_message'[*] (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message')) [42001-175]
+10-21 19:07:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "DROP TABLE IF EXISTS 'system_message'"; expected "identifier"; SQL statement:
+DROP TABLE IF EXISTS 'system_message' [42001-175]
+10-21 19:07:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS 'system_message'[*] (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message'))"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS 'system_message' (
+  'idsystem_message' DATETIME NOT NULL,
+  'idmember' INT NULL DEFAULT NULL,
+  'username' VARCHAR(45) NULL DEFAULT NULL,
+  'type' VARCHAR(45) NULL DEFAULT NULL,
+  'data' LONGTEXT NULL DEFAULT NULL,
+  'date' VARCHAR(45) NULL DEFAULT NULL,
+  'time' VARCHAR(45) NULL DEFAULT NULL,
+  'desiredoutcome' VARCHAR(45) NULL DEFAULT NULL,
+  'list' VARCHAR(45) NULL DEFAULT NULL,
+  'location' VARCHAR(45) NULL DEFAULT NULL,
+  'timestamp' VARCHAR(45) NULL DEFAULT NULL,
+  'delivered' INT NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idsystem_message')) [42001-175]

@@ -98,7 +98,7 @@ public class Connection extends Thread {
                         break;
 
                     //tratamento de user que ja se logou mas foi abaixo
-                    case (Message.RECONNET):
+                    case (Message.RECONNECT):
                         this.username = mensagem.username;
                         break;
 
@@ -107,16 +107,6 @@ public class Connection extends Thread {
                         sendOut(mensagem);
                         break;
 
-
-                    case (Message.POSTDISCUSSIONMESSAGE):
-                        mensagem = c.postNewDiscussionMessage(mensagem);
-                        sendOut(mensagem);
-                        break;
-
-                    case (Message.JOINMEETING):
-                        mensagem = c.joinMeeting(mensagem);
-                        sendOut(mensagem);
-                        break;
 
                     case (Message.LISTALLMEMBERS):
                         mensagem = c.listAllMembers(mensagem);
@@ -128,10 +118,6 @@ public class Connection extends Thread {
                         sendOut(mensagem);
                         break;
 
-                    case (Message.INVITETOMEETING):
-                        mensagem = c.inviteToMeeting(mensagem);
-                        sendOut(mensagem);
-                        break;
 
                     case (Message.LISTUPCOMINGMEETINGS):
                         mensagem = c.listUpcomingMeetings(mensagem);

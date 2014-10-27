@@ -10,9 +10,6 @@ public interface RmiInterface extends Remote {
 
     public Message createMeeting(Message mensagem) throws RemoteException;
 
-    public Message postNewDiscussionMessage(Message mensagem) throws RemoteException;
-
-    public Message inviteToMeeting(Message mensagem) throws RemoteException;
 
     public Message listUpcomingMeetings(Message mensagem) throws RemoteException;
 
@@ -20,7 +17,6 @@ public interface RmiInterface extends Remote {
 
     public Message listMyMeetings(Message mensagem) throws RemoteException;
 
-    public Message joinMeeting(Message mensagem) throws RemoteException;
 
     public Message sendInvitations(Message mensagem) throws RemoteException;
 

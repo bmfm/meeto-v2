@@ -8,7 +8,7 @@ public class Message implements Serializable {
     public static final String LOG = "log";
     public static final String REG = "reg";
     public static final String CREATEMEETING = "createmeeting";
-    public static final String RECONNET = "reconnect";
+    public static final String RECONNECT = "reconnect";
     public static final String POSTDISCUSSIONMESSAGE = "postdiscussionmessage";
     public static final String INVITETOMEETING = "invitetomeeting";
     public static final String LISTUPCOMINGMEETINGS = "listupcomingmeetings";
@@ -52,6 +52,7 @@ public class Message implements Serializable {
     public String list;
     public String location = "";
     public int dataint = 0;
+    public int dataint2 = 0;
     public String timestamp;
     public int delivered;
     public Socket socket;

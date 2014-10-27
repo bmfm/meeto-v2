@@ -104,6 +104,10 @@ public class Events extends Thread {
 
                     case (Message.ADDCHATMESSAGE):
 
+                        String aux = mensagemAux.data;
+                        mensagemAux.data = "[" + mensagemAux.getUsername() + "]:" + aux + "";
+                        sendOut(mensagemAux);
+
                         break;
 
                 }

@@ -114,16 +114,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         return mensagem;
     }
 
-    @Override
-    public synchronized Message postNewDiscussionMessage(Message mensagem) throws RemoteException {
-        return null;
-    }
-
-
-    @Override
-    public synchronized Message inviteToMeeting(Message mensagem) throws RemoteException {
-        return null;
-    }
 
     @Override
     public synchronized Message sendInvitations(Message mensagem) throws RemoteException {
@@ -265,10 +255,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         return mensagem;
     }
 
-    @Override
-    public Message joinMeeting(Message mensagem) throws RemoteException {
-        return null;
-    }
 
     @Override
     public Message listAgendaItems(Message mensagem) throws RemoteException {
@@ -296,7 +282,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     public synchronized Message addAgendaItem(Message mensagem) throws RemoteException {
         int idagenda = getAgendaId(mensagem.dataint);
         mensagem.result = false;
-        if ((sql.doUpdate("INSERT INTO item (idagenda,name,description) VALUES ('" + idagenda + "','" + mensagem.name + "','" + mensagem.description + "')")) == 1) {
+        if ((sql.doUpdate("INSERT INTO item (idagenda,name,description) VALUES ('" + idagenda + "','" + mensagem.name + "','" + mensagem.data + "')")) == 1) {
             mensagem.result = true;
         }
 
@@ -305,22 +291,62 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     @Override
     public synchronized Message modifyAgendaItem(Message mensagem) throws RemoteException {
-        return null;
+
+        mensagem.result = false;
+        //modificar o name do item
+        if (mensagem.dataint2 == 1) {
+
+            if ((sql.doUpdate("UPDATE item SET name='" + mensagem.data + "' where iditem='" + mensagem.dataint + "")) == 1) {
+                mensagem.result = true;
+
+            }
+            //modificar a descriçao
+        } else if ((sql.doUpdate("UPDATE item SET description='" + mensagem.data + "' where iditem='" + mensagem.dataint + "")) == 1) {
+            mensagem.result = true;
+
+
+        }
+
+        return mensagem;
     }
 
     @Override
     public synchronized Message deleteAgendaItem(Message mensagem) throws RemoteException {
-        return null;
+        mensagem.result = false;
+        if ((sql.doUpdate("DELETE FROM item where iditem='" + mensagem.dataint + "';")) == 1) {
+            mensagem.result = true;
+        }
+        return mensagem;
     }
 
     @Override
     public synchronized Message addChatMessage(Message mensagem) throws RemoteException {
-        return null;
+        Message msgid = getUsernameId(mensagem);
+
+        mensagem.result = false;
+        int iduser = msgid.iduser;
+
+        if ((sql.doUpdate("INSERT INTO log (iditem,idmember,line) VALUES ('" + mensagem.dataint + "','" + iduser + "','" + mensagem.date + "');")) == 1) {
+
+            mensagem.result = true;
+
+
+        }
+
+        return mensagem;
+
     }
 
     @Override
     public synchronized Message addKeyDecision(Message mensagem) throws RemoteException {
-        return null;
+
+        if ((sql.doUpdate("INSERT INTO item (keydecision) VALUES ('" + mensagem.data + "') where iditem = '" + mensagem.dataint + "'")) == 1) {
+
+
+        }
+
+
+        return mensagem;
     }
 
     @Override
@@ -358,7 +384,25 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     @Override
     public synchronized Message completeAction(Message mensagem) throws RemoteException {
-        return null;
+        Message msgid = getUsernameId(mensagem);
+        mensagem.dataint = msgid.iduser;
+
+        List<String> completelist = Arrays.asList(mensagem.list.split(","));
+
+        mensagem.result = false;
+        //aceitar as meetings escolhidas
+        for (int i = 0; i < completelist.size(); i++) {
+            if ((sql.doUpdate("UPDATE action SET completed='1' where idmember='" + mensagem.dataint + "'and idmeeting='" + completelist.get(i) + "'")) == 1)
+
+            {
+
+                mensagem.result = true;
+            }
+
+        }
+
+
+        return mensagem;
     }
 
     @Override
@@ -389,7 +433,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
                     }
 
                 } else {
-                    mensagem.data = "No pending invitations!";
+                    mensagem.data = "0";
 
                 }
             }

@@ -27,7 +27,7 @@ public class TCPClient {
     Scanner sci = new Scanner(System.in);
     Scanner scs = new Scanner(System.in);
     ReadData read = null;
-    int itemJoined;
+    static int itemJoined;
 
 
     public static void main(String[] args) throws InterruptedException, SQLException, ClassNotFoundException {
@@ -451,9 +451,9 @@ public class TCPClient {
                         System.out.println("Do you wish to complete any task? (1) Yes (2) No\n");
                         optask = sci.nextInt();
                         if (optask == 1) {
-                            System.out.println("Which one:?\n");
+                            System.out.println("Which ones (separate values with a comma):?\n");
                             Message completeaction = new Message(username_logged, null, null, "completeaction");
-                            completeaction.dataint = sci.nextInt();
+                            completeaction.list = scs.nextLine();
                             sendOut(completeaction);
                             completeaction = (Message) in.readObject();
                             if (completeaction.result) {
@@ -545,7 +545,7 @@ public class TCPClient {
                     listop = sci.nextInt();
                     if (listop != 0) {
                         itemJoined = listop;
-                        agendaItemMenu(listop);
+                        agendaItemMenu(listop, meetingJoined);
                         //voltar a colocar o itemJoined a 0 para quando sair
                         itemJoined = 0;
                     }
@@ -615,15 +615,17 @@ public class TCPClient {
 
     }
 
-    private void agendaItemMenu(int itemid) throws IOException, ClassNotFoundException {
+    private void agendaItemMenu(int itemid, int meetingId) throws IOException, ClassNotFoundException {
         String opt = "";
         while (!("0".equals(opt))) {
 
             System.out.println("You are now in the item " + itemid + " room\n");
+            System.out.println("You may now receive messages from other members of the item at anytime " + itemid + " room\n");
             System.out.println("Please select one of the following options (0 to quit):\n");
             System.out.println("1-Add Message\n" +
                     "2-Add key decision\n" +
                     "3-Assign task to user\n");
+            //TODO colocar um metodo para conseguir ver o chat log todo
 
             opt = scs.nextLine();
             switch (opt) {
@@ -634,7 +636,15 @@ public class TCPClient {
                     Message chatMsg = new Message(username_logged, null, null, "addchatmessage");
                     chatMsg.data = scs.nextLine();
                     chatMsg.dataint = itemJoined;
+                    chatMsg.dataint2 = meetingId;
                     sendOut(chatMsg);
+                    chatMsg = (Message) in.readObject();
+                    if (chatMsg.result) {
+                        System.out.println("::posted::");
+
+                    } else {
+                        System.out.println("An error occured. Please try again");
+                    }
                     break;
 
                 case "2":
@@ -643,6 +653,12 @@ public class TCPClient {
                     keyMsg.keydecision = scs.nextLine();
                     keyMsg.dataint = itemJoined;
                     sendOut(keyMsg);
+                    keyMsg = (Message) in.readObject();
+                    if (keyMsg.result) {
+                        System.out.println("::Added::");
+                    } else {
+                        System.out.println("An error occured. Please try again");
+                    }
                     break;
 
 
@@ -660,9 +676,7 @@ public class TCPClient {
                     sendOut(assignAction);
                     break;
 
-
             }
-
 
         }
 
@@ -699,6 +713,14 @@ class ReadData extends Thread {
                     if (mensagemAux.getTipo().equalsIgnoreCase("print")) {
 
                         System.out.println(mensagemAux.data);
+
+                    }
+
+                    if (mensagemAux.getTipo().equalsIgnoreCase("addchatmessage")) {
+                        if (TCPClient.itemJoined != 0) {
+                            System.out.println(mensagemAux.data);
+
+                        }
 
                     }
 
