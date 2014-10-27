@@ -16,7 +16,11 @@ public interface RmiInterface extends Remote {
 
     public Message listUpcomingMeetings(Message mensagem) throws RemoteException;
 
-    public Message listAllMeetings(Message mensagem) throws RemoteException;
+    public Message listPastMeetings(Message mensagem) throws RemoteException;
+
+    public Message listMyMeetings(Message mensagem) throws RemoteException;
+
+    public Message joinMeeting(Message mensagem) throws RemoteException;
 
     public Message sendInvitations(Message mensagem) throws RemoteException;
 
@@ -25,6 +29,8 @@ public interface RmiInterface extends Remote {
     public Message acceptMeeting(Message mensagem) throws RemoteException;
 
     public Message declineMeeting(Message mensagem) throws RemoteException;
+
+    public Message listAgendaItems(Message mensagem) throws RemoteException;
 
     public Message addAgendaItem(Message mensagem) throws RemoteException;
 
@@ -46,6 +52,8 @@ public interface RmiInterface extends Remote {
 
     public Message listMembers(Message mensagem) throws RemoteException;
 
+    public Message listAllMembers(Message mensagem) throws RemoteException;
+
     public Message register(Message mensagem) throws RemoteException;
 
     public Message login(Message mensagem) throws RemoteException;
@@ -53,6 +61,10 @@ public interface RmiInterface extends Remote {
     public void ping() throws RemoteException;
 
     public void subscribe(TCPServer client) throws RemoteException;
+
+    public Message logout(Message mensagem) throws RemoteException;
+
+    public Message onlineUsers(Message mensagem) throws RemoteException;
 
 
 }

@@ -102,8 +102,29 @@ public class Connection extends Thread {
                         this.username = mensagem.username;
                         break;
 
+                    case (Message.LOGOUT):
+                        mensagem = c.logout(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+
                     case (Message.POSTDISCUSSIONMESSAGE):
                         mensagem = c.postNewDiscussionMessage(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.JOINMEETING):
+                        mensagem = c.joinMeeting(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.LISTALLMEMBERS):
+                        mensagem = c.listAllMembers(mensagem);
+                        sendOut(mensagem);
+                        break;
+
+                    case (Message.LISTAGENDAITEMS):
+                        mensagem = c.listAgendaItems(mensagem);
                         sendOut(mensagem);
                         break;
 
@@ -117,8 +138,8 @@ public class Connection extends Thread {
                         sendOut(mensagem);
                         break;
 
-                    case (Message.LISTALLMEETINGS):
-                        mensagem = c.listAllMeetings(mensagem);
+                    case (Message.LISTPASTMEETINGS):
+                        mensagem = c.listPastMeetings(mensagem);
                         sendOut(mensagem);
                         break;
 
@@ -126,6 +147,12 @@ public class Connection extends Thread {
                         mensagem = c.meetingOverview(mensagem);
                         sendOut(mensagem);
                         break;
+
+                    case (Message.LISTMYMEETINGS):
+                        mensagem = c.listMyMeetings(mensagem);
+                        sendOut(mensagem);
+                        break;
+
 
                     case (Message.ACCEPTMEETING):
                         mensagem = c.acceptMeeting(mensagem);
@@ -162,6 +189,7 @@ public class Connection extends Thread {
                         sendOut(mensagem);
                         break;
 
+
                     case (Message.ASSIGNACTION):
                         mensagem = c.assignAction(mensagem);
                         sendOut(mensagem);
@@ -185,7 +213,12 @@ public class Connection extends Thread {
                     case (Message.VIEWPENDINGINVITATIONS):
                         mensagem = c.viewPendingInvitations(mensagem);
                         sendOut(mensagem);
+                        break;
 
+                    case (Message.CHECKONLINE):
+                        mensagem = c.onlineUsers(mensagem);
+                        sendOut(mensagem);
+                        break;
 
                 }
 

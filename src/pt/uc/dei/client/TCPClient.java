@@ -23,11 +23,12 @@ public class TCPClient {
     static ObjectOutputStream out = null;
     static ObjectInputStream inAux = null;
     static ObjectOutputStream outAux = null;
-
-
-    ReadData read = null;
-
     static EmbeddedHelper embDB = new EmbeddedHelper();
+    Scanner sci = new Scanner(System.in);
+    Scanner scs = new Scanner(System.in);
+    ReadData read = null;
+    int itemJoined;
+
 
     public static void main(String[] args) throws InterruptedException, SQLException, ClassNotFoundException {
         TCPClient client = new TCPClient();
@@ -41,11 +42,121 @@ public class TCPClient {
         }
     }
 
+    public static Socket connect(Properties props, int port) throws InterruptedException {
+        //tentativa de se ligar a qualquer um dos servers tcp disponiveis
+
+        Socket socket = null;
+        List<String> lstIp = new ArrayList<String>(2);
+        lstIp.add(props.getProperty("tcpip1"));
+        lstIp.add(props.getProperty("tcpip2"));
+
+        //TODO percorrer porta?
+
+
+        while (socket == null) {
+
+            for (String ip : lstIp) {
+                try {
+                    socket = (new Socket(ip, port));
+                } catch (Exception ex) {
+
+                }
+                if (socket != null)
+                    break;
+
+                Thread.sleep(2000);
+            }
+        }
+
+        return socket;
+    }
+
+    public static void setS(Socket aS) {
+        s = aS;
+    }
+
+    public static void setSaux(Socket aS) {
+        saux = aS;
+    }
+
+    public static void setIn(ObjectInputStream aIn) {
+        in = aIn;
+    }
+
+    public static void setOut(ObjectOutputStream aOut) {
+        out = aOut;
+    }
+
+    public static void setInAux(ObjectInputStream aIn) {
+        inAux = aIn;
+    }
+
+    public static void setOutAux(ObjectOutputStream aOut) {
+        outAux = aOut;
+    }
+
+    public static void startUpOperations() throws IOException, ClassNotFoundException {
+
+        //assim que o user faz login com sucesso, envia logo uma mensagem para a thread de events para esta guardar o username do member na Hashtable de users online (juntamente com a própria thread)
+        Message msgtohash = new Message(username_logged, null, null, "sendtohash");
+        sendOutAux(msgtohash);
+
+        //verificar as invitations que possui
+        Message checkmyinvitations = new Message(username_logged, null, null, "viewpendinginvitations");
+        sendOut(checkmyinvitations);
+        checkmyinvitations = (Message) in.readObject();
+        System.out.println(checkmyinvitations.data);
+
+
+        //TODO verificar se perdeu alguma CHAT msg enquanto estava offline
+
+    }
+
+    public static void sendOut(Message mensagem) {
+        try {
+            synchronized (out) {
+
+                java.util.Date date = new java.util.Date();
+                mensagem.setTimestamp(String.valueOf(date.getTime()));
+                out.writeObject(mensagem);
+                out.flush();
+                out.reset();
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void sendOutAux(Message mensagem) {
+
+        try {
+            synchronized (outAux) {
+
+                outAux.writeObject(mensagem);
+                outAux.flush();
+                outAux.reset();
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public static void saveToEmbeddedDB(Message mensagem) {
+
+        //TODO tratar do delivery dos dados -> embedded e system_msg do lado do rmi
+
+        embDB.doUpdate("INSERT INTO system_message (username,type,data,date,time,desiredoutcome,list,location,timestamp,delivered) VALUES ()");
+
+
+    }
 
     private void startupClient() throws IOException, InterruptedException {
         System.out.println("TCP Client");
-        Scanner sci = new Scanner(System.in);
-        Scanner scs = new Scanner(System.in);
+
 
         int op;
 
@@ -139,7 +250,7 @@ public class TCPClient {
             while (true) {
 
 
-                System.out.print("1-Create meeting\n2-List upcoming meetings\n3-View pending invitations\n4-View pending tasks\n5-Join Meetings\n6-List online users\n");
+                System.out.print("1-Create meeting\n2-List upcoming meetings\n3-List past meetings\n4-View pending invitations\n5-Join Meeting\n6-Show my TODO-list\n7-List online users\n8-Exit\n");
                 op = sci.nextInt();
 
                 //Create meeting
@@ -188,7 +299,7 @@ public class TCPClient {
                 }
 
 
-                //List upcoming meetings
+                //List upcoming meetings and see their overview
                 if (op == 2) {
                     if (out != null && outAux != null) {
 
@@ -197,7 +308,48 @@ public class TCPClient {
                         sendOut(mensagem);
                         mensagem = (Message) in.readObject();
                         System.out.println(mensagem.data);
-                        System.out.println("Do you wish to ");
+                        System.out.println("Do you wish to see the overview of any? (1)Yes (2)No");
+                        int meetingop = sci.nextInt();
+                        if (meetingop == 1) {
+                            int overview;
+                            Message meetingtocheck = new Message(username_logged, null, null, "meetingoverview");
+                            System.out.println("Which one?:\n");
+                            overview = scs.nextInt();
+                            meetingtocheck.dataint = overview;
+                            sendOut(meetingtocheck);
+                            meetingtocheck = (Message) in.readObject();
+                            System.out.println(meetingtocheck.data);
+
+                        }
+
+
+                    } else {
+                        System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
+
+                    }
+                }
+
+                // View past meetings
+                if (op == 3) {
+                    if (out != null && outAux != null) {
+
+                        Message mensagem = new Message(username_logged, null, null, "listpastmeetings");
+                        sendOut(mensagem);
+                        mensagem = (Message) in.readObject();
+                        System.out.println(mensagem.data);
+                        System.out.println("Do you wish to see the overview of any? (1)Yes (2)No");
+                        int meetingop = sci.nextInt();
+                        if (meetingop == 1) {
+                            int overview;
+                            Message meetingtocheck = new Message(username_logged, null, null, "meetingoverview");
+                            System.out.println("Which one?:\n");
+                            overview = scs.nextInt();
+                            meetingtocheck.dataint = overview;
+                            sendOut(meetingtocheck);
+                            meetingtocheck = (Message) in.readObject();
+                            System.out.println(meetingtocheck.data);
+
+                        }
 
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
@@ -206,9 +358,10 @@ public class TCPClient {
 
                 }
 
+
                 //View pending invitations
 
-                if (op == 3) {
+                if (op == 4) {
                     if (out != null && outAux != null) {
 
                         int opnotifications;
@@ -218,8 +371,9 @@ public class TCPClient {
                         Message mensagem = new Message(username_logged, null, null, "viewpendinginvitations");
                         sendOut(mensagem);
                         mensagem = (Message) in.readObject();
-                        System.out.println(mensagem.data);
-                        if (!mensagem.data.equalsIgnoreCase("No pending notifications!\n")) {
+
+                        if (!mensagem.data.equalsIgnoreCase("No pending notifications!")) {
+                            System.out.println(mensagem.data);
                             System.out.println("Do you wish to (1)Accept, (2)Decline or (3)Exit?\n");
                             opnotifications = sci.nextInt();
                             if (opnotifications == 1) {
@@ -255,13 +409,29 @@ public class TCPClient {
 
                 }
 
-                if (op == 4) {
-                    if (out != null && outAux != null) {
 
-                        Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
+                // join meeting
+                if (op == 5) {
+                    if (out != null && outAux != null) {
+                        int meetingtojoin;
+                        System.out.println("This is a list of your accepted meetings:\n");
+
+                        Message mensagem = new Message(username_logged, null, null, "listMyMeetings");
                         sendOut(mensagem);
                         mensagem = (Message) in.readObject();
                         System.out.println(mensagem.data);
+                        System.out.println("Which meeting do you wish to join? (0 to exit)");
+                        meetingtojoin = sci.nextInt();
+                        if (meetingtojoin != 0) {
+
+                            //Message msgjoin = new Message(username_logged,null,null,"joinmeeting");
+                            //msgjoin.dataint = meetingtojoin;
+                            //sendOut(msgjoin);
+                            //msgjoin = (Message) in.readObject();
+                            meetingMenu(meetingtojoin);
+                            //voltar a 0 quando sai da meeting para nao receber msgs da conversação
+                            itemJoined = 0;
+                        }
 
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
@@ -270,13 +440,28 @@ public class TCPClient {
 
                 }
 
-                if (op == 5) {
+                // show to do list
+                if (op == 6) {
                     if (out != null && outAux != null) {
-
-                        Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
+                        int optask;
+                        Message mensagem = new Message(username_logged, null, null, "showtodolist");
                         sendOut(mensagem);
                         mensagem = (Message) in.readObject();
                         System.out.println(mensagem.data);
+                        System.out.println("Do you wish to complete any task? (1) Yes (2) No\n");
+                        optask = sci.nextInt();
+                        if (optask == 1) {
+                            System.out.println("Which one:?\n");
+                            Message completeaction = new Message(username_logged, null, null, "completeaction");
+                            completeaction.dataint = sci.nextInt();
+                            sendOut(completeaction);
+                            completeaction = (Message) in.readObject();
+                            if (completeaction.result) {
+                                System.out.println("Good job! Task completed.");
+                            } else {
+                                System.out.println("Sorry, an error occured");
+                            }
+                        }
 
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
@@ -286,11 +471,13 @@ public class TCPClient {
                 }
 
                 //List online users
-                if (op == 6) {
+                if (op == 7) {
                     if (out != null && outAux != null) {
 
                         Message mensagem = new Message(username_logged, null, null, "checkonline");
-                        sendOutAux(mensagem);
+                        sendOut(mensagem);
+                        mensagem = (Message) in.readObject();
+                        System.out.println(mensagem.data);
 
 
                     } else {
@@ -299,14 +486,15 @@ public class TCPClient {
                     }
 
                 }
-
-                if (op == 7) {
+                //exit and logout
+                if (op == 8) {
                     if (out != null && outAux != null) {
 
-                        Message mensagem = new Message(username_logged, null, null, "listupcomingmeetings");
+                        System.out.println("See you soon!");
+                        Message mensagem = new Message(username_logged, null, null, "logout");
                         sendOut(mensagem);
-                        mensagem = (Message) in.readObject();
-                        System.out.println(mensagem.data);
+
+                        System.exit(0);
 
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
@@ -336,114 +524,147 @@ public class TCPClient {
         }
     }
 
-    public static Socket connect(Properties props, int port) throws InterruptedException {
-        //tentativa de se ligar a qualquer um dos servers tcp disponiveis
+    private void meetingMenu(int meetingJoined) throws IOException, ClassNotFoundException {
+        String opt = "";
+        while (!("0".equals(opt))) {
+            System.out.println("Welcome to the meeting, " + username_logged + "!\n");
+            System.out.println("Please select one of the following options (0 to quit):\n");
+            System.out.println("1-List Agenda Items\n2-Add Agenda Items\n3-Modify Agenda Items\n4-Delete Agenda Items\n");
+            opt = scs.nextLine();
+            switch (opt) {
 
-        Socket socket = null;
-        List<String> lstIp = new ArrayList<String>(2);
-        lstIp.add(props.getProperty("tcpip1"));
-        lstIp.add(props.getProperty("tcpip2"));
-
-        //TODO não tenho de percorrer a porta também?.
-        // Creio que percebi. Parte-se do principio que independentemente do IP, a porta onde eles se ligam é a mesma. Certo?
-
-
-        while (socket == null) {
-
-            for (String ip : lstIp) {
-                try {
-                    socket = (new Socket(ip, port));
-                } catch (Exception ex) {
-
-                }
-                if (socket != null)
+                //list
+                case "1":
+                    Message listitems = new Message(username_logged, null, null, "listAgendaItems");
+                    listitems.dataint = meetingJoined;
+                    sendOut(listitems);
+                    listitems = (Message) in.readObject();
+                    System.out.println(listitems.data);
+                    System.out.println("Do you wish to enter any agenda item? Enter its ID. (or 0 to exit)\n");
+                    int listop;
+                    listop = sci.nextInt();
+                    if (listop != 0) {
+                        itemJoined = listop;
+                        agendaItemMenu(listop);
+                        //voltar a colocar o itemJoined a 0 para quando sair
+                        itemJoined = 0;
+                    }
                     break;
 
-                Thread.sleep(2000);
+                //add
+                case "2":
+
+                    Message additems = new Message(username_logged, null, null, "addAgendaItem");
+                    additems.dataint = meetingJoined;
+                    System.out.println("Nome:");
+                    additems.name = scs.nextLine();
+                    System.out.println("Description:");
+                    additems.description = scs.nextLine();
+                    sendOut(additems);
+                    additems = (Message) in.readObject();
+                    if (additems.result) {
+                        System.out.println("Item added to the agenda!");
+                    } else {
+                        System.out.println("An error occured. Please try again.");
+                    }
+
+                    break;
+
+                //modify
+                case "3":
+                    Message listi = new Message(username_logged, null, null, "listAgendaItems");
+                    listi.dataint = meetingJoined;
+                    sendOut(listi);
+                    listi = (Message) in.readObject();
+                    System.out.println(listi.data);
+                    Message modifyitems = new Message(username_logged, null, null, "modifyagendaitem");
+                    System.out.println("Which one do tou wish to modify?\n");
+                    modifyitems.dataint = sci.nextInt();
+                    sendOut(modifyitems);
+                    modifyitems = (Message) in.readObject();
+                    if (modifyitems.result) {
+                        System.out.println("Modified.");
+                    } else {
+                        System.out.println("An error occured. Please try again");
+                    }
+
+                    break;
+
+                //delete
+                case "4":
+
+                    Message listToDelete = new Message(username_logged, null, null, "listAgendaItems");
+                    listToDelete.dataint = meetingJoined;
+                    sendOut(listToDelete);
+                    listToDelete = (Message) in.readObject();
+                    System.out.println(listToDelete.data);
+                    Message deleteItem = new Message(username_logged, null, null, "deleteagendaitem");
+                    System.out.println("Which one do tou wish to delete?\n");
+                    deleteItem.dataint = sci.nextInt();
+                    sendOut(deleteItem);
+                    deleteItem = (Message) in.readObject();
+                    if (deleteItem.result) {
+                        System.out.println("Deleted!\n");
+                    } else {
+                        System.out.println("A problem occured. Someone else probably deleted it already. Please refresh\n");
+                    }
+                    break;
+
             }
         }
 
-        return socket;
     }
 
-    public static void setS(Socket aS) {
-        s = aS;
-    }
+    private void agendaItemMenu(int itemid) throws IOException, ClassNotFoundException {
+        String opt = "";
+        while (!("0".equals(opt))) {
 
-    public static void setSaux(Socket aS) {
-        saux = aS;
-    }
+            System.out.println("You are now in the item " + itemid + " room\n");
+            System.out.println("Please select one of the following options (0 to quit):\n");
+            System.out.println("1-Add Message\n" +
+                    "2-Add key decision\n" +
+                    "3-Assign task to user\n");
 
-    public static void setIn(ObjectInputStream aIn) {
-        in = aIn;
-    }
+            opt = scs.nextLine();
+            switch (opt) {
 
-    public static void setOut(ObjectOutputStream aOut) {
-        out = aOut;
-    }
+                case "1":
 
-    public static void setInAux(ObjectInputStream aIn) {
-        inAux = aIn;
-    }
+                    System.out.println("Insert your message to add to the discussion:\n");
+                    Message chatMsg = new Message(username_logged, null, null, "addchatmessage");
+                    chatMsg.data = scs.nextLine();
+                    chatMsg.dataint = itemJoined;
+                    sendOut(chatMsg);
+                    break;
 
-    public static void setOutAux(ObjectOutputStream aOut) {
-        outAux = aOut;
-    }
-
-    public static void startUpOperations() throws IOException, ClassNotFoundException {
-
-        //assim que o user faz login com sucesso, envia logo uma mensagem para a thread de events para esta guardar o username do member na Hashtable de users online (juntamente com a própria thread)
-        Message msgtohash = new Message(username_logged, null, null, "sendtohash");
-        sendOutAux(msgtohash);
-
-        //verificar as invitations que possui
-        Message checkmyinvitations = new Message(username_logged, null, null, "viewpendingnotifications");
-        sendOutAux(checkmyinvitations);
-
-        //TODO verificar se perdeu alguma chat msg enquanto estava offline
-
-    }
+                case "2":
+                    System.out.println("Add a key decision to this item:\n");
+                    Message keyMsg = new Message(username_logged, null, null, "addkeydecision");
+                    keyMsg.keydecision = scs.nextLine();
+                    keyMsg.dataint = itemJoined;
+                    sendOut(keyMsg);
+                    break;
 
 
+                case "3":
+                    Message members = new Message(username_logged, null, null, "listallmembers");
+                    sendOut(members);
+                    members = (Message) in.readObject();
+                    System.out.println(members.data);
+                    Message assignAction = new Message(username_logged, null, null, "assignaction");
+                    System.out.println("User:");
+                    assignAction.dataint = sci.nextInt();
 
-    public static void sendOut(Message mensagem) {
-        try {
-            synchronized (out) {
+                    System.out.println("Task:");
+                    assignAction.data = scs.nextLine();
+                    sendOut(assignAction);
+                    break;
 
-                java.util.Date date = new java.util.Date();
-                mensagem.setTimestamp(String.valueOf(date.getTime()));
-                out.writeObject(mensagem);
-                out.flush();
-                out.reset();
 
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+
         }
-    }
-
-    public static void sendOutAux(Message mensagem) {
-
-        try {
-            synchronized (outAux) {
-
-                outAux.writeObject(mensagem);
-                outAux.flush();
-                outAux.reset();
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    public static void saveToEmbeddedDB(Message mensagem) {
-
-        //TODO tratar do delivery dos dados -> embedded e system_msg do lado do rmi
-
-        embDB.doUpdate("INSERT INTO system_message (username,type,data,date,time,desiredoutcome,list,location,timestamp,delivered) VALUES ()");
 
 
     }
@@ -481,13 +702,13 @@ class ReadData extends Thread {
 
                     }
 
-                    if (mensagemAux.getTipo().equalsIgnoreCase("checkonline")) {
+                    //if (mensagemAux.getTipo().equalsIgnoreCase("viewpendinginvitations")) {
 
 
-                        System.out.println(mensagemAux.data);
-                    }
+                    //  System.out.println(mensagemAux.data);
+                    //}
 
-                    if (mensagemAux.getTipo().equalsIgnoreCase("viewpendingnotifications")) {
+                    /*if (mensagemAux.getTipo().equalsIgnoreCase("viewpendingnotifications")) {
                         if (!mensagemAux.data.equalsIgnoreCase("No pending invitations!")) {
                             System.out.println("While you were away, you were invited to the following meetings:\n");
                             System.out.println(mensagemAux.data);
@@ -495,7 +716,7 @@ class ReadData extends Thread {
 
                         }
 
-                    }
+                    }*/
 
                 }
             } catch (ClassNotFoundException ex) {

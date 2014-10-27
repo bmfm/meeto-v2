@@ -12,6 +12,7 @@ public class Message implements Serializable {
     public static final String POSTDISCUSSIONMESSAGE = "postdiscussionmessage";
     public static final String INVITETOMEETING = "invitetomeeting";
     public static final String LISTUPCOMINGMEETINGS = "listupcomingmeetings";
+    public static final String LISTPASTMEETINGS = "listpastmeetings";
     public static final String MEETINGOVERVIEW = "meetingoverview";
     public static final String ACCEPTMEETING = "acceptmeeting";
     public static final String DECLINEMEETING = "declinemeeting";
@@ -24,14 +25,18 @@ public class Message implements Serializable {
     public static final String SHOWTODOLIST = "showtodolist";
     public static final String COMPLETEACTION = "completeaction";
     public static final String LISTMEMBERS = "listmembers";
-    public static final String LISTALLMEETINGS = "listallmeetings";
+    public static final String LISTALLMEMBERS = "listallmembers";
     public static final String SENDTOHASH = "sendtohash";
     public static final String CHECKONLINE = "checkonline";
     public static final String SENDINVITATIONS = "sendinvitations";
     public static final String CHECKINVITATIONS = "checkinvitations";
     public static final String CHECKCHATMESSAGES = "checkchatmessages";
-    public static final String VIEWPENDINGINVITATIONS = "viewpendingninvitations";
+    public static final String VIEWPENDINGINVITATIONS = "viewpendinginvitations";
     public static final String VERIFYMASTER = "verifymaster";
+    public static final String LISTMYMEETINGS = "listmymeetings";
+    public static final String JOINMEETING = "joinmeeting";
+    public static final String LOGOUT = "logout";
+    public static final String LISTAGENDAITEMS = "listagendaitems";
 
 
     private String tipo = "";
@@ -50,6 +55,9 @@ public class Message implements Serializable {
     public String timestamp;
     public int delivered;
     public Socket socket;
+    public String name;
+    public String description;
+    public String keydecision;
 
     //mensagem para o user ser colocado na Hashtable (juntamente com o seu socket)
     public Message(String username, Socket socket, String tipo) {
