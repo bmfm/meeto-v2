@@ -30,6 +30,9 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
     public static void main(String args[]) throws RemoteException {
         TCPServerImpl tcpimp = new TCPServerImpl();
         tcpimp.init(args);
+        UDPSender udps = new UDPSender(tcpimp);
+        udps.start();
+
 
     }
 

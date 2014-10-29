@@ -580,6 +580,8 @@ public class TCPClient {
                     Message modifyitems = new Message(username_logged, null, null, "modifyagendaitem");
                     System.out.println("Which one do tou wish to modify?\n");
                     modifyitems.dataint = sci.nextInt();
+                    System.out.println("(1)Name (2)Description");
+                    modifyitems.dataint2 = sci.nextInt();
                     sendOut(modifyitems);
                     modifyitems = (Message) in.readObject();
                     if (modifyitems.result) {
@@ -630,6 +632,8 @@ public class TCPClient {
             opt = scs.nextLine();
             switch (opt) {
 
+
+                //add message
                 case "1":
 
                     System.out.println("Insert your message to add to the discussion:\n");
@@ -647,6 +651,8 @@ public class TCPClient {
                     }
                     break;
 
+                //add key decision
+
                 case "2":
                     System.out.println("Add a key decision to this item:\n");
                     Message keyMsg = new Message(username_logged, null, null, "addkeydecision");
@@ -662,18 +668,30 @@ public class TCPClient {
                     break;
 
 
+                //assign action
+
                 case "3":
-                    Message members = new Message(username_logged, null, null, "listallmembers");
+                    Message members = new Message(username_logged, null, null, "listmembers");
                     sendOut(members);
                     members = (Message) in.readObject();
                     System.out.println(members.data);
                     Message assignAction = new Message(username_logged, null, null, "assignaction");
-                    System.out.println("User:");
-                    assignAction.dataint = sci.nextInt();
+                    assignAction.dataint = meetingId;
+                    System.out.println("User (ID):");
+                    assignAction.dataint2 = sci.nextInt();
 
                     System.out.println("Task:");
                     assignAction.data = scs.nextLine();
                     sendOut(assignAction);
+                    assignAction = (Message) in.readObject();
+                    if (assignAction.result) {
+                        System.out.println("\nTask assigned to the selected user!\n");
+
+
+                    } else {
+                        System.out.println("An error occured. Please try again");
+                    }
+
                     break;
 
             }

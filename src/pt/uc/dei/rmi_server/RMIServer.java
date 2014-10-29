@@ -282,7 +282,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     public synchronized Message addAgendaItem(Message mensagem) throws RemoteException {
         int idagenda = getAgendaId(mensagem.dataint);
         mensagem.result = false;
-        if ((sql.doUpdate("INSERT INTO item (idagenda,name,description) VALUES ('" + idagenda + "','" + mensagem.name + "','" + mensagem.data + "')")) == 1) {
+        if ((sql.doUpdate("INSERT INTO item (idagenda,name,description) VALUES ('" + idagenda + "','" + mensagem.name + "','" + mensagem.description + "')")) == 1) {
             mensagem.result = true;
         }
 
@@ -301,11 +301,13 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
             }
             //modificar a descriçao
-        } else if ((sql.doUpdate("UPDATE item SET description='" + mensagem.data + "' where iditem='" + mensagem.dataint + "")) == 1) {
-            mensagem.result = true;
-
+        } else if (mensagem.dataint2 == 2) {
+            if ((sql.doUpdate("UPDATE item SET description='" + mensagem.data + "' where iditem='" + mensagem.dataint + "")) == 1) {
+                mensagem.result = true;
+            }
 
         }
+
 
         return mensagem;
     }
@@ -340,9 +342,11 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     @Override
     public synchronized Message addKeyDecision(Message mensagem) throws RemoteException {
 
-        if ((sql.doUpdate("INSERT INTO item (keydecision) VALUES ('" + mensagem.data + "') where iditem = '" + mensagem.dataint + "'")) == 1) {
+        mensagem.result = false;
 
+        if ((sql.doUpdate("UPDATE item SET keydecision='" + mensagem.keydecision + "' where iditem = '" + mensagem.dataint + "'")) == 1) {
 
+            mensagem.result = true;
         }
 
 
@@ -351,7 +355,18 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     @Override
     public synchronized Message assignAction(Message mensagem) throws RemoteException {
-        return null;
+
+        mensagem.result = false;
+
+
+        if ((sql.doUpdate("INSERT INTO action (idmeeting,idmember,description,completed) VALUES ('" + mensagem.dataint + "','" + mensagem.dataint2 + "','" + mensagem.data + "') where iditem = '" + mensagem.dataint + "'")) == 1) {
+
+            mensagem.result = true;
+        }
+
+
+        return mensagem;
+
     }
 
     @Override

@@ -102,6 +102,8 @@ public class Events extends Thread {
 
                 switch (msg.getTipo()) {
 
+
+                    //enviar chat msg para pessoal que esta online
                     case (Message.ADDCHATMESSAGE):
 
                         String aux = mensagemAux.data;
