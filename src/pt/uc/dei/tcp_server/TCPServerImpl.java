@@ -15,29 +15,28 @@ import java.util.logging.Logger;
 
 public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
-//TODO FAZER EXPORT DO CLASS DIAGRAM E METER NO RELATÓRIO
-
-
     //Hashtable que vai guardar a relação de users com as suas threads
     private Hashtable<String, Events> membersonline = new Hashtable<>();
     private boolean master = false;
 
+
     public TCPServerImpl() throws RemoteException {
         super();
+
+
     }
 
 
     public static void main(String args[]) throws RemoteException {
+
         TCPServerImpl tcpimp = new TCPServerImpl();
         tcpimp.init(args);
-        UDPSender udps = new UDPSender(tcpimp);
-        udps.start();
 
 
     }
 
 
-    private void validateIfMaster() throws NotMasterException {
+    private synchronized void validateIfMaster() throws NotMasterException {
         if (!master) {
             throw new NotMasterException();
         }
@@ -47,13 +46,19 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
     public void init(String args[]) {
 
+        UDPSender udpsender = new UDPSender(this);
+        UDPReceiver udpReceiver = new UDPReceiver(this);
+        udpsender.start();
 
-        if (args.length > 0) {
+
+
+        /*if (args.length > 0) {
             if ("1".equals(args[0])) {
                 master = true;
+
             }
 
-        }
+        }*/
 
 
         int numero = 0;
@@ -161,7 +166,7 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
         this.sendMsg(m, user);
     }
 
-    public void switchToMaster(boolean isMaster) {
+    public synchronized void switchToMaster(boolean isMaster) {
         master = isMaster;
 
     }
@@ -195,7 +200,7 @@ class UDPSender extends Thread {
         Properties props = new Properties();
 
         try {
-            props.load(new FileInputStream("property"));
+            props.load(new FileInputStream("support/property"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -209,17 +214,45 @@ class UDPSender extends Thread {
             InetAddress aHost = InetAddress.getByName(props.getProperty("tcpip2"));
             DatagramPacket msg = new DatagramPacket(m, m.length, aHost, Integer.parseInt(props.getProperty("udpPort")));
             while (true) {
-                uSocket.send(msg);
-                //envia pings de 3 em 3 segundos
-                this.currentThread().sleep(3000);
+                try {
+
+                    uSocket.send(msg);
+                    //envia pings de 3 em 3 segundos
+
+                    this.currentThread().sleep(3000);
+                    System.out.println("Estou a enviar pacotes!");
+
+                } catch (SocketException e) {
+
+                    System.out.println("SocketException!");
+                    System.out.println("Nao encontrei o outro server, sou o master!");
+
+
+                    tcpServer.switchToMaster(true);
+                } catch (IOException e) {
+
+                    System.out.println("IO Exception!");
+                    System.out.println("Mudando para master");
+                    tcpServer.switchToMaster(true);
+                } catch (InterruptedException e) {
+                    System.out.println("InterruptedException!");
+                }
 
             }
+
+
         } catch (SocketException e) {
+
+            System.out.println("SocketException!");
+            System.out.println("Nao encontrei o outro server, sou o master!");
+
+
             tcpServer.switchToMaster(true);
         } catch (IOException e) {
+
+            System.out.println("IO Exception!");
+            System.out.println("Mudando para master");
             tcpServer.switchToMaster(true);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 }
@@ -231,7 +264,12 @@ class UDPReceiver extends Thread {
 
     static Properties props = new Properties();
 
-    public UDPReceiver() {
+    TCPServerImpl tcpServer = null;
+
+    public UDPReceiver(TCPServerImpl tcpServer) {
+
+        this.tcpServer = tcpServer;
+
 
     }
 
@@ -272,8 +310,6 @@ class UDPReceiver extends Thread {
             e.printStackTrace();
         }
 
-        System.out.println("[Primary TCP server has crashed!]");
-        System.out.println("[Backup TCP Server has just started!]");
         uSocket.close();
 
     }
