@@ -214,29 +214,15 @@ class UDPSender extends Thread {
             InetAddress aHost = InetAddress.getByName(props.getProperty("tcpip2"));
             DatagramPacket msg = new DatagramPacket(m, m.length, aHost, Integer.parseInt(props.getProperty("udpPort")));
             while (true) {
-                try {
 
-                    uSocket.send(msg);
+
+                uSocket.send(msg);
                     //envia pings de 3 em 3 segundos
 
                     this.currentThread().sleep(3000);
                     System.out.println("Estou a enviar pacotes!");
 
-                } catch (SocketException e) {
 
-                    System.out.println("SocketException!");
-                    System.out.println("Nao encontrei o outro server, sou o master!");
-
-
-                    tcpServer.switchToMaster(true);
-                } catch (IOException e) {
-
-                    System.out.println("IO Exception!");
-                    System.out.println("Mudando para master");
-                    tcpServer.switchToMaster(true);
-                } catch (InterruptedException e) {
-                    System.out.println("InterruptedException!");
-                }
 
             }
 
@@ -244,15 +230,17 @@ class UDPSender extends Thread {
         } catch (SocketException e) {
 
             System.out.println("SocketException!");
-            System.out.println("Nao encontrei o outro server, sou o master!");
-
 
             tcpServer.switchToMaster(true);
         } catch (IOException e) {
 
             System.out.println("IO Exception!");
-            System.out.println("Mudando para master");
+            System.out.println("Nao encontrei o outro server, sou o master!");
             tcpServer.switchToMaster(true);
+        } catch (InterruptedException e) {
+            System.out.println("Interrupted Exception!");
+            System.out.println("Mudando para master");
+
         }
     }
 }
