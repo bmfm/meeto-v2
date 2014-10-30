@@ -1,5 +1,5 @@
-tcpip1=127.0.0.1
-tcpip2=127.0.0.1
+tcpip1=192.168.1.5
+tcpip2=192.168.1.4
 tcpServerPort=7000
 tcpServerPortAux=7001
 tcpBackupServerPort=7002
