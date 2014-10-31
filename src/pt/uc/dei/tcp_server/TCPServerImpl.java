@@ -1,7 +1,6 @@
 package pt.uc.dei.tcp_server;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.*;
 import java.rmi.RemoteException;
@@ -10,8 +9,6 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
@@ -46,20 +43,10 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
     public void init(String args[]) {
 
-        UDPSender udpsender = new UDPSender(this);
-        UDPReceiver udpReceiver = new UDPReceiver(this);
-        udpsender.start();
-
-
-
-        /*if (args.length > 0) {
-            if ("1".equals(args[0])) {
-                master = true;
-
-            }
-
-        }*/
-
+        if (args.length < 1) {
+            System.out.println("Usage: java TCPServerImpl.java other_server_ip ");
+            System.exit(0);
+        }
 
         int numero = 0;
         Properties props = new Properties();
@@ -69,6 +56,7 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
 
         try {
 
@@ -183,12 +171,12 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
 }
 
-class UDPSender extends Thread {
+/*class UDPSender extends Thread {
 
     TCPServerImpl tcpServer = null;
 
 
-    public UDPSender(TCPServerImpl tcpServer) {
+    public UDPSender(TCPServerImpl tcpServer, String ip) {
 
         this.tcpServer = tcpServer;
 
@@ -209,7 +197,7 @@ class UDPSender extends Thread {
         try {
             uSocket = new DatagramSocket();
             //TODO em vez de ser com I AM ALive, verificar primeiro o estado de master e enviar um ping consoante isso "I AM MASTER", "I AM SLAVE"
-            byte[] m = "I AM ALIVE".getBytes();
+            byte[] m = "ping".getBytes();
             //TODO mudar para ir trocando de ip constantemente
             InetAddress aHost = InetAddress.getByName(props.getProperty("tcpip2"));
             DatagramPacket msg = new DatagramPacket(m, m.length, aHost, Integer.parseInt(props.getProperty("udpPort")));
@@ -254,7 +242,7 @@ class UDPReceiver extends Thread {
 
     TCPServerImpl tcpServer = null;
 
-    public UDPReceiver(TCPServerImpl tcpServer) {
+    public UDPReceiver(TCPServerImpl tcpServer, String ip) {
 
         this.tcpServer = tcpServer;
 
@@ -302,5 +290,97 @@ class UDPReceiver extends Thread {
 
     }
 
+
+}*/
+
+class UDPService extends Thread {
+
+    TCPServerImpl tcpServer;
+    String ip;
+    DatagramSocket aSocket = null;
+    DatagramPacket recebe, envia;
+    String texto = "ping";
+    byte[] msgIn = new byte[10];
+    byte[] msgOut;
+
+
+    public UDPService(TCPServerImpl tcpServer, String ip) {
+        this.tcpServer = tcpServer;
+        this.ip = ip;
+    }
+
+    public void run() {
+        try {
+
+            Properties props = new Properties();
+
+            props.load(new FileInputStream("support/property"));
+
+
+            aSocket = new DatagramSocket(); //
+            System.out.println("Backup Server Ready!"); //
+            aSocket.setSoTimeout(3000); //
+            InetAddress aHost = InetAddress.getByName(ip); //
+            msgOut = texto.getBytes(); //
+            while (true) {  // While enquanto Backup
+                // Envia
+                try {
+                    //
+                    envia = new DatagramPacket(msgOut, msgOut.length, aHost, Integer.parseInt(props.getProperty("udpPort")));
+                    aSocket.send(envia);
+
+                    recebe = new DatagramPacket(msgIn, msgIn.length);           // cria um datagram packet
+                    aSocket.receive(recebe);                                // fica a aguardar dados
+                    String conteudo = new String(recebe.getData(), 0, recebe.getLength());
+
+                } catch (SocketException e) {
+                    System.out.println("Socket Exception");
+                } catch (UnknownHostException e) {
+                    System.out.println("Unknown Host Exception");
+                } catch (IOException e) {
+                    System.out.println("Changing to primary server...");
+                    System.out.println("Primary Server Ready!");
+                    tcpServer.switchToMaster(true);
+
+                    try {
+                        aSocket.setSoTimeout(0);
+                    } catch (SocketException ex) {
+                        System.out.println("Socket Exception");
+                    }
+                    break;
+                }
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            } //while
+
+            aSocket = new DatagramSocket(Integer.parseInt(props.getProperty("udpPort")));
+        } catch (SocketException ex) {
+            System.out.println("Socket Exception");
+        } catch (UnknownHostException e) {
+            System.out.println("Unknown Host Exception");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        while (true) {  // While enquanto Master
+            // RECEBE
+            try {
+                recebe = new DatagramPacket(msgIn, msgIn.length);           // cria um datagram packet
+                aSocket.receive(recebe);                                // fica a aguardar dados
+                String text = new String(recebe.getData(), 0, recebe.getLength());
+
+                msgOut = text.getBytes();
+                envia = new DatagramPacket(msgOut, msgOut.length, recebe.getAddress(), recebe.getPort());
+                aSocket.send(envia);
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+
+        } //while
+    }
 
 }
