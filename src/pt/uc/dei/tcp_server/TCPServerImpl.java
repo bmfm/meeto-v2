@@ -332,7 +332,8 @@ class UDPService extends Thread {
             msgOut = texto.getBytes(); //
             InetAddress aHost = InetAddress.getByName(ip); //
             aSocket = new DatagramSocket(); //
-            aSocket.setSoTimeout(5000); //
+            aSocket.setSoTimeout(2000); //
+            int backup = 0;
 
             System.out.println("Backup Server Ready!"); //
 
@@ -346,7 +347,10 @@ class UDPService extends Thread {
 
                     recebe = new DatagramPacket(msgIn, msgIn.length);           // cria um datagram packet
                     aSocket.receive(recebe);                                // fica a aguardar dados
-                    String conteudo = new String(recebe.getData(), 0, recebe.getLength());
+                    count = 0;
+                    //String conteudo = new String(recebe.getData(), 0, recebe.getLength());
+                    backup = 1;
+
 
                 } catch (SocketException e) {
                     System.out.println("Socket Exception");
@@ -355,19 +359,20 @@ class UDPService extends Thread {
                 } catch (IOException e) {
 
 
-                    enviaTransiente = new DatagramPacket(msgOut, msgOut.length, aHost, Integer.parseInt(props.getProperty("udpPort")));
-                    aSocket.send(enviaTransiente);
+                    //enviaTransiente = new DatagramPacket(msgOut, msgOut.length, aHost, Integer.parseInt(props.getProperty("udpPort")));
+                    //aSocket.send(enviaTransiente);
                     count++;
-                    if (count == 3) {
+                    if ((backup == 0) || (count == 3)) {
                         System.out.println("Changing to primary server...");
                         System.out.println("Primary Server Ready!");
                         tcpServer.switchToMaster(true);
+
+                        break;
 
 
                     }
 
 
-                    break;
                 }
 
                 try {
