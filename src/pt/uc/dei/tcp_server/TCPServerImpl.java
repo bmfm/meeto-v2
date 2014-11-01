@@ -14,7 +14,7 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
     //Hashtable que vai guardar a relação de users com as suas threads
     private Hashtable<String, Events> membersonline = new Hashtable<>();
-    private boolean master = false;
+    private volatile boolean master = false;
 
 
     public TCPServerImpl() throws RemoteException {
@@ -310,7 +310,7 @@ class UDPService extends Thread {
     TCPServerImpl tcpServer;
     String ip;
     DatagramSocket aSocket = null;
-    DatagramPacket recebe, envia;
+    DatagramPacket recebe, envia, enviaTransiente;
     String texto = "ping";
     byte[] msgIn = new byte[10];
     byte[] msgOut;
@@ -331,9 +331,11 @@ class UDPService extends Thread {
 
             aSocket = new DatagramSocket(); //
             System.out.println("Backup Server Ready!"); //
-            aSocket.setSoTimeout(3000); //
+            aSocket.setSoTimeout(5000); //
             InetAddress aHost = InetAddress.getByName(ip); //
             msgOut = texto.getBytes(); //
+            enviaTransiente = new DatagramPacket(msgOut, msgOut.length, aHost, Integer.parseInt(props.getProperty("udpPort")));
+            aSocket.send(enviaTransiente);
             while (true) {  // While enquanto Backup
                 // Envia
                 try {
@@ -377,6 +379,7 @@ class UDPService extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         while (true) {  // While enquanto Master
             // RECEBE
             try {
