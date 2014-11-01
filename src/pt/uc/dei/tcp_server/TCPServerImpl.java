@@ -324,18 +324,19 @@ class UDPService extends Thread {
     public void run() {
         try {
 
+            int count = 0;
+
             Properties props = new Properties();
 
             props.load(new FileInputStream("support/property"));
-
-
-            aSocket = new DatagramSocket(); //
-            System.out.println("Backup Server Ready!"); //
-            aSocket.setSoTimeout(5000); //
-            InetAddress aHost = InetAddress.getByName(ip); //
             msgOut = texto.getBytes(); //
-            enviaTransiente = new DatagramPacket(msgOut, msgOut.length, aHost, Integer.parseInt(props.getProperty("udpPort")));
-            aSocket.send(enviaTransiente);
+            InetAddress aHost = InetAddress.getByName(ip); //
+            aSocket = new DatagramSocket(); //
+            aSocket.setSoTimeout(5000); //
+
+            System.out.println("Backup Server Ready!"); //
+
+
             while (true) {  // While enquanto Backup
                 // Envia
                 try {
@@ -352,15 +353,20 @@ class UDPService extends Thread {
                 } catch (UnknownHostException e) {
                     System.out.println("Unknown Host Exception");
                 } catch (IOException e) {
-                    System.out.println("Changing to primary server...");
-                    System.out.println("Primary Server Ready!");
-                    tcpServer.switchToMaster(true);
 
-                    try {
-                        aSocket.setSoTimeout(0);
-                    } catch (SocketException ex) {
-                        System.out.println("Socket Exception");
+
+                    enviaTransiente = new DatagramPacket(msgOut, msgOut.length, aHost, Integer.parseInt(props.getProperty("udpPort")));
+                    aSocket.send(enviaTransiente);
+                    count++;
+                    if (count == 3) {
+                        System.out.println("Changing to primary server...");
+                        System.out.println("Primary Server Ready!");
+                        tcpServer.switchToMaster(true);
+
+
                     }
+
+
                     break;
                 }
 
@@ -378,6 +384,13 @@ class UDPService extends Thread {
             System.out.println("Unknown Host Exception");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        //quando muda para master, esperar forever por um pacote
+        try {
+            aSocket.setSoTimeout(0);
+        } catch (SocketException ex) {
+            System.out.println("Socket Exception");
         }
 
         while (true) {  // While enquanto Master
