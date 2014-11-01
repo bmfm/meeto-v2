@@ -27,6 +27,7 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
     public static void main(String args[]) throws RemoteException {
 
         TCPServerImpl tcpimp = new TCPServerImpl();
+
         tcpimp.init(args);
 
 
@@ -47,6 +48,10 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
             System.out.println("Usage: java TCPServerImpl.java other_server_ip ");
             System.exit(0);
         }
+
+        UDPService udpservice = new UDPService(this, args[0]);
+        udpservice.start();
+
 
         int numero = 0;
         Properties props = new Properties();
@@ -70,25 +75,32 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
             System.out.println("LISTEN SOCKET=" + listenAuxSocket);
 
             while (true) {
+                if (master) {
+                    Socket clientSocket = listenMainSocket.accept();
+                    System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
+                    numero++;
+                    Connection clientMain = new Connection(clientSocket, numero);
 
-                Socket clientSocket = listenMainSocket.accept();
-                System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
-                numero++;
-                Connection clientMain = new Connection(clientSocket, numero);
+                    clientMain.start();
+                    Socket clientAuxSocket = listenAuxSocket.accept();
+                    System.out.println("CLIENT_SOCKET (created at accept())=" + clientAuxSocket);
+                    Events clientEvents = new Events(clientAuxSocket, numero, this);
 
-                clientMain.start();
-                Socket clientAuxSocket = listenAuxSocket.accept();
-                System.out.println("CLIENT_SOCKET (created at accept())=" + clientAuxSocket);
-                Events clientEvents = new Events(clientAuxSocket, numero, this);
-
-                clientEvents.start();
+                    clientEvents.start();
+                }
 
             }
         } catch (IOException e) {
             System.out.println("Listen:" + e.getMessage());
 
         }
+
+
     }
+
+
+
+
 
 
     public synchronized Collection<Events> values() {
