@@ -7,10 +7,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.Scanner;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -196,46 +193,55 @@ public class TCPClient {
 
 
             while (true) {
-                System.out.print("1 - Register\n2 - Login\n>");
-                op = sci.nextInt();
 
-                //register
-                if (op == 1) {
-                    System.out.println("Insira username: ");
-                    username = scs.nextLine();
-                    System.out.println("Insira password: ");
-                    password = scs.nextLine();
-                    System.out.println("Insira mail: ");
-                    mail = scs.nextLine();
-                    Message mensagem = new Message(username, password, mail, "reg");
-                    sendOut(mensagem);
-                    mensagem = (Message) in.readObject();
-                    if (mensagem.result) {
-                        System.out.println("Utilizador inserido com sucesso na base de dados.");
+                try {
 
-                    } else {
-                        System.out.println("ERRO! Username ja se encontra registado.");
+
+                    System.out.print("1 - Register\n2 - Login\n>");
+                    op = sci.nextInt();
+
+                    //register
+                    if (op == 1) {
+                        System.out.println("Insira username: ");
+                        username = scs.nextLine();
+                        System.out.println("Insira password: ");
+                        password = scs.nextLine();
+                        System.out.println("Insira mail: ");
+                        mail = scs.nextLine();
+                        Message mensagem = new Message(username, password, mail, "reg");
+                        sendOut(mensagem);
+                        mensagem = (Message) in.readObject();
+                        if (mensagem.result) {
+                            System.out.println("Utilizador inserido com sucesso na base de dados.");
+
+                        } else {
+                            System.out.println("ERRO! Username ja se encontra registado.");
+                        }
+
+                        //login
+                    } else if (op == 2) {
+                        System.out.println("Insira username: ");
+                        username = scs.nextLine();
+                        System.out.println("Insira password: ");
+                        password = scs.nextLine();
+                        Message mensagem = new Message(username, password, null, "log");
+                        sendOut(mensagem);
+                        mensagem = (Message) in.readObject();
+
+                        if (mensagem.result) {
+
+                            System.out.println("Login efectuado com sucesso.");
+                            TCPClient.username_logged = username;
+                            break;
+                        } else {
+                            System.out.println("ERRO! Username ou Password incorrectos.");
+                            System.out.println("Se tem a certeza que os dados estão correctos, então o user já se encontra logado.");
+                        }
                     }
+                } catch (InputMismatchException e) {
 
-                    //login
-                } else if (op == 2) {
-                    System.out.println("Insira username: ");
-                    username = scs.nextLine();
-                    System.out.println("Insira password: ");
-                    password = scs.nextLine();
-                    Message mensagem = new Message(username, password, null, "log");
-                    sendOut(mensagem);
-                    mensagem = (Message) in.readObject();
+                    System.out.println("Ups! I didn't quite get your command\nPlease select (1) Register or (2) Login\n");
 
-                    if (mensagem.result) {
-
-                        System.out.println("Login efectuado com sucesso.");
-                        TCPClient.username_logged = username;
-                        break;
-                    } else {
-                        System.out.println("ERRO! Username ou Password incorrectos.");
-                        System.out.println("Se tem a certeza que os dados estão correctos, então o user já se encontra logado.");
-                    }
                 }
             }
 
