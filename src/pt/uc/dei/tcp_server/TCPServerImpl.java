@@ -16,6 +16,9 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
     private Hashtable<String, Events> membersonline = new Hashtable<>();
     private volatile boolean master = false;
 
+    ServerSocket listenMainSocket;
+    ServerSocket listenAuxSocket;
+
 
     public TCPServerImpl() throws RemoteException {
         super();
@@ -54,26 +57,11 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
 
         int numero = 0;
-        Properties props = new Properties();
-
-        try {
-            props.load(new FileInputStream("support/property"));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
 
 
         try {
 
-            ServerSocket listenMainSocket;
-            ServerSocket listenAuxSocket;
-            InetAddress ip = InetAddress.getByName(props.getProperty("tcpip2"));
-            listenMainSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPort")), 100, ip);
-            System.out.println("TCP Server ready! Main socket à escuta no porto " + props.getProperty("tcpServerPort"));
-            System.out.println("LISTEN SOCKET=" + listenMainSocket);
-            listenAuxSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPortAux")), 100, ip);
-            System.out.println("TCP Server ready! Secondary socket à escuta no porto " + props.getProperty("tcpServerPortAux"));
-            System.out.println("LISTEN SOCKET=" + listenAuxSocket);
+
             System.out.println(":::I'm backup, I won't accept any clients!::");
 
             while (true) {
@@ -171,7 +159,22 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
         this.sendMsg(m, user);
     }
 
-    public synchronized void switchToMaster(boolean isMaster) {
+    public synchronized void switchToMaster(boolean isMaster) throws IOException {
+        Properties props = new Properties();
+
+        try {
+            props.load(new FileInputStream("support/property"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        InetAddress ip = InetAddress.getByName(props.getProperty("tcpip2"));
+        listenMainSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPort")), 100, ip);
+        System.out.println("TCP Server ready! Main socket à escuta no porto " + props.getProperty("tcpServerPort"));
+        System.out.println("LISTEN SOCKET=" + listenMainSocket);
+        listenAuxSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPortAux")), 100, ip);
+        System.out.println("TCP Server ready! Secondary socket à escuta no porto " + props.getProperty("tcpServerPortAux"));
+        System.out.println("LISTEN SOCKET=" + listenAuxSocket);
+
         master = isMaster;
 
     }
@@ -280,6 +283,7 @@ class UDPService extends Thread {
         } catch (SocketException ex) {
             System.out.println("Socket Exception");
         }
+
 
         while (true) {  // While enquanto Master
             // RECEBE
