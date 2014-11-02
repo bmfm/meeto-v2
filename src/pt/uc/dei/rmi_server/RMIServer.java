@@ -344,11 +344,11 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         mensagem.data = "";
 
-        ResultSet rs = sql.doQuery("select member.username,log.line from (member,log) where member.idmember = log.idmember and log.iditem='" + mensagem.dataint + "'");
+        ResultSet rs = sql.doQuery("select member.username,log.line from (member,log) where member.idmember = log.idmember and log.iditem='" + mensagem.dataint + "' order by log.idlog ASC");
         try {
             while (rs.next()) {
 
-                String username = rs.getString("name");
+                String username = rs.getString("username");
                 mensagem.data += "[" + username + "]:";
                 String line = rs.getString("line");
                 mensagem.data += line + "\n";
