@@ -206,6 +206,11 @@ public class Connection extends Thread {
                         sendOut(mensagem);
                         break;
 
+                    case (Message.CHECKCHATMESSAGES):
+                        mensagem = c.listChat(mensagem);
+                        sendOut(mensagem);
+                        break;
+
                 }
 
             }
@@ -218,6 +223,8 @@ public class Connection extends Thread {
             System.out.println("IO error!");
         } catch (NotBoundException e) {
             System.out.println("Not bound error!");
+        } catch (NotMasterException e) {
+            e.printStackTrace();
         }
     }
 

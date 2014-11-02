@@ -1,6 +1,7 @@
 package pt.uc.dei.rmi_server;
 
 import pt.uc.dei.tcp_server.Message;
+import pt.uc.dei.tcp_server.NotMasterException;
 import pt.uc.dei.tcp_server.TCPServer;
 
 import java.io.FileInputStream;
@@ -322,21 +323,42 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     }
 
     @Override
-    public synchronized Message addChatMessage(Message mensagem) throws RemoteException {
+    public synchronized Message addChatMessage(Message mensagem) throws RemoteException, NotMasterException {
         Message msgid = getUsernameId(mensagem);
 
         mensagem.result = false;
         int iduser = msgid.iduser;
 
-        if ((sql.doUpdate("INSERT INTO log (iditem,idmember,line) VALUES ('" + mensagem.dataint + "','" + iduser + "','" + mensagem.date + "');")) == 1) {
+        if ((sql.doUpdate("INSERT INTO log (iditem,idmember,line) VALUES ('" + mensagem.dataint + "','" + iduser + "','" + mensagem.data + "');")) == 1) {
 
             mensagem.result = true;
-
+            tcpServer.msgToMany(mensagem, mensagem.data);
 
         }
 
         return mensagem;
 
+    }
+
+    public synchronized Message listChat(Message mensagem) throws RemoteException {
+
+        mensagem.data = "";
+
+        ResultSet rs = sql.doQuery("select member.username,log.line from (member,log) where member.idmember = log.idmember and log.iditem='" + mensagem.dataint + "'");
+        try {
+            while (rs.next()) {
+
+                String username = rs.getString("name");
+                mensagem.data += "[" + username + "]:";
+                String line = rs.getString("line");
+                mensagem.data += line + "\n";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return mensagem;
     }
 
     @Override
