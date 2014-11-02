@@ -816,8 +816,8 @@ class ReadData extends Thread {
                         csaux = new Socket(props.getProperty("tcpip1"), Integer.parseInt(props.getProperty("tcpServerPortAux")));
                         cout = new ObjectOutputStream(cs.getOutputStream());
                         cin = new ObjectInputStream(cs.getInputStream());
-                        coutAux = new ObjectOutputStream(cs.getOutputStream());
-                        cinAux = new ObjectInputStream(cs.getInputStream());
+                        coutAux = new ObjectOutputStream(csaux.getOutputStream());
+                        cinAux = new ObjectInputStream(csaux.getInputStream());
                         TCPClient.setS(cs);
                         TCPClient.setOut(cout);
                         TCPClient.setIn(cin);
