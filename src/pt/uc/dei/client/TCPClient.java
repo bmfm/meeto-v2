@@ -43,11 +43,9 @@ public class TCPClient {
         //tentativa de se ligar a qualquer um dos servers tcp disponiveis
 
         Socket socket = null;
-        List<String> lstIp = new ArrayList<String>(2);
+        List<String> lstIp = new ArrayList<>(2);
         lstIp.add(props.getProperty("tcpip1"));
         lstIp.add(props.getProperty("tcpip2"));
-
-        //TODO percorrer porta?
 
 
         while (socket == null) {
@@ -55,11 +53,18 @@ public class TCPClient {
             for (String ip : lstIp) {
                 try {
                     socket = (new Socket(ip, port));
+
+
                 } catch (Exception ex) {
+                    ex.printStackTrace();
+
 
                 }
-                if (socket != null)
+                if (socket != null) {
+                    System.out.println("liguei-me ao ip " + ip + " na porta " + port);
                     break;
+                }
+
 
                 Thread.sleep(2000);
             }
@@ -166,6 +171,8 @@ public class TCPClient {
 
             props.load(new FileInputStream("support/property"));
 
+
+            //socket for request-reply thread
             Socket mainSocket = connect(props, Integer.parseInt(props.getProperty("tcpServerPort")));
             setS(mainSocket);
 
@@ -173,8 +180,12 @@ public class TCPClient {
 
 
             setOut(new ObjectOutputStream(s.getOutputStream()));
+            System.out.println("Stream Out ok");
             setIn(new ObjectInputStream(s.getInputStream()));
+            System.out.println("Streams In ok");
 
+
+            //socket for events' thread
             Socket secondarySocket = connect(props, Integer.parseInt(props.getProperty("tcpServerPortAux")));
 
             setSaux(secondarySocket);
@@ -241,6 +252,7 @@ public class TCPClient {
                 } catch (InputMismatchException e) {
 
                     System.out.println("Ups! I didn't quite get your command\nPlease select (1) Register or (2) Login\n");
+                    sci.nextLine();
 
                 }
             }
@@ -507,11 +519,7 @@ public class TCPClient {
 
 
             }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(TCPClient.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(TCPClient.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (ClassNotFoundException | UnknownHostException ex) {
             Logger.getLogger(TCPClient.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
