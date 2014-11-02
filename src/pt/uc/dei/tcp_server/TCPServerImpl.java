@@ -137,7 +137,7 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
     //metodo chamado pelo RMI para enviar uma mensagem para varios utilizadores ou várias mensagens para um só utilizador.
 
     public synchronized void sendMsg(Message[] messages, String[] usernames) throws RemoteException, NotMasterException {
-        validateIfMaster();
+        //validateIfMaster();
         for (Message m : messages) {
             for (String u : usernames) {
 
