@@ -65,16 +65,21 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
         try {
 
+            ServerSocket listenMainSocket;
+            ServerSocket listenAuxSocket;
+            listenMainSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPort")));
+            System.out.println("TCP Server ready! Main socket à escuta no porto " + props.getProperty("tcpServerPort"));
+            System.out.println("LISTEN SOCKET=" + listenMainSocket);
+            listenAuxSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPortAux")));
+            System.out.println("TCP Server ready! Secondary socket à escuta no porto " + props.getProperty("tcpServerPortAux"));
+            System.out.println("LISTEN SOCKET=" + listenAuxSocket);
+            System.out.println(":::I'm backup, I won't accept any clients!::");
+
             while (true) {
                 if (master) {
-                    ServerSocket listenMainSocket;
-                    ServerSocket listenAuxSocket;
-                    listenMainSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPort")));
-                    System.out.println("TCP Server ready! Main socket à escuta no porto " + props.getProperty("tcpServerPort"));
-                    System.out.println("LISTEN SOCKET=" + listenMainSocket);
-                    listenAuxSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPortAux")));
-                    System.out.println("TCP Server ready! Secondary socket à escuta no porto " + props.getProperty("tcpServerPortAux"));
-                    System.out.println("LISTEN SOCKET=" + listenAuxSocket);
+
+                    System.out.println(":::I'm primary! I'm now accepting clients!:::");
+
                     Socket clientSocket = listenMainSocket.accept();
                     System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
                     numero++;
