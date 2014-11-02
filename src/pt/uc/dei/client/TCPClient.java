@@ -4,6 +4,7 @@ import pt.uc.dei.tcp_server.Connection;
 import pt.uc.dei.tcp_server.Message;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
@@ -25,6 +26,8 @@ public class TCPClient {
     Scanner scs = new Scanner(System.in);
     ReadData read = null;
     static int itemJoined;
+    static int ipConnected;
+    static Scanner aux;
 
 
     public static void main(String[] args) throws InterruptedException, SQLException, ClassNotFoundException {
@@ -53,6 +56,10 @@ public class TCPClient {
             for (String ip : lstIp) {
                 try {
                     socket = (new Socket(ip, port));
+                    aux = new Scanner(socket.getInputStream());
+
+
+                } catch (ConnectException ex) {
 
 
                 } catch (Exception ex) {
@@ -60,6 +67,7 @@ public class TCPClient {
 
 
                 }
+
                 if (socket != null) {
                     System.out.println("liguei-me ao ip " + ip + " na porta " + port);
                     break;
@@ -252,6 +260,7 @@ public class TCPClient {
                 } catch (InputMismatchException e) {
 
                     System.out.println("Ups! I didn't quite get your command\nPlease select (1) Register or (2) Login\n");
+                    //para limpar o buffer
                     sci.nextLine();
 
                 }
