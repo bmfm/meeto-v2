@@ -67,10 +67,11 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
             ServerSocket listenMainSocket;
             ServerSocket listenAuxSocket;
-            listenMainSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPort")));
+            InetAddress ip = InetAddress.getByName(props.getProperty("tcpip2"));
+            listenMainSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPort")), 100, ip);
             System.out.println("TCP Server ready! Main socket à escuta no porto " + props.getProperty("tcpServerPort"));
             System.out.println("LISTEN SOCKET=" + listenMainSocket);
-            listenAuxSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPortAux")));
+            listenAuxSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPortAux")), 100, ip);
             System.out.println("TCP Server ready! Secondary socket à escuta no porto " + props.getProperty("tcpServerPortAux"));
             System.out.println("LISTEN SOCKET=" + listenAuxSocket);
             System.out.println(":::I'm backup, I won't accept any clients!::");
