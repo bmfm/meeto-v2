@@ -1,6 +1,7 @@
 package pt.uc.dei.rmi_server;
 
 import pt.uc.dei.tcp_server.Message;
+import pt.uc.dei.tcp_server.NotMasterException;
 import pt.uc.dei.tcp_server.TCPServer;
 
 import java.rmi.Remote;
@@ -34,7 +35,9 @@ public interface RmiInterface extends Remote {
 
     public Message deleteAgendaItem(Message mensagem) throws RemoteException;
 
-    public Message addChatMessage(Message mensagem) throws RemoteException;
+    public Message addChatMessage(Message mensagem) throws RemoteException, NotMasterException;
+
+    public Message listChat(Message mensagem) throws RemoteException;
 
     public Message addKeyDecision(Message mensagem) throws RemoteException;
 

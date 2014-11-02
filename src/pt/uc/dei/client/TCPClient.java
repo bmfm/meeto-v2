@@ -319,16 +319,13 @@ public class TCPClient {
                             sendOut(meetingtocheck);
                             meetingtocheck = (Message) in.readObject();
                             System.out.println(meetingtocheck.data);
-
                         }
-
 
                     } else {
                         System.out.println("Ligacao caiu..Estamos a trabalhar nisso...");
 
                     }
                 }
-
                 // View past meetings
                 if (op == 3) {
                     if (out != null && outAux != null) {
@@ -357,7 +354,6 @@ public class TCPClient {
                     }
 
                 }
-
 
                 //View pending invitations
 
@@ -626,7 +622,17 @@ public class TCPClient {
             System.out.println("Please select one of the following options (0 to quit):\n");
             System.out.println("1-Add Message\n" +
                     "2-Add key decision\n" +
-                    "3-Assign task to user\n");
+                    "3-Assign task to user\n\n");
+
+            System.out.println(":::Chat log:::\n");
+            Message listChat = new Message(username_logged, null, null, "checkchatmessages");
+            listChat.dataint = itemid;
+            sendOut(listChat);
+            listChat = (Message) in.readObject();
+            System.out.println(listChat.data);
+            System.out.println("::::::::::::::\n");
+
+
             //TODO colocar um metodo para conseguir ver o chat log todo
 
             opt = scs.nextLine();
@@ -735,9 +741,11 @@ class ReadData extends Thread {
                     }
 
                     if (mensagemAux.getTipo().equalsIgnoreCase("addchatmessage")) {
-                        if (TCPClient.itemJoined != 0) {
+                        if (TCPClient.itemJoined == mensagemAux.dataint) {
                             System.out.println(mensagemAux.data);
 
+                        } else {
+                            System.out.println("One of the meetings you are attending has new messages. Please check it");
                         }
 
                     }

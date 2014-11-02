@@ -65,17 +65,16 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
         try {
 
-            ServerSocket listenMainSocket;
-            ServerSocket listenAuxSocket;
-            listenMainSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPort")));
-            System.out.println("TCP Server ready! Main socket à escuta no porto " + props.getProperty("tcpServerPort"));
-            System.out.println("LISTEN SOCKET=" + listenMainSocket);
-            listenAuxSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPortAux")));
-            System.out.println("TCP Server ready! Secondary socket à escuta no porto " + props.getProperty("tcpServerPortAux"));
-            System.out.println("LISTEN SOCKET=" + listenAuxSocket);
-
             while (true) {
                 if (master) {
+                    ServerSocket listenMainSocket;
+                    ServerSocket listenAuxSocket;
+                    listenMainSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPort")));
+                    System.out.println("TCP Server ready! Main socket à escuta no porto " + props.getProperty("tcpServerPort"));
+                    System.out.println("LISTEN SOCKET=" + listenMainSocket);
+                    listenAuxSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPortAux")));
+                    System.out.println("TCP Server ready! Secondary socket à escuta no porto " + props.getProperty("tcpServerPortAux"));
+                    System.out.println("LISTEN SOCKET=" + listenAuxSocket);
                     Socket clientSocket = listenMainSocket.accept();
                     System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
                     numero++;
@@ -182,128 +181,6 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
 
 }
-
-/*class UDPSender extends Thread {
-
-    TCPServerImpl tcpServer = null;
-
-
-    public UDPSender(TCPServerImpl tcpServer, String ip) {
-
-        this.tcpServer = tcpServer;
-
-
-    }
-
-    public void run() {
-
-        Properties props = new Properties();
-
-        try {
-            props.load(new FileInputStream("support/property"));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        DatagramSocket uSocket;
-        try {
-            uSocket = new DatagramSocket();
-            //TODO em vez de ser com I AM ALive, verificar primeiro o estado de master e enviar um ping consoante isso "I AM MASTER", "I AM SLAVE"
-            byte[] m = "ping".getBytes();
-            //TODO mudar para ir trocando de ip constantemente
-            InetAddress aHost = InetAddress.getByName(props.getProperty("tcpip2"));
-            DatagramPacket msg = new DatagramPacket(m, m.length, aHost, Integer.parseInt(props.getProperty("udpPort")));
-            while (true) {
-
-
-                uSocket.send(msg);
-                    //envia pings de 3 em 3 segundos
-
-                    this.currentThread().sleep(3000);
-                    System.out.println("Estou a enviar pacotes!");
-
-
-
-            }
-
-
-        } catch (SocketException e) {
-
-            System.out.println("SocketException!");
-
-            tcpServer.switchToMaster(true);
-        } catch (IOException e) {
-
-            System.out.println("IO Exception!");
-            System.out.println("Nao encontrei o outro server, sou o master!");
-            tcpServer.switchToMaster(true);
-        } catch (InterruptedException e) {
-            System.out.println("Interrupted Exception!");
-            System.out.println("Mudando para master");
-
-        }
-    }
-}
-
-
-class UDPReceiver extends Thread {
-
-    static DatagramSocket uSocket;
-
-    static Properties props = new Properties();
-
-    TCPServerImpl tcpServer = null;
-
-    public UDPReceiver(TCPServerImpl tcpServer, String ip) {
-
-        this.tcpServer = tcpServer;
-
-
-    }
-
-    public void run() {
-
-        try {
-
-            props.load(new FileInputStream("support/property"));
-
-
-            byte[] buffer = new byte[1024];
-            uSocket = null;
-
-            uSocket = new DatagramSocket(Integer.parseInt(props.getProperty("udpPort")));
-            //Esperar 10 segundos pelo server tcp principal para lhe dar tempo para voltar up
-            uSocket.setSoTimeout(10000);
-            DatagramPacket request;
-
-
-            while (true) {
-
-                try {
-                    request = new DatagramPacket(buffer, buffer.length);
-
-                    uSocket.receive(request);
-                    System.out.println("Backup server waiting for his turn...");
-
-                } catch (IOException ex) {
-                    break;
-                }
-
-            }
-        } catch (SocketException ex) {
-            Logger.getLogger(UDPReceiver.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        uSocket.close();
-
-    }
-
-
-}*/
 
 class UDPService extends Thread {
 
