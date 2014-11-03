@@ -332,7 +332,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         if ((sql.doUpdate("INSERT INTO log (iditem,idmember,line) VALUES ('" + mensagem.dataint + "','" + iduser + "','" + mensagem.data + "');")) == 1) {
 
             mensagem.result = true;
-            tcpServer.msgToMany(mensagem, mensagem.data);
+            //tcpServer.msgToMany(mensagem, mensagem.data);
 
         }
 

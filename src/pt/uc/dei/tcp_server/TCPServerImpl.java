@@ -167,7 +167,7 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        InetAddress ip = InetAddress.getByName(props.getProperty("tcpip2"));
+        InetAddress ip = InetAddress.getByName(props.getProperty("tcpip1"));
         listenMainSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPort")), 100, ip);
         System.out.println("TCP Server ready! Main socket à escuta no porto " + props.getProperty("tcpServerPort"));
         System.out.println("LISTEN SOCKET=" + listenMainSocket);

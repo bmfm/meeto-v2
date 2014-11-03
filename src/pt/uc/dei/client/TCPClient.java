@@ -26,7 +26,7 @@ public class TCPClient {
     Scanner scs = new Scanner(System.in);
     ReadData read = null;
     static int itemJoined;
-    static int ipConnected;
+    static String ipConnected;
     static Scanner aux;
 
 
@@ -70,6 +70,7 @@ public class TCPClient {
 
                 if (socket != null) {
                     System.out.println("liguei-me ao ip " + ip + " na porta " + port);
+                    ipConnected = ip;
                     break;
                 }
 
@@ -801,39 +802,36 @@ class ReadData extends Thread {
                     e1.printStackTrace();
                 }
                 TCPClient.out = null;
-                ObjectInputStream cin = null;
-                ObjectOutputStream cout = null;
-                Socket cs = null;
-                Socket csaux = null;
-                ObjectInputStream cinAux = null;
-                ObjectOutputStream coutAux = null;
+
                 while (true) {
                     try {
 
                         //dar 5 segundos ao server para voltar
                         ReadData.sleep(5000);
-                        cs = new Socket(props.getProperty("tcpip1"), Integer.parseInt(props.getProperty("tcpServerPort")));
-                        csaux = new Socket(props.getProperty("tcpip1"), Integer.parseInt(props.getProperty("tcpServerPortAux")));
-                        cout = new ObjectOutputStream(cs.getOutputStream());
-                        cin = new ObjectInputStream(cs.getInputStream());
-                        coutAux = new ObjectOutputStream(csaux.getOutputStream());
-                        cinAux = new ObjectInputStream(csaux.getInputStream());
-                        TCPClient.setS(cs);
-                        TCPClient.setOut(cout);
-                        TCPClient.setIn(cin);
-                        TCPClient.setSaux(csaux);
-                        TCPClient.setInAux(cinAux);
-                        TCPClient.setOutAux(coutAux);
-                        this.in = cin;
-                        this.inAux = cinAux;
-                        Message mensagem = new Message(TCPClient.username_logged, null, null, "reconnect");
-                        cout.writeObject(mensagem);
-
+                        reconnect(props);
                         break;
                     } catch (UnknownHostException ex) {
-                        System.out.println("BOOM1");
+                        System.out.println("I don't know that host!");
                     } catch (IOException ex) {
-                        System.out.println("BOOM2");
+
+                        try {
+                            reconnect(props);
+                            if ("10.0.0.1".equals(TCPClient.ipConnected)) {
+                                TCPClient.ipConnected = "10.0.0.2";
+                                reconnect(props);
+                                break;
+
+
+                            } else {
+                                TCPClient.ipConnected = "10.0.0.1";
+                                reconnect(props);
+                                break;
+                            }
+
+                        } catch (IOException e1) {
+
+                            break;
+                        }
                     } catch (InterruptedException e1) {
                         e1.printStackTrace();
                     }
@@ -842,5 +840,31 @@ class ReadData extends Thread {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void reconnect(Properties props) throws IOException {
+        ObjectInputStream cin = null;
+        ObjectOutputStream cout = null;
+        Socket cs = null;
+        Socket csaux = null;
+        ObjectInputStream cinAux = null;
+        ObjectOutputStream coutAux = null;
+        cs = new Socket(TCPClient.ipConnected, Integer.parseInt(props.getProperty("tcpServerPort")));
+        csaux = new Socket(TCPClient.ipConnected, Integer.parseInt(props.getProperty("tcpServerPortAux")));
+        cout = new ObjectOutputStream(cs.getOutputStream());
+        cin = new ObjectInputStream(cs.getInputStream());
+        coutAux = new ObjectOutputStream(csaux.getOutputStream());
+        cinAux = new ObjectInputStream(csaux.getInputStream());
+        TCPClient.setS(cs);
+        TCPClient.setOut(cout);
+        TCPClient.setIn(cin);
+        TCPClient.setSaux(csaux);
+        TCPClient.setInAux(cinAux);
+        TCPClient.setOutAux(coutAux);
+        this.in = cin;
+        this.inAux = cinAux;
+        Message mensagem = new Message(TCPClient.username_logged, null, null, "reconnect");
+        cout.writeObject(mensagem);
+
     }
 }
