@@ -802,6 +802,7 @@ class ReadData extends Thread {
                     e1.printStackTrace();
                 }
                 TCPClient.out = null;
+                TCPClient.outAux = null;
 
                 while (true) {
                     try {
@@ -815,7 +816,7 @@ class ReadData extends Thread {
                     } catch (IOException ex) {
 
                         try {
-                            reconnect(props);
+
                             if ("10.0.0.1".equals(TCPClient.ipConnected)) {
                                 TCPClient.ipConnected = "10.0.0.2";
                                 reconnect(props);
@@ -830,7 +831,8 @@ class ReadData extends Thread {
 
                         } catch (IOException e1) {
 
-                            break;
+                            System.out.println("Nao encontrei nenhum server");
+
                         }
                     } catch (InterruptedException e1) {
                         e1.printStackTrace();

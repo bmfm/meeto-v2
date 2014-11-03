@@ -187,7 +187,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         mensagem.data += actionsInAMeeting(mensagem.dataint);
         return mensagem;
 
-
     }
 
 
