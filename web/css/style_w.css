@@ -1,0 +1,24 @@
+input#chat {
+    width: 456px
+}
+
+#container {
+    width: 650px;
+}
+
+#history {
+    height: 100px;
+    font-family: Courier, monospace;
+    font-size: .9em;
+    border: 1px solid #AACAAC;
+    border-right-color: #AACAAC;
+    border-bottom-color: #AACAAC;
+    overflow-y: scroll;
+    padding: 5px;
+    width: 100%;
+}
+
+#history p {
+    padding: 0;
+    margin: 0;
+}
