@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="mock:///login.html" libraries="{html5shiv}" />
+    <file url="mock:///login.html" libraries="{respond}" />
+  </component>
+</project>
+
