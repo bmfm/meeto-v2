@@ -12,6 +12,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 public class TCPClient {
 
     static String username_logged;
@@ -22,13 +23,12 @@ public class TCPClient {
     static ObjectInputStream inAux = null;
     static ObjectOutputStream outAux = null;
     static EmbeddedHelper embDB = new EmbeddedHelper();
-    Scanner sci = new Scanner(System.in);
-    Scanner scs = new Scanner(System.in);
-    ReadData read = null;
     static int itemJoined;
     static String ipConnected;
     static Scanner aux;
-
+    Scanner sci = new Scanner(System.in);
+    Scanner scs = new Scanner(System.in);
+    ReadData read = null;
 
     public static void main(String[] args) throws InterruptedException, SQLException, ClassNotFoundException {
         TCPClient client = new TCPClient();
