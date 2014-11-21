@@ -13,8 +13,9 @@
       </configuration>
       <facet type="Struts2" name="Struts 2">
         <configuration>
-          <fileset id="s2fileset" name="My Fileset " removed="false">
+          <fileset id="s2fileset2" name="My Fileset 2" removed="false">
             <file>file://$MODULE_DIR$/src/struts.xml</file>
+            <file>jar://$MODULE_DIR$/web/WEB-INF/lib/struts2-core-2.3.16.3.jar!/struts-default.xml</file>
           </fileset>
           <propertiesKeys disabled="false" />
         </configuration>
@@ -39,6 +40,8 @@
     <orderEntry type="library" name="mysql-connector-java-5.1.33-bin" level="project" />
     <orderEntry type="library" name="joda-time-2.5" level="project" />
     <orderEntry type="library" name="h2-1.4.182" level="project" />
+    <orderEntry type="library" name="struts2-core-2.3.16.3" level="project" />
+    <orderEntry type="library" name="asm-3.3" level="project" />
   </component>
 </module>
 

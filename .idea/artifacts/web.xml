@@ -10,6 +10,8 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="mysql-connector-java-5.1.33-bin" />
           <element id="library" level="project" name="h2-1.4.182" />
+          <element id="library" level="project" name="struts2-core-2.3.16.3" />
+          <element id="library" level="project" name="asm-3.3" />
         </element>
       </element>
     </root>
