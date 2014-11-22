@@ -16,17 +16,20 @@ public class LoginAction extends ActionSupport implements SessionAware {
     private String userName=null;
     private String password=null;
 
-    private LoginBean loginBean;
+
 
     private Map<String, Object> session;
 
-    @Override
+
     public String execute() {
 
         Boolean outcome;
 
+        LoginBean loginBean = new LoginBean();
+
         this.getLoginBean().setPassword(password);
         this.getLoginBean().setUserName(userName);
+
 
         outcome = loginBean.validate(userName, password);
         if (outcome){
@@ -65,8 +68,6 @@ public class LoginAction extends ActionSupport implements SessionAware {
     @Override
     public void setSession(Map<String, Object> session) {
         this.session = session;
-
-
 
     }
 }

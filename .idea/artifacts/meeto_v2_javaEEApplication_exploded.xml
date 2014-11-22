@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="exploded-ear" name="meeto-v2:javaEEApplication exploded">
-    <output-path>$PROJECT_DIR$/out/artifacts/meeto_v2_javaEEApplication_exploded</output-path>
-    <root id="root">
-      <element id="javaee-facet-resources" facet="meeto-v2/javaeeApplication/javaEEApplication" />
-    </root>
-  </artifact>
-</component>

@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="web">
+  <artifact type="exploded-war" build-on-make="true" name="web">
     <output-path>$PROJECT_DIR$/out/artifacts/web</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="meeto-v2/web/Web" />
@@ -14,6 +14,7 @@
           <element id="library" level="project" name="asm-3.3" />
         </element>
       </element>
+      <element id="dir-copy" path="$PROJECT_DIR$/support" />
     </root>
   </artifact>
 </component>

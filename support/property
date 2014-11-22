@@ -6,6 +6,6 @@ tcpBackupServerPort=7002
 tcpBackupserverPortAux=7003
 udpPort=5432
 rmiServerip=10.0.0.1
-rmiServerPort1=1099
-rmiServerPort2=6001
+rmiServerPort1=6001
+rmiServerPort2=6002
 

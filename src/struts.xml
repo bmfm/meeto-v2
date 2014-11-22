@@ -13,14 +13,14 @@
             <result>/index.jsp</result>
         </action>
 
-        <action name="login.action" class="pt.uc.dei.actions.LoginAction" method="execute">
-            <result name="success">/main.jsp</result>
+        <action name="login" class="pt.uc.dei.actions.LoginAction">
+            <result name="success">main.jsp</result>
             <result name="error">login.jsp</result>
         </action>
 
-        <action name="register" class="pt.uc.dei.actions.RegisterAction" method="execute">
+        <action name="register" class="pt.uc.dei.actions.RegisterAction">
             <result name="success">/login.jsp</result>
-            <result name="error">register.jsp</result>
+            <result name="error">/register.jsp</result>
         </action>
     </package>
 </struts>

@@ -1,18 +1,17 @@
 package pt.uc.dei.models;
 
-import com.opensymphony.xwork2.ActionSupport;
-import org.apache.struts2.interceptor.SessionAware;
+
 import pt.uc.dei.rmi_server.RmiInterface;
 import pt.uc.dei.tcp_server.Message;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.rmi.AccessException;
+
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.util.Map;
+
 import java.util.Properties;
 
 /**

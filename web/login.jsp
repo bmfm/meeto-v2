@@ -23,13 +23,13 @@ pageEncoding="ISO-8859-1" %>
 
 <div class="container">
 
-    <s:form action="login.action" method="post" cssClass="form-signin" focusElement="user" >
+    <s:form class="form-signin" method="post" action="login">
         <h2 class="form-signin-heading">Please sign in</h2>
-        <s:textfield id="user" name="userName" cssClass="form-control" placeholder="Username" required="true"/>
-        <s:password name="password" cssClass="form-control" placeholder="Password" required="true"/>
+        <input type="text" name="userName" class="form-control" placeholder="Username" required autofocus>
+        <input type="password" name="password" class="form-control" placeholder="Password" required>
 
         <!-- stupid data-loading-text isn't working... -->
-        <s:submit cssClass="btn btn-lg btn-primary btn-block" type="submit">Sign in</s:submit>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         <button class="btn btn-default btn-lg btn-block" type="button" onClick="window.history.back()">Back</button>
     </s:form>
 

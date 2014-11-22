@@ -4,6 +4,9 @@
     <entry_points version="2.0" />
   </component>
   <component name="IdProvider" IDEtalkID="CE32E479759CD6392B0917F90C6987B3" />
+  <component name="ProjectResources">
+    <resource url="cenas" location="$PROJECT_DIR$/src/log4j.dtd" />
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
