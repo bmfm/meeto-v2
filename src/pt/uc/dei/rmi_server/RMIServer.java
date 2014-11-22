@@ -296,7 +296,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         //modificar o name do item
         if (mensagem.dataint2 == 1) {
 
-            if ((sql.doUpdate("UPDATE item SET name='" + mensagem.data + "' where iditem='" + mensagem.dataint + "")) == 1) {
+            if ((sql.doUpdate("UPDATE item SET name='" + mensagem.data + "' where iditem='" + mensagem.dataint + "'")) == 1) {
                 mensagem.result = true;
 
             }

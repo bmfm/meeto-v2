@@ -167,11 +167,13 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+        //TODO voltar a forcar o bind no 10.0.0.1 -> meter o "ip" a seguir ao "100". Verificar properties file
         InetAddress ip = InetAddress.getByName(props.getProperty("tcpip1"));
-        listenMainSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPort")), 100, ip);
+        listenMainSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPort")), 100);
         System.out.println("TCP Server ready! Main socket à escuta no porto " + props.getProperty("tcpServerPort"));
         System.out.println("LISTEN SOCKET=" + listenMainSocket);
-        listenAuxSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPortAux")), 100, ip);
+        listenAuxSocket = new ServerSocket(Integer.parseInt(props.getProperty("tcpServerPortAux")), 100);
         System.out.println("TCP Server ready! Secondary socket à escuta no porto " + props.getProperty("tcpServerPortAux"));
         System.out.println("LISTEN SOCKET=" + listenAuxSocket);
 

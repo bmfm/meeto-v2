@@ -17,7 +17,7 @@
 
         } else {
             alert("Invalid access. Please log in.");
-            window.location.replace("login.html");
+            window.location.replace("login.jsp");
 
         }
     </script>
@@ -104,7 +104,7 @@
 </div>
 
 
-<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/functionsjquery.js"></script>
 

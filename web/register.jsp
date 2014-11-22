@@ -1,37 +1,38 @@
-<!DOCTYPE html>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+pageEncoding="ISO-8859-1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <meta name="author" content="">
-
+    <meta name="author" content="Bruno Martins">
     <link href="css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="css/font-awesome.min.css" rel="stylesheet" media="screen">
-
+    <link href="css/style.css" rel="stylesheet" media="screen">
     <link href="css/signin.css" rel="stylesheet">
-    <title>Log in</title>
+    <title>Register</title>
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
+
 </head>
 
 <body>
 
 <div class="container">
 
-    <form class="form-signin" method="post" action="login.action">
-        <h2 class="form-signin-heading">Please sign in</h2>
+    <form class="form-signin" action="register.action" method="post">
+        <h2 class="form-signin-heading">Please register</h2>
         <input type="text" name="userName" class="form-control" placeholder="Username" required autofocus>
         <input type="password" name="passWord" class="form-control" placeholder="Password" required>
+        <input type="password" name="repeatpassWord" class="form-control" placeholder="Repeat password" required>
+        <input type="text" name="mail" class="form-control" placeholder="E-mail" required>
 
-        <!-- stupid data-loading-text isn't working... -->
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+        <button class="btn btn-lg btn-primary btn-block" data-loading-text="Loading..." type="submit">Register</button>
         <button class="btn btn-default btn-lg btn-block" type="button" onClick="window.history.back()">Back</button>
+
     </form>
 
 </div>
@@ -42,7 +43,7 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.js"></script>
+<script src="/js/jquery.js"></script>
+<script src="/js/bootstrap.js"></script>
 </body>
 </html>
