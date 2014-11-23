@@ -4,8 +4,8 @@ package pt.uc.dei.models;
 import pt.uc.dei.rmi_server.RmiInterface;
 import pt.uc.dei.tcp_server.Message;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import javax.servlet.ServletContext;
+import java.io.*;
 
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
@@ -27,19 +27,26 @@ public class LoginBean {
 
         try {
 
+
             Properties props = new Properties();
 
-            try {
-                props.load(new FileInputStream("support/property"));
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            //${pageContext.request.contextPath}
 
-            System.getProperties().put("java.security.policy", "support/policy.all");
+
+
+
+            props.load(new FileInputStream("property"));
+
+
+            System.getProperties().put("java.security.policy", "policy.all");
             System.setSecurityManager(new RMISecurityManager());
 
-            //funciona apenas com lookup(core) mas torna-se um problema se o o cliente se tentar ligar ao servidor de backup
+
             RmiInterface c = (RmiInterface) LocateRegistry.getRegistry(props.getProperty("rmiServerip"), Integer.parseInt(props.getProperty("rmiServerPort1"))).lookup("rmi://" + props.getProperty("rmiServerip") + "/core");
+
+            System.out.println(userName);
+            System.out.println(password);
+
 
             Message mensagem = new Message(userName, password, null, "log");
             mensagem = c.login(mensagem);
@@ -47,12 +54,13 @@ public class LoginBean {
             return mensagem.result;
 
 
-        } catch (RemoteException | NotBoundException e) {
+
+
+        } catch (NotBoundException | IOException e) {
             e.printStackTrace();
+            return null;
         }
 
-
-        return null;
     }
 
 

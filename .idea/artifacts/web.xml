@@ -14,7 +14,6 @@
           <element id="library" level="project" name="asm-3.3" />
         </element>
       </element>
-      <element id="dir-copy" path="$PROJECT_DIR$/support" />
     </root>
   </artifact>
 </component>
