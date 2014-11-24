@@ -5,6 +5,7 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
 import pt.uc.dei.models.LoginBean;
 
+import java.rmi.RemoteException;
 import java.util.Map;
 
 /**
@@ -13,26 +14,26 @@ import java.util.Map;
 public class LoginAction extends ActionSupport implements SessionAware {
 
     private static final long serialVersionUID = 4L;
-
+    Boolean outcome;
     private String userName=null;
     private String password=null;
-
-
-
     private Map<String, Object> session;
 
 
     public String execute() {
 
-        Boolean outcome;
 
         LoginBean loginBean = new LoginBean();
 
         this.getLoginBean().setPassword(password);
         this.getLoginBean().setUserName(userName);
 
+        try {
+            outcome = loginBean.validate(userName, password);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
-        outcome = loginBean.validate(userName, password);
         if (outcome){
 
             session.put("username", userName);
@@ -51,7 +52,11 @@ public class LoginAction extends ActionSupport implements SessionAware {
         return SUCCESS;
     }
 
-    public String logout() {
+    public String logout() throws RemoteException {
+
+        LoginBean loginBean = new LoginBean();
+
+        outcome = loginBean.logout((String) session.get("username"));
 
         ServletActionContext.getRequest().getSession().invalidate();
 
