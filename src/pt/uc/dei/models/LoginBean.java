@@ -17,7 +17,7 @@ public class LoginBean {
     private UtilityBean utility = new UtilityBean();
 
 
-    public Boolean validate(String userName, String password) throws RemoteException {
+    public Boolean validate() throws RemoteException {
 
 
         RmiInterface c = utility.connectoToRmiServer();

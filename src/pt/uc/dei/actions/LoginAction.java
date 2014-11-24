@@ -23,13 +23,13 @@ public class LoginAction extends ActionSupport implements SessionAware {
     public String execute() {
 
 
-        LoginBean loginBean = new LoginBean();
+        //LoginBean loginBean = new LoginBean();
 
         this.getLoginBean().setPassword(password);
         this.getLoginBean().setUserName(userName);
 
         try {
-            outcome = loginBean.validate(userName, password);
+            outcome = this.getLoginBean().validate();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -53,6 +53,8 @@ public class LoginAction extends ActionSupport implements SessionAware {
     }
 
     public String logout() throws RemoteException {
+
+        //TODO mudar o método de logout do bean para não receber nada. estabelecer o username do bean com o setUsername usado em cima
 
         LoginBean loginBean = new LoginBean();
 
