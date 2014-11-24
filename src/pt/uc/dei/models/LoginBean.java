@@ -4,14 +4,11 @@ package pt.uc.dei.models;
 import pt.uc.dei.rmi_server.RmiInterface;
 import pt.uc.dei.tcp_server.Message;
 
-import javax.servlet.ServletContext;
-import java.io.*;
-
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
-import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-
 import java.util.Properties;
 
 /**
@@ -31,9 +28,6 @@ public class LoginBean {
             Properties props = new Properties();
 
             //${pageContext.request.contextPath}
-
-
-
 
             props.load(new FileInputStream("property"));
 

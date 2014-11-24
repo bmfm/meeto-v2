@@ -7,20 +7,56 @@
 
     <package name="pt.uc.dei" extends="struts-default">
 
+        <interceptors>
+            <interceptor class="pt.uc.dei.interceptors.AuthenticationInterceptor" name="authInterceptor"/>
+
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="authInterceptor"/>
+                <interceptor-ref name="defaultStack"/>
+
+            </interceptor-stack>
+        </interceptors>
+
+
         <default-action-ref name="index"/>
+
+        <global-results>
+
+            <result name="loginRedirect" type="redirect">login.jsp</result>
+        </global-results>
+
+        <!--<action name="main">
+            <result>main.jsp</result>
+        </action>-->
 
         <action name="index">
             <result>/index.jsp</result>
         </action>
 
-        <action name="login" class="pt.uc.dei.actions.LoginAction">
-            <result name="success">main.jsp</result>
+        <action name="loginUser" class="pt.uc.dei.actions.LoginAction">
+            <!--<interceptor-ref name="defaultStack"/>-->
+            <result name="success" type="redirectAction">home</result>
+            <result name="login">login.jsp</result>
             <result name="error">login.jsp</result>
         </action>
+
+        <!-- home link action -->
+        <action name="home" class="pt.uc.dei.actions.LoginAction" method="home">
+            <interceptor-ref name="authStack"/>
+            <result name="login">login.jsp</result>
+            <result name="success">main.jsp</result>
+        </action>
+
 
         <action name="register" class="pt.uc.dei.actions.RegisterAction">
             <result name="success">/login.jsp</result>
             <result name="error">/register.jsp</result>
         </action>
+
+        <action name="logout" class="pt.uc.dei.actions.LoginAction" method="logout">
+            <result>login.jsp</result>
+
+        </action>
+
     </package>
 </struts>

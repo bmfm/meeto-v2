@@ -17,6 +17,10 @@
         </init-param>
     </filter>
 
+    <session-config>
+        <session-timeout>5</session-timeout>
+    </session-config>
+
     <filter-mapping>
         <filter-name>struts2</filter-name>
         <url-pattern>/*</url-pattern>

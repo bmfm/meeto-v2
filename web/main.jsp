@@ -1,9 +1,13 @@
-<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+         pageEncoding="ISO-8859-1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta charset="utf-8">
+
     <title>IDEABroker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -11,7 +15,7 @@
     <link href="css/bootstrap.css" rel="stylesheet" media="screen">
 
 
-    <script language="javascript" type="text/javascript">
+    <%--<script language="javascript" type="text/javascript">
         <%Boolean logged = (Boolean) session.getAttribute("logged_in");%>
         if (<%=logged%>) {
 
@@ -20,7 +24,7 @@
             window.location.replace("login.jsp");
 
         }
-    </script>
+    </script>--%>
 
 </head>
 
@@ -47,10 +51,9 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <%String user = (String) session.getAttribute("user");%>
 
-
-                            <p class="navbar-text">Logged in as <a id="portfolio" href="#" class="navbar-link"><%=user%>
+                            <p class="navbar-text">Logged in as ${session.username} <a id="portfolio" href="#"
+                                                                                       class="navbar-link">
                             </a></p>
                         </li>
                         <li>
@@ -67,7 +70,7 @@
 
 
                         <li>
-                            <p class="navbar-text"><a href="/ProjectSD2/LogoutServlet" class="navbar-link">Logout</a>
+                            <p class="navbar-text"><a href="<s:url action="logout"/>" class="navbar-link">Logout</a>
                             </p>
                         </li>
                         <li>

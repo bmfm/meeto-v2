@@ -1,6 +1,7 @@
 package pt.uc.dei.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
 import pt.uc.dei.models.LoginBean;
 
@@ -39,9 +40,22 @@ public class LoginAction extends ActionSupport implements SessionAware {
 
 
             return SUCCESS;
+
         }
         else return ERROR;
 
+
+    }
+
+    public String home() {
+        return SUCCESS;
+    }
+
+    public String logout() {
+
+        ServletActionContext.getRequest().getSession().invalidate();
+
+        return SUCCESS;
 
     }
 
