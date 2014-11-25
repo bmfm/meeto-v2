@@ -22,18 +22,18 @@ pageEncoding="ISO-8859-1" %>
 
 <div class="container">
 
-    <form class="form-signin" action="register.action" method="post">
+    <s:form cssClass="form-signin" action="register" method="post">
         <h2 class="form-signin-heading">Please register</h2>
         <input type="text" name="userName" class="form-control" placeholder="Username" required autofocus>
-        <input type="password" name="passWord" class="form-control" placeholder="Password" required>
-        <input type="password" name="repeatpassWord" class="form-control" placeholder="Repeat password" required>
+        <input type="password" name="password" class="form-control" placeholder="Password" required>
+        <input type="password" name="repeatpassword" class="form-control" placeholder="Repeat password" required>
         <input type="text" name="mail" class="form-control" placeholder="E-mail" required>
 
 
         <button class="btn btn-lg btn-primary btn-block" data-loading-text="Loading..." type="submit">Register</button>
         <button class="btn btn-default btn-lg btn-block" type="button" onClick="window.history.back()">Back</button>
 
-    </form>
+    </s:form>
 
 </div>
 <!-- /container -->
@@ -43,7 +43,7 @@ pageEncoding="ISO-8859-1" %>
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 
-<script src="/js/jquery.js"></script>
-<script src="/js/bootstrap.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.js" type="javascript"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.js" type="javascript"></script>
 </body>
 </html>

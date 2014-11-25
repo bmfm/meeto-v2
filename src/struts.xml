@@ -49,8 +49,8 @@
 
 
         <action name="register" class="pt.uc.dei.actions.RegisterAction">
-            <result name="success">/login.jsp</result>
-            <result name="error">/register.jsp</result>
+            <result name="success">login.jsp</result>
+            <result name="error">register.jsp</result>
         </action>
 
         <action name="logout" class="pt.uc.dei.actions.LoginAction" method="logout">
