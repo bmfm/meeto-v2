@@ -17,6 +17,22 @@ public class RegisterAction extends ActionSupport {
     private String repeatpassword = null;
     private String mail = null;
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public void setRepeatpassword(String repeatpassword) {
+        this.repeatpassword = repeatpassword;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String execute() {
 
         RegisterBean regBean = new RegisterBean();
@@ -38,7 +54,7 @@ public class RegisterAction extends ActionSupport {
 
         if (outcome) {
 
-            return SUCCESS;
+            return LOGIN;
 
         } else return ERROR;
 

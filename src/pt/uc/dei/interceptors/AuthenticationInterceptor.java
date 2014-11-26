@@ -16,6 +16,7 @@ public class AuthenticationInterceptor extends AbstractInterceptor {
 
         String user = (String) session.get("username");
 
+
         if (user == null) {
             return Action.LOGIN;
         } else {
