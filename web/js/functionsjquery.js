@@ -1,10 +1,18 @@
-$('document').ready(function () {
+$(function () {
+    $('#datetimepicker1').datetimepicker({
+        format: 'dd-MM-yyyy hh:mm:ss',
+        language: 'pt-BR'
+    });
+});
+
+
+$(function () {
     $('#menuCreateMeeting').click(function () {
         $('#pagecontainer').load('create_meeting.jsp');
     });
 });
 
-$('document').ready(function () {
+$(function () {
 
     $('#menuListMeetings').click(function () {
         $('#pagecontainer').load('pending_invitations.jsp');
@@ -12,14 +20,14 @@ $('document').ready(function () {
 
 });
 
-$('document').ready(function () {
+$(function () {
     $('#itemShares').click(function () {
         $('#pagecontainer').load('SharesServlet?optionshares=1');
     });
 
 });
 
-$('document').ready(function () {
+$(function () {
     $('#itemTransactions').click(function () {
         $.get("TransactionsServlet", function (data) {
             $('#pagecontainer').html(data.replace(/\n/g, "<br>"));
@@ -36,21 +44,21 @@ $('document').ready(function () {
     });
 });
 
-$('document').ready(function () {
+$(function () {
     $('#portfolio').click(function () {
         $('#pagecontainer').load('PortfolioServlet?');
     });
 });
 
 //mudar para hall of fame
-$('document').ready(function () {
+$(function () {
     $('#itemHallofFame').click(function () {
         $('#pagecontainer').load('HallofFameServlet?');
     });
 });
 
 // root - comprar x ideia
-$('document').ready(function () {
+$(function () {
     $('#buyallbtn').click(function () {
 
         alert("Entrou no jquery");

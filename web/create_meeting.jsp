@@ -3,11 +3,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
-
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -15,29 +13,31 @@
 
     <link href="css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="css/font-awesome.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 
-    <title>topics</title>
+
+    <title>meetings</title>
 
 
 <body>
 <div class="container">
     <div class="row clearfix">
-        <div class="col-md-12 column">
+        <div class="col-md-9 column">
 
-            <div class="col-md-6">
-                <form class="form-search" role="search">
-                    <div class="input-group">
-                        <input type="text" id="topicfield" class="form-control">
-                            <span class="input-group-btn">
-                            <button type="button" id="submitsearch" class="btn btn-default"><i
-                                    class="glyphicon glyphicon-search"></i></button>
-                            </span>
-                    </div>
-                </form>
+            <div class="col-md-5">
+                <div id="datetimepicker1" class="input-append date">
+                    <label>
+                        <input type="text">
+                    </label>
+                      <span class="add">
+                        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                      </span>
+                </div>
+
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
 
-                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
                     Add topic
                 </button>
                 <!-- Modal -->
@@ -87,16 +87,18 @@
     <p>&nbsp;</p>
 
     <div class="row clearfix">
-        <div class="col-md-12 column" id="topicspagecontainer">
+        <div class="col-md-9 column" id="topicspagecontainer">
 
 
         </div>
     </div>
 </div>
 
+<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="js/functionsjquery.js"></script>
 <script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/bootstrap.js"></script>
-<script type="text/javascript" src="js/topicsjquery.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
 
 </body>
 </html>

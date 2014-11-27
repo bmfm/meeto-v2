@@ -8,23 +8,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-    <title>IDEABroker</title>
+    <title>Meeto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
     <link href="css/bootstrap.css" rel="stylesheet" media="screen">
 
-
-    <%--<script language="javascript" type="text/javascript">
-        <%Boolean logged = (Boolean) session.getAttribute("logged_in");%>
-        if (<%=logged%>) {
-
-        } else {
-            alert("Invalid access. Please log in.");
-            window.location.replace("login.jsp");
-
-        }
-    </script>--%>
 
 </head>
 
