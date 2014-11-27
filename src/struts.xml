@@ -22,7 +22,6 @@
         <default-action-ref name="index"/>
 
 
-
         <action name="index">
             <result>/index.jsp</result>
         </action>
@@ -38,7 +37,7 @@
         <!-- home link action -->
         <action name="home" class="pt.uc.dei.actions.LoginAction" method="home">
 
-        <result name="login">login.jsp</result>
+            <result name="login">login.jsp</result>
             <result name="success">main.jsp</result>
         </action>
 

@@ -44,7 +44,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
 
-                        <li><a href="<%=session.getAttribute("fbURL")%>" id="fbloginlabel">Facebook login</a></li>
+                        <%--<li><a href="<%=session.getAttribute("fbURL")%>" id="fbloginlabel">Facebook login</a></li>--%>
 
 
                     </ul>
@@ -56,18 +56,6 @@
                                                                                        class="navbar-link">
                             </a></p>
                         </li>
-                        <li>
-                            <%--(String) session.getAttribute("cash") didn't work here...wtf.--%>
-                            <%String cash = String.valueOf(session.getAttribute("cash"));%>
-                            <p class="navbar-text"><a id="coins"><%=cash%> DEIcoins</a></p>
-
-                        </li>
-                        <li>
-                            <p class="navbar-text"><a id="refreshCoins" href="#" class="navbar-link">Refresh Coins</a>
-                            </p>
-
-                        </li>
-
 
                         <li>
                             <p class="navbar-text"><a href="<s:url action="logout"/>" class="navbar-link">Logout</a>
@@ -85,21 +73,61 @@
         </div>
     </div>
     <div class="row clearfix">
-        <div class="col-md-2 column">
-            <div class="tabbable">
-                <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a id="itemTopics" href="#" data-toggle="tab">Topics</a></li>
-                    <li><a id="itemIdeas" href="#" data-toggle="tab">Ideas</a></li>
-                    <li><a id="itemShares" href="#" data-toggle="tab">Shares</a></li>
-                    <li><a id="itemTransactions" href="#" data-toggle="tab">Transactions</a></li>
-                    <li><a id="itemHallofFame" href="#" data-toggle="tab">Hall of Fame</a></li>
-                    <li><a id="itemNotifications" href="#" data-toggle="tab">Notifications</a></li>
+        <div class="col-md-3 column">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Menu</h3>
+                </div>
+                <div class="panel-body">
 
-                </ul>
+                    <div class="tabbable">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li class="active"><a id="menuCreateMeeting" href="#" data-toggle="tab">Create Meeting</a>
+                            </li>
+                            <li><a id="menuListMeetings" href="#" data-toggle="tab">List meetings</a></li>
+                            <li><a id="menuPendingInvitations" href="#" data-toggle="tab">Pending Invitations</a></li>
+                            <li><a id="menuJoinMeeting" href="#" data-toggle="tab">Join meeting</a></li>
+
+
+                        </ul>
+                    </div>
+                </div>
             </div>
+
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Notification Area</h3>
+                </div>
+                <div class="panel-body">
+
+                    <div class="tabbable">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Users Online</h3>
+                </div>
+                <div class="panel-body">
+
+                    <div class="tabbable">
+
+                    </div>
+                </div>
+            </div>
+
+
         </div>
-        <div class="col-md-10 column" id="pagecontainer">
-            Welcome! Please select one of the options on the left.
+
+        <div class="col-md-9 column" id="pagecontainer">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    Welcome! Please select one of the options on the left.
+                </div>
+            </div>
 
 
         </div>

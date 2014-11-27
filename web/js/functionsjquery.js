@@ -1,13 +1,13 @@
 $('document').ready(function () {
-    $('#itemTopics').click(function () {
-        $('#pagecontainer').load('topics.jsp');
+    $('#menuCreateMeeting').click(function () {
+        $('#pagecontainer').load('create_meeting.jsp');
     });
 });
 
 $('document').ready(function () {
 
-    $('#itemIdeas').click(function () {
-        $('#pagecontainer').load('IdeasServlet?optionideas=1');
+    $('#menuListMeetings').click(function () {
+        $('#pagecontainer').load('pending_invitations.jsp');
     });
 
 });
