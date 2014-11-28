@@ -1,14 +1,15 @@
-
-
+//open create meeting jsp
 $(function () {
     $('#menuCreateMeeting').click(function () {
         $('#pagecontainer').load('create_meeting.jsp');
     });
 });
 
+
+//set datetimepicker preferenes
 $(function () {
     $(".form_datetime").datetimepicker({
-        format: "dd MM yyyy - hh:ii",
+        format: "yyyy-MM-dd hh:ii",
         weekStart: 1,
         todayBtn: 1,
         autoclose: 1,
@@ -18,6 +19,20 @@ $(function () {
 
     });
 });
+/*
+ $(function(){
+ $('#submitMeetingBtn').click(function(){
+ $.ajax({
+ dataType: 'html',
+ success: function (html) {
+ $('#pagecontainer').html(html); //set result.jsp output to leftDiv
+ }
+
+ });
+ });
+ })*/
+
+
 
 $(function () {
 

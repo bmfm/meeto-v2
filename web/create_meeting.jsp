@@ -29,13 +29,15 @@
 
                 <s:form role="form" class="col-md-8" action="createMeeting">
                     <div class="form-group">
-                        <label for="meetingTitle">Meeting Title</label><input class="form-control" id="meetingTitle"
-                                                                              type="text"/>
+                        <label for="meetingTitle">Meeting Title</label><input class="form-control" name="meetingTitle"
+                                                                              id="meetingTitle"
+                                                                              type="text" required/>
                     </div>
                     <div class="form-group">
                         <label for="desiredOutcome">Desired Outcome</label><textarea class="form-control"
+                                                                                     name="desiredOutcome"
                                                                                      id="desiredOutcome" rows="3"
-                                                                                     cols="3"></textarea>
+                                                                                     cols="3" required></textarea>
                     </div>
 
                     <div class="form-group">
@@ -43,15 +45,16 @@
                         <div class="input-group date form_datetime" data-date="2014-12-25T10:00:07Z"
                              data-date-format="dd-MM-yyyy HH:ii p" data-link-field="dtp_input1">
 
-                            <input class="form-control" type="text" id="datetime" value="" readonly>
+                            <input class="form-control" type="text" id="datetime" value="" readonly required>
 
 
                             <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                         </div>
-                        <input type="hidden" id="dtp_input1" value=""/><br/>
+                        <input type="hidden" name="datetime" id="dtp_input1" value=""/><br/>
                     </div>
                     <div class="form-group">
-                        <label for="location">Location</label><input class="form-control" id="location" type="text"/>
+                        <label for="location">Location</label><input class="form-control" name="location" id="location"
+                                                                     type="text" required/>
                     </div>
                     <div class="form-group">
                         <label>Members</label>
@@ -67,15 +70,28 @@
                         </p>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" id="submitMeetingBtn" class="btn btn-primary">Submit</button>
                 </s:form>
+                <p>&nbsp;</p>
+
+                <s:if test="hasActionMessages()">
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span
+                                class="sr-only">Close</span></button>
+                        <strong>Success!</strong> <s:actionmessage/>
+                    </div>
+                </s:if>
+
+                <s:if test="hasActionErrors()">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span
+                                class="sr-only">Close</span></button>
+                        <strong>Error!</strong> <s:actionerror/>
+                    </div>
+                </s:if>
 
 
-                <%--<script type="text/javascript">
-                    $(".form_datetime").datetimepicker({
-                        format: "dd MM yyyy - hh:ii"
-                    });
-                </script>--%>
+
                 <%-- <div class="col-md-4">
 
                      <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">

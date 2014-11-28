@@ -15,15 +15,13 @@ public class LoginAction extends ActionSupport implements SessionAware {
 
     private static final long serialVersionUID = 4L;
     Boolean outcome;
-    private String userName=null;
-    private String password=null;
+    private String userName = null;
+    private String password = null;
     private Map<String, Object> session;
 
 
     public String execute() {
 
-
-        //LoginBean loginBean = new LoginBean();
 
         this.getLoginBean().setPassword(password);
         this.getLoginBean().setUserName(userName);
@@ -34,7 +32,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
             e.printStackTrace();
         }
 
-        if (outcome){
+        if (outcome) {
 
             session.put("username", userName);
             session.put("loggedin", true); // this marks the user as logged in
@@ -42,8 +40,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
 
             return SUCCESS;
 
-        }
-        else return ERROR;
+        } else return ERROR;
 
 
     }
@@ -67,7 +64,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
     }
 
     public LoginBean getLoginBean() {
-        if(!session.containsKey("loginBean"))
+        if (!session.containsKey("loginBean"))
             this.setLoginBean(new LoginBean());
         return (LoginBean) session.get("loginBean");
     }

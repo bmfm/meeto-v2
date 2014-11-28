@@ -41,10 +41,9 @@
             <result name="success">main.jsp</result>
         </action>
 
-        <action name="createMeeting" class="pt.uc.dei.actions.MeetingAction" method="createMeeting">
+        <action name="createMeeting" class="pt.uc.dei.actions.MeetingAction">
 
-            <result name="error">login.jsp</result>
-            <result name="success" type="redirect">main.jsp</result>
+            <result name="success">create_meeting.jsp</result>
         </action>
 
 
