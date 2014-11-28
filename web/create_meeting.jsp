@@ -6,84 +6,129 @@
 <html lang="en">
 <head>
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>meetings</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
 
     <link href="css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="css/font-awesome.min.css" rel="stylesheet" media="screen">
-    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
 
 
-    <title>meetings</title>
+</head>
 
 
 <body>
-<div class="container">
-    <div class="row clearfix">
-        <div class="col-md-9 column">
 
-            <div class="col-md-5">
-                <div id="datetimepicker1" class="input-append date">
-                    <label>
-                        <input type="text">
-                    </label>
-                      <span class="add">
-                        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-                      </span>
-                </div>
+<div class="row clearfix">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="col-md-9 column">
 
-            </div>
-            <div class="col-md-4">
 
-            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                    Add topic
-                </button>
-                <!-- Modal -->
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"
-                                        aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">Please insert new topic</h4>
-                            </div>
-                            <div class="modal-body">
-
-                                <form role="form" method="post" action="/ProjectSD2/TopicsServlet">
-                                    <div class="form-group">
-                                        <label for="topic">Topic</label>
-                                        <input type="text" class="form-control" id="topic" name="newtopic"
-                                               maxlength="50" placeholder="Enter new topic">
-                                    </div>
-
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </form>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-                            </div>
-                        </div>
-                        <!-- /.modal-content -->
+                <form role="form" class="col-md-8" action="createMeeting">
+                    <div class="form-group">
+                        <label for="meetingTitle">Meeting Title</label><input class="form-control" id="meetingTitle"
+                                                                              type="text"/>
                     </div>
-                    <!-- /.modal-dialog -->
-                </div>
-                <!-- /.modal -->
+                    <div class="form-group">
+                        <label for="desiredOutcome">Desired Outcome</label><textarea class="form-control"
+                                                                                     id="desiredOutcome" rows="3"
+                                                                                     cols="3"></textarea>
+                    </div>
 
-                <button class="btn btn-primary" id="listalltopics">
-                    List All
-                </button>
+                    <div class="form-group">
+
+                        <div class="input-group date form_datetime" data-date="2014-12-25T10:00:07Z"
+                             data-date-format="dd-MM-yyyy HH:ii p" data-link-field="dtp_input1">
+
+                            <input class="form-control" type="text" id="datetime" value="" readonly>
+
+
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                        </div>
+                        <input type="hidden" id="dtp_input1" value=""/><br/>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label><input class="form-control" id="location" type="text"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Members</label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="inlineCheckbox1" value="option1"> bruno
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="inlineCheckbox2" value="option2"> catarina
+                        </label>
+
+                        <p class="help-block">
+                            Select members to invite
+                        </p>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+
+
+                <%--<script type="text/javascript">
+                    $(".form_datetime").datetimepicker({
+                        format: "dd MM yyyy - hh:ii"
+                    });
+                </script>--%>
+                <%-- <div class="col-md-4">
+
+                     <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                         Add topic
+                     </button>
+                     <!-- Modal -->
+                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                          aria-hidden="true">
+                         <div class="modal-dialog">
+                             <div class="modal-content">
+                                 <div class="modal-header">
+                                     <button type="button" class="close" data-dismiss="modal"
+                                             aria-hidden="true">&times;</button>
+                                     <h4 class="modal-title" id="myModalLabel">Please insert new topic</h4>
+                                 </div>
+                                 <div class="modal-body">
+
+                                     <form role="form" method="post" action="/ProjectSD2/TopicsServlet">
+                                         <div class="form-group">
+                                             <label for="topic">Topic</label>
+                                             <input type="text" class="form-control" id="topic" name="newtopic"
+                                                    maxlength="50" placeholder="Enter new topic">
+                                         </div>
+
+                                         <button type="submit" class="btn btn-primary">Submit</button>
+                                     </form>
+
+                                 </div>
+                                 <div class="modal-footer">
+                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                                 </div>
+                             </div>
+                             <!-- /.modal-content -->
+                         </div>
+                         <!-- /.modal-dialog -->
+                     </div>
+                     <!-- /.modal -->
+
+                     <button class="btn btn-primary" id="listalltopics">
+                         List All
+                     </button>
+
+
+                 </div>--%>
 
 
             </div>
-
-
         </div>
     </div>
+
+
+</div>
     <p>&nbsp;</p>
 
     <div class="row clearfix">
@@ -92,12 +137,12 @@
 
         </div>
     </div>
-</div>
 
-<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript" src="js/functionsjquery.js"></script>
+
 <script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/functionsjquery.js"></script>
+<script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script>
 
 
 </body>

@@ -1,14 +1,21 @@
-$(function () {
-    $('#datetimepicker1').datetimepicker({
-        format: 'dd-MM-yyyy hh:mm:ss',
-        language: 'pt-BR'
-    });
-});
 
 
 $(function () {
     $('#menuCreateMeeting').click(function () {
         $('#pagecontainer').load('create_meeting.jsp');
+    });
+});
+
+$(function () {
+    $(".form_datetime").datetimepicker({
+        format: "dd MM yyyy - hh:ii",
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0
+
     });
 });
 
@@ -36,7 +43,7 @@ $(function () {
     });
 });
 
-$('document').ready(function () {
+$(function () {
     $('#refreshCoins').click(function () {
         $.get("MoneyServlet", function (data) {
             $("#coins").text(data + "DEIcoins");
@@ -86,7 +93,7 @@ $(function () {
 });
 
 
-$('document').ready(function () {
+$(function () {
     $('#itemNotifications').click(function () {
         $('#pagecontainer').load('notifications.jsp');
     });

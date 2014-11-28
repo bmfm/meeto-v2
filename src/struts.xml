@@ -41,6 +41,12 @@
             <result name="success">main.jsp</result>
         </action>
 
+        <action name="createMeeting" class="pt.uc.dei.actions.MeetingAction" method="createMeeting">
+
+            <result name="error">login.jsp</result>
+            <result name="success" type="redirect">main.jsp</result>
+        </action>
+
 
         <action name="register" class="pt.uc.dei.actions.RegisterAction">
             <interceptor-ref name="defaultStack"/>
