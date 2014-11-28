@@ -27,7 +27,7 @@
             <div class="col-md-9 column">
 
 
-                <form role="form" class="col-md-8" action="createMeeting">
+                <s:form role="form" class="col-md-8" action="createMeeting">
                     <div class="form-group">
                         <label for="meetingTitle">Meeting Title</label><input class="form-control" id="meetingTitle"
                                                                               type="text"/>
@@ -68,7 +68,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
+                </s:form>
 
 
                 <%--<script type="text/javascript">
