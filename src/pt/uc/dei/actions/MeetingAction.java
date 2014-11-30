@@ -14,11 +14,11 @@ import java.util.Map;
  * Created by bruno on 22/11/14.
  */
 public class MeetingAction extends ActionSupport implements SessionAware {
-
     private static final long serialVersionUID = 4L;
     public List<String> list;
     Boolean outcome;
     MeetingBean meetingBean = new MeetingBean();
+    private String req = null;
     private String checkboxes;
     private String meetingTitle = null;
     private Map<String, Object> session;
@@ -26,6 +26,14 @@ public class MeetingAction extends ActionSupport implements SessionAware {
     private String datetime = null;
     private String location = null;
     private String users = null;
+
+    public String getReq() {
+        return req;
+    }
+
+    public void setReq(String req) {
+        this.req = req;
+    }
 
     public List<String> getList() {
         return list;

@@ -32,6 +32,7 @@
                         <label for="meetingTitle">Meeting Title</label><input class="form-control" name="meetingTitle"
                                                                               id="meetingTitle"
                                                                               type="text" required/>
+                        <s:hidden name="req" value="createMeetingHidden"/>
                     </div>
                     <div class="form-group">
                         <label for="desiredOutcome">Desired Outcome</label><textarea class="form-control"
@@ -73,7 +74,9 @@
                         </p>
                     </div>
 
+
                     <button type="submit" id="submitMeetingBtn" class="btn btn-primary">Submit</button>
+
                 </s:form>
                 <p>&nbsp;</p>
 

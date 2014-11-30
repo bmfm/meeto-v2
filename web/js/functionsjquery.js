@@ -4,6 +4,7 @@ $(function () {
         $.ajax({
             url: 'openCreateMeeting',
             type: 'POST',
+
             dataType: 'html',
             success: function (html) {
                 $('#pagecontainer').html(html);

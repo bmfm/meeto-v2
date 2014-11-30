@@ -16,6 +16,7 @@ public class RegisterAction extends ActionSupport {
     private String password = null;
     private String repeatpassword = null;
     private String mail = null;
+    private String req;
 
     public void setUserName(String userName) {
         this.userName = userName;
@@ -61,5 +62,11 @@ public class RegisterAction extends ActionSupport {
 
     }
 
+    public String getReq() {
+        return req;
+    }
 
+    public void setReq(String req) {
+        this.req = req;
+    }
 }

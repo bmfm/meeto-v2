@@ -23,6 +23,7 @@ pageEncoding="ISO-8859-1" %>
 <div class="container">
 
     <s:form cssClass="form-signin" action="register" method="post">
+        <s:hidden name="req" value="register"/>
         <h2 class="form-signin-heading">Please register</h2>
         <input type="text" name="userName" class="form-control" placeholder="Username" required autofocus>
         <input type="password" name="password" class="form-control" placeholder="Password" required>
