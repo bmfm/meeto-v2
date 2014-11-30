@@ -75,7 +75,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         mensagem.dataint = msgid.iduser;
         int idmeeting = 0;
 
-        List<String> inviteeslist = Arrays.asList(mensagem.list.split(","));
+        List<String> inviteeslist = Arrays.asList(mensagem.list.split(" "));
         mensagem.result = false;
         if ((sql.doUpdate("INSERT INTO meeting (title,objective,date,location) VALUES ('" + mensagem.data + "','" + mensagem.desiredoutcome + "','" + mensagem.date + " " + mensagem.time + "','" + mensagem.location + "');")) == 1) {
 
@@ -484,7 +484,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     //listar todos menos o actual que está a fazer o pedido. Usado essencialmente aquando da criação da meeting
     public synchronized Message listMembers(Message mensagem) throws RemoteException {
 
-        mensagem.data = "ID User" + "\t\t" + "Name\n";
+        mensagem.data = "";
         ResultSet rs = sql.doQuery("select * from member where username NOT LIKE '" + mensagem.username + "'");
         try {
             while (rs.next()) {

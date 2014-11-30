@@ -58,11 +58,14 @@
                     </div>
                     <div class="form-group">
                         <label>Members</label>
+
+                            <%--<s:iterator value="list" status="status">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="checkboxes['%{#status.index}']" value="checkboxes['%{#status.index}']"> <s:property/>
+                            </label>
+                            </s:iterator>--%>
                         <label class="checkbox-inline">
-                            <input type="checkbox" id="inlineCheckbox1" value="option1"> bruno
-                        </label>
-                        <label class="checkbox-inline">
-                            <input type="checkbox" id="inlineCheckbox2" value="option2"> catarina
+                            <s:checkboxlist name="checkboxes" list="list"/>
                         </label>
 
                         <p class="help-block">
@@ -145,14 +148,6 @@
 
 
 </div>
-    <p>&nbsp;</p>
-
-    <div class="row clearfix">
-        <div class="col-md-9 column" id="topicspagecontainer">
-
-
-        </div>
-    </div>
 
 
 <script type="text/javascript" src="js/jquery.js"></script>

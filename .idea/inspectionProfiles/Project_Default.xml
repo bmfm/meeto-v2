@@ -5,7 +5,7 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="10">
+          <list size="13">
             <item index="0" class="java.lang.String" itemvalue="data-time-icon" />
             <item index="1" class="java.lang.String" itemvalue="data-date-icon" />
             <item index="2" class="java.lang.String" itemvalue="data-toggle" />
@@ -16,6 +16,9 @@
             <item index="7" class="java.lang.String" itemvalue="data-date" />
             <item index="8" class="java.lang.String" itemvalue="data-date-format" />
             <item index="9" class="java.lang.String" itemvalue="data-link-field" />
+            <item index="10" class="java.lang.String" itemvalue="required" />
+            <item index="11" class="java.lang.String" itemvalue="data-dismiss" />
+            <item index="12" class="java.lang.String" itemvalue="aria-hidden" />
           </list>
         </value>
       </option>

@@ -1,7 +1,17 @@
 //open create meeting jsp
 $(function () {
     $('#menuCreateMeeting').click(function () {
-        $('#pagecontainer').load('create_meeting.jsp');
+        $.ajax({
+            url: 'openCreateMeeting',
+            type: 'POST',
+            dataType: 'html',
+            success: function (html) {
+                $('#pagecontainer').html(html);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('An error occurred! ' + thrownError);
+            }
+        });
     });
 });
 

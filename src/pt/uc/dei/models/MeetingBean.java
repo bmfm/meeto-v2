@@ -4,6 +4,9 @@ import pt.uc.dei.rmi_server.RmiInterface;
 import pt.uc.dei.tcp_server.Message;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by brunomartins on 27/11/14.
@@ -15,8 +18,7 @@ public class MeetingBean {
     private String datetime;
     private String location;
     private String users;
-    private String time;
-    private String date;
+
     private UtilityBean utility = new UtilityBean();
     private String username;
 
@@ -46,7 +48,6 @@ public class MeetingBean {
 
     public Boolean createMeeting() throws RemoteException {
 
-        date = (datetime.split(" "))[1];
 
         RmiInterface c = utility.connectoToRmiServer();
 
@@ -56,10 +57,26 @@ public class MeetingBean {
         mensagem.date = (datetime.split(" "))[0];
         mensagem.time = (datetime.split(" "))[1];
         mensagem.data = meetingTitle;
-        //TODO receber e passar lsita de users como deve ser
-        mensagem.list = "1,2,3";
+        mensagem.list = users;
         mensagem = c.createMeeting(mensagem);
 
         return mensagem.result;
+    }
+
+    public List<String> getInviteeList() throws RemoteException {
+
+        List<String> l = new ArrayList<>();
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        Message mensagem = new Message(username, null, null, null);
+
+        mensagem = c.listMembers(mensagem);
+
+        String[] aux = mensagem.data.split("\n");
+
+        Collections.addAll(l, aux);
+
+        return l;
     }
 }
