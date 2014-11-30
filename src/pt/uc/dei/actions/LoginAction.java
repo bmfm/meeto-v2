@@ -18,6 +18,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
     private String userName = null;
     private String password = null;
     private Map<String, Object> session;
+    private String req;
 
 
     public String execute() {
@@ -57,6 +58,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
 
         outcome = loginBean.logout((String) session.get("username"));
 
+
         ServletActionContext.getRequest().getSession().invalidate();
 
         return SUCCESS;
@@ -87,6 +89,14 @@ public class LoginAction extends ActionSupport implements SessionAware {
     public void setSession(Map<String, Object> session) {
         this.session = session;
 
+    }
+
+    public String getReq() {
+        return req;
+    }
+
+    public void setReq(String req) {
+        this.req = req;
     }
 }
 

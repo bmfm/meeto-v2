@@ -37,17 +37,23 @@
         <!-- home link action -->
         <action name="home" class="pt.uc.dei.actions.LoginAction" method="home">
 
-        <result name="login">login.jsp</result>
+            <param name="req">toHome</param>
+
+            <result name="login">login.jsp</result>
             <result name="success">main.jsp</result>
         </action>
 
         <action name="createMeeting" class="pt.uc.dei.actions.MeetingAction">
 
-            <result name="success">openCreateMeeting.action</result>
+            <result name="success">main.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">main.jsp</result>
         </action>
 
         <action name="openCreateMeeting" class="pt.uc.dei.actions.MeetingAction" method="getInviteeList">
+            <param name="req">openCreateMeeting</param>
             <result name="success">create_meeting.jsp</result>
+            <result name="login">login.jsp</result>
 
         </action>
 
