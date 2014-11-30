@@ -105,13 +105,17 @@ public class Events extends Thread {
 
                     //enviar chat msg para pessoal que esta online
                     case (Message.ADDCHATMESSAGE):
-
-                        String aux = mensagemAux.data;
-                        mensagemAux.data = "[" + mensagemAux.getUsername() + "]:" + aux + "";
-                        sendOut(mensagemAux);
-
+                        String aux = msg.data;
+                        msg.data = "[" + msg.getUsername() + "]:" + aux + "";
+                        sendOut(msg);
                         break;
-
+                    case (Message.CHECKINVITATIONS):
+                        msg.data = "You've been invited to a meeting";
+                        sendOut(msg);
+                        break;
+                    case (Message.ADDCHATMESSAGE): // se for adicionada uma mensagem ao chat
+                        sendOut(msg);
+                        break;
                 }
 
 

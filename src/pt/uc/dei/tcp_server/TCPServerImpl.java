@@ -13,11 +13,10 @@ import java.util.Properties;
 public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
 
     //Hashtable que vai guardar a relação de users com as suas threads
-    private Hashtable<String, Events> membersonline = new Hashtable<>();
-    private volatile boolean master = false;
-
+    static Hashtable<String, Events> membersonline = new Hashtable<>();
     ServerSocket listenMainSocket;
     ServerSocket listenAuxSocket;
+    private volatile boolean master = false;
 
 
     public TCPServerImpl() throws RemoteException {
@@ -136,9 +135,11 @@ public class TCPServerImpl extends UnicastRemoteObject implements TCPServer {
             for (String u : usernames) {
 
                 Events threadEvent = membersonline.get(u);
-                threadEvent.putMsgIntoQueue(m);
-            }
+                if (threadEvent != null) {
+                    threadEvent.putMsgIntoQueue(m);
+                }
 
+            }
         }
 
     }

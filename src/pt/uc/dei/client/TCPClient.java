@@ -34,7 +34,7 @@ public class TCPClient {
         TCPClient client = new TCPClient();
         try {
 
-            embDB.startupEmbeddedDB();
+            //embDB.startupEmbeddedDB();
             client.startupClient();
 
         } catch (IOException e) {
@@ -772,6 +772,10 @@ class ReadData extends Thread {
                             System.out.println("One of the meetings you are attending has new messages. Please check it");
                         }
 
+                    }
+
+                    if (mensagemAux.getTipo().equalsIgnoreCase("checkinvitations")) {
+                        System.out.println(mensagemAux.data);
                     }
 
                     //if (mensagemAux.getTipo().equalsIgnoreCase("viewpendinginvitations")) {

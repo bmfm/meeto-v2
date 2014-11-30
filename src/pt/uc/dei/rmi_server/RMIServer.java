@@ -107,6 +107,19 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             }
 
             //TODO enviar mensagem para TCPSERVER
+
+            List<String> usersList = new ArrayList<>();
+            for (String user : inviteeslist) {
+                usersList.add(getUserById(user));
+            }
+            String[] usersArray = new String[usersList.size()];
+
+            try {
+                mensagem.setTipo("checkinvitations");
+                tcpServer.msgToMany(mensagem, usersList.toArray(usersArray));
+            } catch (NotMasterException e) {
+                e.printStackTrace();
+            }
             return mensagem;
 
 
@@ -115,6 +128,18 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         return mensagem;
     }
 
+
+    public synchronized String getUserById(String id) throws RemoteException {
+        ResultSet rs = sql.doQuery("SELECT username from member where idmember='" + id + "'");
+        try {
+            rs.next();
+            return rs.getString(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @Override
     public synchronized Message sendInvitations(Message mensagem) throws RemoteException {
@@ -332,6 +357,20 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
             mensagem.result = true;
             //tcpServer.msgToMany(mensagem, mensagem.data);
+            List<String> meetingMembers = Arrays.asList(getMeetingMembers(mensagem).data.split(" "));
+
+            List<String> usersList = new ArrayList<>();
+            for (String user : meetingMembers) {
+                usersList.add(getUserById(user));
+            }
+            String[] usersArray = new String[usersList.size()];
+
+            try {
+                mensagem.setTipo("addchatmessage");
+                tcpServer.msgToMany(mensagem, usersList.toArray(usersArray));
+            } catch (NotMasterException e) {
+                e.printStackTrace();
+            }
 
         }
 
@@ -479,6 +518,23 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         return mensagem;
 
 
+    }
+
+    // listar os membros de uma meeting
+    public synchronized Message getMeetingMembers(Message mensagem) throws RemoteException {
+        mensagem.data = "";
+        ResultSet rs = sql.doQuery("select * from meeting_member where idmeeting = '" + mensagem.dataint2 + "'");
+        try {
+            while (rs.next()) {
+                int idmember = rs.getInt("idmember");
+                mensagem.data += idmember + " " + "\n";
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return mensagem;
     }
 
     //listar todos menos o actual que está a fazer o pedido. Usado essencialmente aquando da criação da meeting
