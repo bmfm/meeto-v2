@@ -58,39 +58,6 @@ public class MeetingAction extends ActionSupport implements SessionAware {
 
     public String execute() throws RemoteException {
 
-        String membersToInvite = "";
-
-        String aux = "";
-        List<String> check = Arrays.asList(checkboxes.split(","));
-
-
-        for (String checkbox : check) {
-            aux = checkbox.split("\t\t")[0];
-            membersToInvite += aux;
-        }
-
-        /*for (Map.Entry<Integer, String> entry : checkboxes.entrySet())
-        {
-            String aux = entry.getValue().split(" ")[0];
-            membersToInvite += aux;
-
-        }*/
-
-        meetingBean.setMeetingTitle(meetingTitle);
-        meetingBean.setDatetime(datetime);
-        meetingBean.setLocation(location);
-        meetingBean.setDesiredOutcome(desiredOutcome);
-        meetingBean.setUsers(membersToInvite);
-        meetingBean.setUsername((String) session.get("username"));
-
-        outcome = meetingBean.createMeeting();
-
-        if (outcome) {
-            addActionMessage("Meeting created!");
-        } else {
-            addActionError("Meeting not created, something's wrong");
-        }
-
 
         return SUCCESS;
 
@@ -126,5 +93,44 @@ public class MeetingAction extends ActionSupport implements SessionAware {
         list = meetingBean.getInviteeList();
 
         return SUCCESS;
+    }
+
+    public String create() throws Exception {
+
+        String membersToInvite = "";
+
+        String aux = "";
+        List<String> check = Arrays.asList(checkboxes.split(","));
+
+
+        for (String checkbox : check) {
+            aux = checkbox.split("\t\t")[0];
+            membersToInvite += aux;
+        }
+
+        /*for (Map.Entry<Integer, String> entry : checkboxes.entrySet())
+        {
+            String aux = entry.getValue().split(" ")[0];
+            membersToInvite += aux;
+
+        }*/
+
+        meetingBean.setMeetingTitle(meetingTitle);
+        meetingBean.setDatetime(datetime);
+        meetingBean.setLocation(location);
+        meetingBean.setDesiredOutcome(desiredOutcome);
+        meetingBean.setUsers(membersToInvite);
+        meetingBean.setUsername((String) session.get("username"));
+
+        outcome = meetingBean.createMeeting();
+
+        if (outcome) {
+            addActionMessage("Meeting created!");
+        } else {
+            addActionError("Meeting not created, something's wrong");
+        }
+
+
+        return "success";
     }
 }

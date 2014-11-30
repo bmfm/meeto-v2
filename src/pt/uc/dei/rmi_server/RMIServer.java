@@ -106,9 +106,10 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
             }
 
-            //TODO enviar mensagem para TCPSERVER
 
-            List<String> usersList = new ArrayList<>();
+            //TODO Distinguir entre chamada de método por Web e por CLI. Por web o RMI não tem ligação nenhuma a tcp servers nem threads de events
+
+            /*List<String> usersList = new ArrayList<>();
             for (String user : inviteeslist) {
                 usersList.add(getUserById(user));
             }
@@ -120,7 +121,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             } catch (NotMasterException e) {
                 e.printStackTrace();
             }
-            return mensagem;
+            return mensagem;*/
 
 
         }

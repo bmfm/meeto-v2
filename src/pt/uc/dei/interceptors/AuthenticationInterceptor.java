@@ -42,7 +42,8 @@ public class AuthenticationInterceptor extends AbstractInterceptor {
 
 
         //to protect against online users trying to perform action from the url
-        if (req1 == null && req2 == null) {
+        if (req1 == null && req2.equals("null")) {
+
             addActionError(invocation, "You can't perform that action");
             return Action.ERROR;
 

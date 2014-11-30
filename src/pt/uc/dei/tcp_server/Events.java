@@ -113,9 +113,7 @@ public class Events extends Thread {
                         msg.data = "You've been invited to a meeting";
                         sendOut(msg);
                         break;
-                    case (Message.ADDCHATMESSAGE): // se for adicionada uma mensagem ao chat
-                        sendOut(msg);
-                        break;
+
                 }
 
 
