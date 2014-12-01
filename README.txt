@@ -1,7 +1,7 @@
 Para correr a aplicação irá necessitar dos seguintes requisitos:
 - Java 8
 - Servidor com MySQL com a respectiva base de dados (o script de criação da base de dados encontra-se na pasta support, ficheiro {meetosqlscript.sql}
-- Tomcat
+- Tomcat 8.0.15
 
 Após reunidos todos os requisitos necessários, é necessário que o MySQL esteja a correr dentro da própria (localhost), ou no caso que esteja se encontre noutra máquina, que seja definido o respectivo IP e porta.
 Como foi mencionado anteriormente, deve-se correr o script {meetossqlcript.sql} que contem todas as tabelas criadas bem como alguns dados.
