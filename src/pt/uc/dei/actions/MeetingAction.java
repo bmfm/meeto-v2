@@ -108,13 +108,6 @@ public class MeetingAction extends ActionSupport implements SessionAware {
             membersToInvite += aux;
         }
 
-        /*for (Map.Entry<Integer, String> entry : checkboxes.entrySet())
-        {
-            String aux = entry.getValue().split(" ")[0];
-            membersToInvite += aux;
-
-        }*/
-
         meetingBean.setMeetingTitle(meetingTitle);
         meetingBean.setDatetime(datetime);
         meetingBean.setLocation(location);

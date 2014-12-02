@@ -16,6 +16,23 @@ $(function () {
     });
 });
 
+$(function () {
+    $('#menuPendingInvitations').click(function () {
+        $.ajax({
+            url: 'openInvitations',
+            type: 'POST',
+
+            dataType: 'html',
+            success: function (html) {
+                $('#pagecontainer').html(html);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('An error occurred! ' + thrownError);
+            }
+        });
+    });
+});
+
 
 //set datetimepicker preferenes
 $(function () {

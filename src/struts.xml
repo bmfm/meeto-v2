@@ -57,6 +57,27 @@
 
         </action>
 
+        <action name="acceptInvitation" class="pt.uc.dei.actions.InvitationAction" method="acceptInvitation">
+
+            <result name="success">main.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">main.jsp</result>
+        </action>
+
+        <action name="declineInvitation" class="pt.uc.dei.actions.InvitationAction" method="declineInvitation">
+
+            <result name="success">main.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">main.jsp</result>
+        </action>
+
+        <action name="openInvitations" class="pt.uc.dei.actions.InvitationAction" method="getPendingInvitations">
+            <param name="req">openInvitations</param>
+            <result name="success">invitations.jsp</result>
+            <result name="login">login.jsp</result>
+
+        </action>
+
 
         <action name="register" class="pt.uc.dei.actions.RegisterAction">
             <interceptor-ref name="defaultStack"/>
