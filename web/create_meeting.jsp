@@ -66,7 +66,7 @@
                             </label>
                             </s:iterator>--%>
                         <label class="checkbox-inline">
-                            <s:checkboxlist name="checkboxes" list="list"/>
+                            <s:checkboxlist name="checkboxes" list="list" theme="simple"/>
                         </label>
 
                         <p class="help-block">
@@ -80,7 +80,7 @@
                 </s:form>
                 <p>&nbsp;</p>
 
-                <s:if test="hasActionMessages()">
+                <%--<s:if test="hasActionMessages()">
                     <div class="alert alert-success alert-dismissible" role="alert">
                         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span
                                 class="sr-only">Close</span></button>
@@ -94,7 +94,7 @@
                                 class="sr-only">Close</span></button>
                         <strong>Error!</strong> <s:actionerror/>
                     </div>
-                </s:if>
+                </s:if>--%>
 
 
 

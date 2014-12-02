@@ -1,5 +1,6 @@
 package pt.uc.dei.rmi_server;
 
+import pt.uc.dei.models.DataStructure;
 import pt.uc.dei.tcp_server.Message;
 import pt.uc.dei.tcp_server.NotMasterException;
 import pt.uc.dei.tcp_server.TCPServer;
@@ -494,7 +495,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
                 resultado = rs.getInt(1);
                 if (resultado != 1) {
 
-                    mensagem.data = "My pending invitations:\n";
 
                     ResultSet rset = sql.doQuery("select distinct meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = '" + mensagem.dataint + "' and accepted IS NULL");
                     mensagem.data = "ID Meeeting\t\tMeeting Descrition\t\t\tObjective\t\t\tDate\t\t\tLocation\n ";
@@ -517,6 +517,48 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             e.printStackTrace();
         }
         return mensagem;
+
+
+    }
+
+
+    @Override
+    public synchronized List<DataStructure> viewPendingInvitationsForDataStructure(String username) throws RemoteException {
+        int resultado;
+        int userid = getUsernameIdForWeb(username);
+
+        List<DataStructure> dsList = new ArrayList<>();
+
+
+        ResultSet rs = sql.doQuery("select * from meeting_member where idmember ='" + userid + "' and accepted IS NULL");
+        System.out.println("select * from meeting_member where idmember ='" + userid + "' and accepted IS NULL");
+        try {
+            while (rs.next()) {
+
+                resultado = rs.getInt(1);
+                if (resultado != 1) {
+
+
+                    ResultSet rset = sql.doQuery("select distinct meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = '" + userid + "' and accepted IS NULL");
+                    System.out.println("select distinct meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = '" + userid + "' and accepted IS NULL");
+
+                    while (rset.next()) {
+                        DataStructure ds = new DataStructure();
+                        ds.setId(rset.getInt("idmeeting"));
+                        ds.setTitle(rset.getString("title"));
+                        ds.setObjective(rset.getString("objective"));
+                        ds.setDate(rset.getString("date"));
+                        ds.setLocation(rset.getString("location"));
+                        dsList.add(ds);
+                    }
+                    return dsList;
+
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsList;
 
 
     }
@@ -700,6 +742,24 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         }
 
     }
+
+
+    public synchronized int getUsernameIdForWeb(String username) throws RemoteException {
+
+        ResultSet rs = sql.doQuery("SELECT idmember from member where username='" + username + "'");
+        System.out.println("SELECT idmember from member where username='" + username + "'");
+        try {
+            rs.next();
+            return rs.getInt(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+
+    }
+
+
 
     public synchronized int getAgendaId(int idmeeting) throws RemoteException {
 

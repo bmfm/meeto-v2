@@ -4,8 +4,6 @@ import pt.uc.dei.rmi_server.RmiInterface;
 import pt.uc.dei.tcp_server.Message;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,10 +14,17 @@ public class InvitationBean {
     private String desiredOutcome;
     private String datetime;
     private String location;
-    private String users;
-
+    private String meetings;
     private UtilityBean utility = new UtilityBean();
     private String username;
+
+    public String getMeetings() {
+        return meetings;
+    }
+
+    public void setMeetings(String meetings) {
+        this.meetings = meetings;
+    }
 
     public void setDesiredOutcome(String desiredOutcome) {
         this.desiredOutcome = desiredOutcome;
@@ -33,9 +38,6 @@ public class InvitationBean {
         this.location = location;
     }
 
-    public void setUsers(String users) {
-        this.users = users;
-    }
 
     public void setMeetingTitle(String meetingTitle) {
         this.meetingTitle = meetingTitle;
@@ -45,28 +47,31 @@ public class InvitationBean {
         this.username = username;
     }
 
-    public List<String> getPendingInvitations() throws RemoteException {
-
-        List<String> l = new ArrayList<>();
+    public List getPendingInvitations() throws RemoteException {
 
         RmiInterface c = utility.connectoToRmiServer();
 
-        Message mensagem = new Message(username, null, null, null);
+        return c.viewPendingInvitationsForDataStructure(username);
 
-        mensagem = c.viewPendingInvitations(mensagem);
 
-        String[] aux = mensagem.data.split("\n");
-
-        Collections.addAll(l, aux);
-
-        return l;
     }
 
-    public String acceptInvitation() {
-        return null;
+    public Boolean acceptInvitation() throws RemoteException {
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        Message mensagem = new Message(username, null, null, "acceptMeetings");
+
+        mensagem.list = meetings;
+        mensagem = c.acceptMeeting(mensagem);
+
+
+        return mensagem.result;
+
+
     }
 
-    public String declineInvitation() {
+    public Boolean declineInvitation() {
         return null;
     }
 

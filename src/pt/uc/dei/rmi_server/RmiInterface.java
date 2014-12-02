@@ -6,6 +6,7 @@ import pt.uc.dei.tcp_server.TCPServer;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 public interface RmiInterface extends Remote {
 
@@ -17,6 +18,8 @@ public interface RmiInterface extends Remote {
     public Message listPastMeetings(Message mensagem) throws RemoteException;
 
     public Message listMyMeetings(Message mensagem) throws RemoteException;
+
+    public List viewPendingInvitationsForDataStructure(String username) throws RemoteException;
 
 
     public Message sendInvitations(Message mensagem) throws RemoteException;

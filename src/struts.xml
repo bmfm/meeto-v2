@@ -4,6 +4,7 @@
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
     <constant name="struts.devMode" value="false"/>
+    <constant name="struts.mapper.action.prefix.enabled" value="true"/>
 
     <package name="pt.uc.dei" extends="struts-default">
 
@@ -87,6 +88,8 @@
         </action>
 
         <action name="logout" class="pt.uc.dei.actions.LoginAction" method="logout">
+            <param name="req">loggingout</param>
+
             <result>login.jsp</result>
 
         </action>

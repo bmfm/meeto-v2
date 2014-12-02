@@ -58,7 +58,6 @@ public class LoginAction extends ActionSupport implements SessionAware {
 
         outcome = loginBean.logout((String) session.get("username"));
 
-
         ServletActionContext.getRequest().getSession().invalidate();
 
         return SUCCESS;

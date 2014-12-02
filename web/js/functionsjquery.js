@@ -4,7 +4,6 @@ $(function () {
         $.ajax({
             url: 'openCreateMeeting',
             type: 'POST',
-
             dataType: 'html',
             success: function (html) {
                 $('#pagecontainer').html(html);
@@ -21,7 +20,6 @@ $(function () {
         $.ajax({
             url: 'openInvitations',
             type: 'POST',
-
             dataType: 'html',
             success: function (html) {
                 $('#pagecontainer').html(html);
@@ -59,7 +57,6 @@ $(function () {
  });
  });
  })*/
-
 
 
 $(function () {
