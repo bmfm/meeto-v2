@@ -303,7 +303,7 @@ public class TCPClient {
                         String loc = scs.nextLine();
                         mensagem.location = loc;
                         //TODO parar com o tipo de martelada que vem a seguir (mensagem2....)
-                        System.out.println("Select members to invite (separate id's with a comma)");
+                        System.out.println("Select members to invite (separate id's with a blank space)");
                         Message mensagem2 = new Message(username_logged, null, null, "listMembers");
                         sendOut(mensagem2);
                         mensagem2 = (Message) in.readObject();

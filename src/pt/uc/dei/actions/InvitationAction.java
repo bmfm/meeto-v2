@@ -84,7 +84,7 @@ public class InvitationAction extends ActionSupport implements SessionAware {
 
         invitationBean.setUsername((String) session.get("username"));
 
-        invitationBean.setMeetings(Arrays.toString(check));
+        invitationBean.setMeetings(Arrays.toString(check).replace("[", "").replace("]", "").replace(" ", ""));
 
         outcome = invitationBean.acceptInvitation();
 
@@ -102,7 +102,7 @@ public class InvitationAction extends ActionSupport implements SessionAware {
 
         invitationBean.setUsername((String) session.get("username"));
 
-        invitationBean.setMeetings(Arrays.toString(check));
+        invitationBean.setMeetings(Arrays.toString(check).replace("[", "").replace("]", "").replace(" ", ""));
 
         outcome = invitationBean.declineInvitation();
 
