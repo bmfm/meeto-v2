@@ -216,6 +216,12 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     }
 
+    @Override
+    public List meetingOverviewForWeb(int meetingID) throws RemoteException {
+
+        return null;
+    }
+
 
     @Override
     public synchronized Message acceptMeeting(Message mensagem) throws RemoteException {
@@ -562,6 +568,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
 
     }
+
 
     // listar os membros de uma meeting
     public synchronized Message getMeetingMembers(Message mensagem) throws RemoteException {

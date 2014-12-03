@@ -126,4 +126,9 @@ public class MeetingAction extends ActionSupport implements SessionAware {
 
         return "success";
     }
+
+    public String getMeetings() {
+
+        return SUCCESS;
+    }
 }

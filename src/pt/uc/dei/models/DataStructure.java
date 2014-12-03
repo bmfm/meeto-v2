@@ -10,6 +10,60 @@ public class DataStructure implements Serializable {
     private String objective;
     private String date;
     private String location;
+    private String username;
+    private String itemname;
+    private String itemdescription;
+    private String keydecision;
+    private String status;
+    private String usernameaction;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getItemname() {
+        return itemname;
+    }
+
+    public void setItemname(String itemname) {
+        this.itemname = itemname;
+    }
+
+    public String getItemdescription() {
+        return itemdescription;
+    }
+
+    public void setItemdescription(String itemdescription) {
+        this.itemdescription = itemdescription;
+    }
+
+    public String getKeydecision() {
+        return keydecision;
+    }
+
+    public void setKeydecision(String keydecision) {
+        this.keydecision = keydecision;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getUsernameaction() {
+        return usernameaction;
+    }
+
+    public void setUsernameaction(String usernameaction) {
+        this.usernameaction = usernameaction;
+    }
 
     public String getLocation() {
         return location;
