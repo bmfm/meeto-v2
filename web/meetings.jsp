@@ -42,7 +42,8 @@
 
                     <s:iterator value="allMeetings" status="status" var="listContent">
 
-                        <tr>
+                        <div class="form-group">
+                            <tr>
                                 <%--<s:form role="form" action="openMeetingDetails" id="formDetails">--%>
 
                             <td><s:property value="id"/></td>
@@ -51,15 +52,17 @@
                             <td><s:property value="date"/></td>
                             <td><s:property value="location"/></td>
 
+                                    <s:radio name="yourGender" value="defaultGenderValue" list=""/>
+
                             <td>
-                                <button type="submit" id="viewDetails" class="btn btn-primary">View</button>
+                                <button id="viewDetails" class="btn btn-primary">View</button>
                             </td>
                                 <%--<td><s:url  theme="simple" fieldValue="%{#listContent.id}"/></td>--%>
                                 <%--</s:form>--%>
                             <s:hidden name="meetingOverviewID" value="%{#listContent.id}"/>
 
                         </tr>
-
+                        </div>
 
                     </s:iterator>
 

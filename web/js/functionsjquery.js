@@ -67,7 +67,7 @@ $(function () {
         $('#pagecontainer').html('<img src="loading.gif" /> Now loading...');
         $.ajax({
             url: 'openMeetingDetails',
-//            data: $("#formDetails").serialize(),
+            data: $("#formDetails").serialize(),
             type: 'POST',
             dataType: 'html',
             success: function (html) {
