@@ -21,7 +21,13 @@ public interface RmiInterface extends Remote {
 
     public List viewPendingInvitationsForDataStructure(String username) throws RemoteException;
 
-    public List meetingOverviewForWeb(int meetingID) throws RemoteException;
+    public List actionsInAMeetingForWeb(int idmeeting) throws RemoteException;
+
+    public List participantsInAMeetingForWeb(int idmeeting) throws RemoteException;
+
+    public List agendaItemsInAMeetingForWeb(int idmeeting) throws RemoteException;
+
+    public List listUpcomingMeetingsForWeb() throws RemoteException;
 
     public Message sendInvitations(Message mensagem) throws RemoteException;
 

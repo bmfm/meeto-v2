@@ -23,49 +23,49 @@
 <div class="row clearfix">
     <div class="panel panel-default">
         <div class="panel-body">
-            <div class="col-md-9 column">
-                <s:form role="form">
-                    <div class="form-group">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-
-                                <th>#</th>
-                                <th>Title</th>
-                                <th>Objective</th>
-                                <th>Date</th>
-                                <th>Location</th>
-                                <th>Select</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            <s:iterator value="list" status="status" var="listContent">
-
-                                <tr>
-                                    <td><s:property value="id"/></td>
-                                    <td><s:property value="title"/></td>
-                                    <td><s:property value="objective"/></td>
-                                    <td><s:property value="date"/></td>
-                                    <td><s:property value="location"/></td>
-                                    <td><s:checkbox name="check" theme="simple" fieldValue="%{#listContent.id}"/></td>
+            <div class="col-md-11 column">
 
 
-                                </tr>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+
+                        <th>#</th>
+                        <th>Meeting Description</th>
+                        <th>Objective</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <s:iterator value="allMeetings" status="status" var="listContent">
+
+                        <tr>
+                                <%--<s:form role="form" action="openMeetingDetails" id="formDetails">--%>
+
+                            <td><s:property value="id"/></td>
+                            <td><s:property value="title"/></td>
+                            <td><s:property value="objective"/></td>
+                            <td><s:property value="date"/></td>
+                            <td><s:property value="location"/></td>
+
+                            <td>
+                                <button type="submit" id="viewDetails" class="btn btn-primary">View</button>
+                            </td>
+                                <%--<td><s:url  theme="simple" fieldValue="%{#listContent.id}"/></td>--%>
+                                <%--</s:form>--%>
+                            <s:hidden name="meetingOverviewID" value="%{#listContent.id}"/>
+
+                        </tr>
 
 
-                            </s:iterator>
+                    </s:iterator>
 
-                            </tbody>
-                        </table>
-                        <s:hidden name="req" value="acceptInvitationRequest"/>
-                        <s:submit id="acceptInviationsBtn" cssClass="btn-block btn-primary" action="acceptInvitation"
-                                  value="Accept Selected"/>
-                        <s:submit id="declineInvitationsBtn" cssClass="btn-block btn-primary" action="declineInvitation"
-                                  value="Decline Selected"/>
+                    </tbody>
+                </table>
 
-                    </div>
-                </s:form>
 
             </div>
         </div>

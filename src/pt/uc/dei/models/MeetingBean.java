@@ -18,9 +18,17 @@ public class MeetingBean {
     private String datetime;
     private String location;
     private String users;
-
+    private int idmeeting;
     private UtilityBean utility = new UtilityBean();
     private String username;
+
+    public int getIdmeeting() {
+        return idmeeting;
+    }
+
+    public void setIdmeeting(int idmeeting) {
+        this.idmeeting = idmeeting;
+    }
 
     public void setDesiredOutcome(String desiredOutcome) {
         this.desiredOutcome = desiredOutcome;
@@ -81,5 +89,39 @@ public class MeetingBean {
     }
 
 
+    public List actionList(int idmeeting) throws RemoteException {
+        RmiInterface c = utility.connectoToRmiServer();
+
+        return c.actionsInAMeetingForWeb(idmeeting);
+
+
+    }
+
+    public List participantsList(int idmeeting) throws RemoteException {
+        RmiInterface c = utility.connectoToRmiServer();
+
+        return c.participantsInAMeetingForWeb(idmeeting);
+
+
+    }
+
+    public List agendaList(int idmeeting) throws RemoteException {
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        return c.agendaItemsInAMeetingForWeb(idmeeting);
+
+
+    }
+
+
+    public List allMeetingsList() throws RemoteException {
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        return c.listUpcomingMeetingsForWeb();
+
+
+    }
 }
 

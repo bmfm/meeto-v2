@@ -79,6 +79,22 @@
 
         </action>
 
+        <action name="openMeetings" class="pt.uc.dei.actions.MeetingAction" method="meetingsoverview">
+            <param name="req">openMeetings</param>
+            <result name="success">meetings.jsp</result>
+            <result name="login">login.jsp</result>
+
+
+        </action>
+
+        <action name="openMeetingDetails" class="pt.uc.dei.actions.MeetingAction" method="meetingdetails">
+
+            <result name="success">meetingdetails.jsp</result>
+            <result name="login">login.jsp</result>
+
+
+        </action>
+
 
         <action name="register" class="pt.uc.dei.actions.RegisterAction">
             <interceptor-ref name="defaultStack"/>

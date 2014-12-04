@@ -16,6 +16,9 @@ import java.util.Map;
 public class MeetingAction extends ActionSupport implements SessionAware {
     private static final long serialVersionUID = 4L;
     public List<String> list;
+    public List participantsList;
+    public List agendaItemsList;
+    public List actionsList;
     Boolean outcome;
     MeetingBean meetingBean = new MeetingBean();
     private String req = null;
@@ -26,6 +29,25 @@ public class MeetingAction extends ActionSupport implements SessionAware {
     private String datetime = null;
     private String location = null;
     private String users = null;
+    private String meetingOverviewID;
+    private List allMeetings;
+    private String idmeeting = null;
+
+    public List getAllMeetings() {
+        return allMeetings;
+    }
+
+    public void setAllMeetings(List allMeetings) {
+        this.allMeetings = allMeetings;
+    }
+
+    public String getIdmeeting() {
+        return idmeeting;
+    }
+
+    public void setIdmeeting(String idmeeting) {
+        this.idmeeting = idmeeting;
+    }
 
     public String getReq() {
         return req;
@@ -55,6 +77,29 @@ public class MeetingAction extends ActionSupport implements SessionAware {
         this.meetingTitle = meetingTitle;
     }
 
+    public List getParticipantsList() {
+        return participantsList;
+    }
+
+    public void setParticipantsList(List participantsList) {
+        this.participantsList = participantsList;
+    }
+
+    public List getAgendaItemsList() {
+        return agendaItemsList;
+    }
+
+    public void setAgendaItemsList(List agendaItemsList) {
+        this.agendaItemsList = agendaItemsList;
+    }
+
+    public List getActionsList() {
+        return actionsList;
+    }
+
+    public void setActionsList(List actionsList) {
+        this.actionsList = actionsList;
+    }
 
     public String execute() throws RemoteException {
 
@@ -127,8 +172,33 @@ public class MeetingAction extends ActionSupport implements SessionAware {
         return "success";
     }
 
-    public String getMeetings() {
+
+    public String meetingsoverview() throws Exception {
+
+        meetingBean.setUsername((String) session.get("username"));
+        //meetingBean.setIdmeeting(Integer.parseInt(idmeeting));
+
+        allMeetings = meetingBean.allMeetingsList();
 
         return SUCCESS;
+    }
+
+    public String meetingdetails() throws Exception {
+
+        actionsList = meetingBean.actionList(Integer.parseInt(meetingOverviewID));
+
+        agendaItemsList = meetingBean.agendaList(Integer.parseInt(meetingOverviewID));
+
+        participantsList = meetingBean.participantsList(Integer.parseInt(meetingOverviewID));
+
+        return "success";
+    }
+
+    public String getMeetingOverviewID() {
+        return meetingOverviewID;
+    }
+
+    public void setMeetingOverviewID(String meetingOverviewID) {
+        this.meetingOverviewID = meetingOverviewID;
     }
 }

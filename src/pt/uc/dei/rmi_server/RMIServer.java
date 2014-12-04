@@ -163,6 +163,26 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         return participants;
     }
 
+    public synchronized List participantsInAMeetingForWeb(int idmeeting) {
+
+        List<DataStructure> dsList = new ArrayList<>();
+
+
+        ResultSet rs = sql.doQuery("SELECT member.username FROM (member,meeting_member) where meeting_member.idmeeting='" + idmeeting + "' and member.idmember=meeting_member.idmember");
+        try {
+            while (rs.next()) {
+                DataStructure ds = new DataStructure();
+                ds.setUsername(rs.getString("username"));
+                dsList.add(ds);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return dsList;
+    }
+
     public synchronized String agendaItemsInAMeeting(int idmeeting) {
         String agendaitems = "Agenda Items\t\tDescription\t\tKeydecision\n";
         ResultSet rs = sql.doQuery("SELECT item.name,item.description,item.keydecision FROM (item,agenda) where agenda.idmeeting='" + idmeeting + "' and agenda.idagenda=item.idagenda");
@@ -180,6 +200,29 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         return agendaitems;
     }
+
+    public synchronized List agendaItemsInAMeetingForWeb(int idmeeting) {
+
+        List<DataStructure> dsList = new ArrayList<>();
+
+        ResultSet rs = sql.doQuery("SELECT item.name,item.description,item.keydecision FROM (item,agenda) where agenda.idmeeting='" + idmeeting + "' and agenda.idagenda=item.idagenda");
+        try {
+            while (rs.next()) {
+                DataStructure ds = new DataStructure();
+                ds.setItemname(rs.getString("name"));
+                ds.setItemdescription(rs.getString("description"));
+                ds.setKeydecision(rs.getString("keydecision"));
+                dsList.add(ds);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return dsList;
+    }
+
 
     public synchronized String actionsInAMeeting(int idmeeting) {
         String actions = "Action description\t\tAsignee\t\tStatus\n";
@@ -203,6 +246,30 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         return actions;
     }
 
+    public synchronized List actionsInAMeetingForWeb(int idmeeting) {
+        List<DataStructure> dsList = new ArrayList<>();
+        ResultSet rs = sql.doQuery("SELECT member.username,action.description,action.completed FROM (action,member,meeting) where action.idmeeting='" + idmeeting + "' and member.idmember=action.idmember and meeting.idmeeting=action.idmeeting");
+        try {
+            while (rs.next()) {
+                DataStructure ds = new DataStructure();
+                ds.setUsernameaction(rs.getString("username"));
+                ds.setDescription(rs.getString("description"));
+                String status = String.valueOf(rs.getInt("completed"));
+                if ("0".equals(status)) {
+                    ds.setStatus("Not yet completed");
+                } else {
+                    ds.setStatus("Closed");
+                }
+                dsList.add(ds);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return dsList;
+    }
+
 
     @Override
     public synchronized Message meetingOverview(Message mensagem) throws RemoteException {
@@ -214,12 +281,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         mensagem.data += actionsInAMeeting(mensagem.dataint);
         return mensagem;
 
-    }
-
-    @Override
-    public List meetingOverviewForWeb(int meetingID) throws RemoteException {
-
-        return null;
     }
 
 
@@ -364,7 +425,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         if ((sql.doUpdate("INSERT INTO log (iditem,idmember,line) VALUES ('" + mensagem.dataint + "','" + iduser + "','" + mensagem.data + "');")) == 1) {
 
             mensagem.result = true;
-            //tcpServer.msgToMany(mensagem, mensagem.data);
+
             List<String> meetingMembers = Arrays.asList(getMeetingMembers(mensagem).data.split(" "));
 
             List<String> usersList = new ArrayList<>();
@@ -645,6 +706,30 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         return mensagem;
 
     }
+
+
+    public synchronized List listUpcomingMeetingsForWeb() throws RemoteException {
+
+        List<DataStructure> dsList = new ArrayList<>();
+
+        ResultSet rs = sql.doQuery("SELECT * FROM meeting where date > now();");
+        try {
+            while (rs.next()) {
+                DataStructure ds = new DataStructure();
+                ds.setId(rs.getInt("idmeeting"));
+                ds.setTitle(rs.getString("title"));
+                ds.setObjective(rs.getString("objective"));
+                ds.setDate(rs.getString("date"));
+                ds.setLocation(rs.getString("location"));
+                dsList.add(ds);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsList;
+
+    }
+
 
     @Override
     public Message listPastMeetings(Message mensagem) throws RemoteException {
