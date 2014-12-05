@@ -574,6 +574,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
                         String loc = rset.getString("location");
                         mensagem.data += meetingid + "\t\t\t" + meetingdesc + "\t\t\t" + obj + "\t\t\t" + d + "\t\t\t" + loc + "\n";
                     }
+                    return mensagem;
 
                 } else {
                     mensagem.data = "0";
@@ -598,7 +599,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
 
         ResultSet rs = sql.doQuery("select * from meeting_member where idmember ='" + userid + "' and accepted IS NULL");
-        System.out.println("select * from meeting_member where idmember ='" + userid + "' and accepted IS NULL");
+
         try {
             while (rs.next()) {
 
@@ -607,7 +608,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
 
                     ResultSet rset = sql.doQuery("select distinct meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = '" + userid + "' and accepted IS NULL");
-                    System.out.println("select distinct meeting.idmeeting,meeting.title,meeting.objective,meeting.date,meeting.location from (meeting,meeting_member,member) where meeting_member.idmeeting = meeting.idmeeting and meeting_member.idmember = '" + userid + "' and accepted IS NULL");
+
 
                     while (rset.next()) {
                         DataStructure ds = new DataStructure();

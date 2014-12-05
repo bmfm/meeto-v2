@@ -61,14 +61,14 @@ $(function () {
 
 
 //open meetingdetails.jsp
-$(function () {
-    $('#viewDetails').click(function () {
+/*$(function () {
+ $('#viewDetails').click(function () {
 
         $('#pagecontainer').html('<img src="loading.gif" /> Now loading...');
         $.ajax({
             url: 'openMeetingDetails',
-            data: $("#formDetails").serialize(),
-            type: 'POST',
+ data: $("#hiddenlabel"),
+ type: 'POST',
             dataType: 'html',
             success: function (html) {
                 $('#pagecontainer').html(html);
@@ -78,7 +78,7 @@ $(function () {
             }
         });
     });
-});
+ });*/
 
 
 //set datetimepicker preferenes
@@ -95,14 +95,6 @@ $(function () {
     });
 });
 
-
-$(function () {
-
-    $('#menuListMeetings').click(function () {
-        $('#pagecontainer').load('pending_invitations.jsp');
-    });
-
-});
 
 
 

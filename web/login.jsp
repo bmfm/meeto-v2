@@ -29,7 +29,7 @@ pageEncoding="ISO-8859-1" %>
         <input type="text" name="userName" class="form-control" placeholder="Username" required autofocus>
         <input type="password" name="password" class="form-control" placeholder="Password" required>
 
-        <!-- stupid data-loading-text isn't working... -->
+
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         <button class="btn btn-default btn-lg btn-block" type="button" onClick="window.history.back()">Back</button>
     </s:form>

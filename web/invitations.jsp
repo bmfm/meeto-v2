@@ -60,9 +60,11 @@
                             </tbody>
                         </table>
                         <s:hidden name="req" value="acceptInvitationRequest"/>
-                        <s:submit id="acceptInviationsBtn" cssClass="btn-block btn-primary" action="acceptInvitation"
+                        <s:submit id="acceptInviationsBtn" theme="simple" cssClass="btn btn-lg btn-primary btn-block"
+                                  action="acceptInvitation"
                                   value="Accept Selected"/>
-                        <s:submit id="declineInvitationsBtn" cssClass="btn-block btn-primary" action="declineInvitation"
+                        <s:submit id="declineInvitationsBtn" theme="simple" cssClass="btn btn-lg btn-primary btn-block"
+                                  action="declineInvitation"
                                   value="Decline Selected"/>
 
                  </div>

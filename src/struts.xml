@@ -89,7 +89,7 @@
         </action>
 
         <action name="openMeetingDetails" class="pt.uc.dei.actions.MeetingAction" method="meetingdetails">
-
+            <param name="req">openMeetings</param>
             <result name="success">meetingdetails.jsp</result>
             <result name="login">login.jsp</result>
 
