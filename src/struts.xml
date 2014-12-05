@@ -5,11 +5,13 @@
 <struts>
     <constant name="struts.devMode" value="false"/>
     <constant name="struts.mapper.action.prefix.enabled" value="true"/>
+    <!--<constant name="struts.action.excludePattern" value="^ws://.+$"/>-->
+    <constant name="struts.action.excludePattern" value="/ws"/>
 
 
-    <package name="pt.uc.dei" namespace="/" extends="struts-default">
+    <package name="pt.uc.dei" extends="struts-default">
 
-        <interceptors>
+    <interceptors>
             <interceptor class="pt.uc.dei.interceptors.AuthenticationInterceptor" name="authInterceptor"/>
 
             <interceptor-stack name="authStack">

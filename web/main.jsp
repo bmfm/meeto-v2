@@ -90,7 +90,7 @@
                 </div>
                 <div class="panel-body">
 
-                    <div class="tabbable">
+                    <div class="tabbable" id="notifications">
 
                     </div>
                 </div>
@@ -102,7 +102,7 @@
                 </div>
                 <div class="panel-body">
 
-                    <div class="tabbable">
+                    <div class="tabbable" id="usersonline">
 
                     </div>
                 </div>

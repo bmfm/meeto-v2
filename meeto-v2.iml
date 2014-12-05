@@ -41,6 +41,7 @@
     <orderEntry type="library" name="asm-3.3" level="project" />
     <orderEntry type="library" name="commons-logging-1.1.1" level="project" />
     <orderEntry type="library" name="struts2-jquery-plugin-4.0.0-20141123.115729-8" level="project" />
+    <orderEntry type="library" name="WebSocket-1.0" level="project" />
   </component>
 </module>
 

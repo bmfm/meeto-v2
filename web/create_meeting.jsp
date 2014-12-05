@@ -66,7 +66,7 @@
                             </label>
                             </s:iterator>--%>
                         <label class="checkbox-inline">
-                            <s:checkboxlist name="checkboxes" list="list" theme="simple"/>
+                            <s:checkboxlist name="checkboxes" list="list"/>
                         </label>
 
                         <p class="help-block">
