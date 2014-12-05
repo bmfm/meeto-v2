@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicInteger;
 
+
 @ServerEndpoint(value = "/ws")
 public class WebSocketAnnotation {
     private static final AtomicInteger sequence = new AtomicInteger(1);
