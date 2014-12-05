@@ -30,8 +30,7 @@
                         <thead>
                         <tr>
 
-                            <th>#</th>
-                            <th>Participant</th>
+                            <th>Participants</th>
 
                         </tr>
                         </thead>
@@ -42,14 +41,73 @@
                             <tr>
 
 
-                                <td><s:property value="id"/></td>
-                                <td><s:property value="username"/></td>
+                            <td><s:property value="username"/></td>
 
 
                             </tr>
 
 
                         </s:iterator>
+                        </tbody>
+                    </table>
+
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+
+                            <th>Agenda Item</th>
+                            <th>Description</th>
+                            <th>Key Decision</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <s:iterator value="agendaItemsList" status="status" var="listContent">
+
+                            <tr>
+
+
+                                <td><s:property value="itemname"/></td>
+                                <td><s:property value="itemdescription"/></td>
+                                <td><s:property value="keydecision"/></td>
+
+
+                            </tr>
+
+
+                        </s:iterator>
+
+                        </tbody>
+                    </table>
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+
+                            <th>Action assignee</th>
+                            <th>Description</th>
+                            <th>Status</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <s:iterator value="actionsList" status="status" var="listContent">
+
+                            <tr>
+
+
+                                <td><s:property value="usernameaction"/></td>
+                                <td><s:property value="description"/></td>
+                                <td><s:property value="status"/></td>
+
+
+                            </tr>
+
+
+                        </s:iterator>
+
 
                         </tbody>
                     </table>
