@@ -2,6 +2,7 @@ package pt.uc.dei.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.SessionAware;
+import pt.uc.dei.models.ItemBean;
 import pt.uc.dei.models.MeetingBean;
 
 import java.rmi.RemoteException;
@@ -21,6 +22,8 @@ public class MeetingAction extends ActionSupport implements SessionAware {
     public List actionsList;
     Boolean outcome;
     MeetingBean meetingBean = new MeetingBean();
+    ItemBean itemBean = new ItemBean();
+
     private String req = null;
     private String checkboxes;
     private String meetingTitle = null;
@@ -34,6 +37,7 @@ public class MeetingAction extends ActionSupport implements SessionAware {
     private List allMeetings;
     private String idmeeting = null;
     private List myMeetingsList;
+
 
     public String getJoinmymeetingid() {
         return joinmymeetingid;
@@ -232,6 +236,8 @@ public class MeetingAction extends ActionSupport implements SessionAware {
 
     public String meetingroom() throws Exception {
 
+
+        agendaItemsList = itemBean.agendaList(Integer.parseInt(joinmymeetingid));
 
         return SUCCESS;
     }

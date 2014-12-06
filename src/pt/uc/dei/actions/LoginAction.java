@@ -20,7 +20,6 @@ public class LoginAction extends ActionSupport implements SessionAware {
     private Map<String, Object> session;
     private String req;
 
-
     public String execute() {
 
 

@@ -51,12 +51,12 @@
                                 <td><s:property value="date"/></td>
                                 <td><s:property value="location"/></td>
                                 <td>
-                                    <s:form role="form" theme="simple" id="formViewDetails" action="openMeetingRoom">
+                                    <s:form role="form" theme="simple" id="formEnterMeeting" action="openMeetingRoom">
                                         <s:hidden name="joinmymeetingid" value="%{#listContent.id}"/>
                                         <s:hidden name="req" value="hiddenreq"/>
                                         <%--<td><button id="sta" class="btn btn-primary">View</button></td>--%>
 
-                                        <s:submit theme="simple" id="viewDetails" cssClass="btn btn-primary"
+                                        <s:submit theme="simple" cssClass="btn btn-primary"
                                                   value="View"/>
 
                                     </s:form>

@@ -4,6 +4,15 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class ItemAction extends ActionSupport {
 
+    private String agendaItemID;
+
+    public String getAgendaItemID() {
+        return agendaItemID;
+    }
+
+    public void setAgendaItemID(String agendaItemID) {
+        this.agendaItemID = agendaItemID;
+    }
 
     public String addItem() throws Exception {
         return SUCCESS;

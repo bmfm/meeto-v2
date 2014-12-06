@@ -50,11 +50,7 @@
                                     <td><s:property value="date"/></td>
                                     <td><s:property value="location"/></td>
                                     <td><s:checkbox name="check" theme="simple" fieldValue="%{#listContent.id}"/></td>
-
-
                                 </tr>
-
-
                             </s:iterator>
 
                             </tbody>
@@ -67,7 +63,7 @@
                                   action="declineInvitation"
                                   value="Decline Selected"/>
 
-                 </div>
+                    </div>
                 </s:form>
 
             </div>

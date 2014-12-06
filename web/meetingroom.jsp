@@ -29,8 +29,6 @@
 
                 <h3>Agenda items</h3>
 
-                <button type="submit" id="addItemBtn" value="ADD"></button>
-
 
                 <table class="table table-striped">
                     <thead>
@@ -45,24 +43,36 @@
                     </thead>
                     <tbody>
 
-                    <s:iterator value="itemList" status="status" var="listContent">
-
+                    <s:iterator value="agendaItemsList" status="status" var="listContent">
 
                         <tr>
 
-
                             <td><s:property value="id"/></td>
-                            <td><s:property value="title"/></td>
-                            <td><s:property value="description"/></td>
+                            <td><s:property value="itemname"/></td>
+                            <td><s:property value="itemdescription"/></td>
                             <td><s:property value="keydecision"/></td>
 
-                            <td><s:form role="form" theme="simple" id="formViewDetails" target="meetingdetails"
-                                        action="openMeetingDetails">
-                                <s:hidden name="itemID" value="%{#listContent.id}"/>
+                            <td><s:form role="form" theme="simple" id="formViewDetails">
+                                <s:hidden name="agendaItemID" value="%{#listContent.id}"/>
                                 <s:hidden name="req" value="hiddenreq"/>
                                 <%--<td><button id="sta" class="btn btn-primary">View</button></td>--%>
 
-                                <s:submit theme="simple" id="viewDetails" cssClass="btn btn-primary" value="View"/>
+                                <s:submit id="modifyItemBtn" theme="simple" cssClass="btn btn-primary"
+                                          action="modifyItem"
+                                          value="Modify"/>
+
+
+                                <s:submit id="deleteItemBtn" theme="simple" cssClass="btn btn-primary"
+                                          action="deleteItem"
+                                          value="Delete"/>
+
+                                <s:submit id="addKeyDecisionBtn" theme="simple" cssClass="btn btn-primary"
+                                          action="addKeyDecision"
+                                          value="Add Key Decicion"/>
+
+                                <s:submit id="assignTaskBtn" theme="simple" cssClass="btn btn-primary"
+                                          action="assignTask"
+                                          value="Assign Task"/>
 
                             </s:form>
                             </td>
@@ -76,6 +86,7 @@
                     </tbody>
                 </table>
 
+                <button type="submit" id="addItemBtn" class="btn btn-primary">ADD</button>
 
             </div>
 

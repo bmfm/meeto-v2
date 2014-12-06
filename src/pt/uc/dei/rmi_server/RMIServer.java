@@ -395,6 +395,28 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     }
 
+    public List listAgendaItemsForWeb(int idmeeting) throws RemoteException {
+
+        List<DataStructure> dsList = new ArrayList<>();
+        ResultSet rs = sql.doQuery("select item.iditem,item.name,item.description,item.keydecision from (agenda,item) where agenda.idagenda=item.idagenda and agenda.idmeeting='" + idmeeting + "'");
+        try {
+            while (rs.next()) {
+                DataStructure ds = new DataStructure();
+                ds.setId(rs.getInt("iditem"));
+                ds.setItemname(rs.getString("name"));
+                ds.setItemdescription(rs.getString("description"));
+                ds.setKeydecision(rs.getString("keydecision"));
+                dsList.add(ds);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return dsList;
+
+
+    }
+
     @Override
     public synchronized Message addAgendaItem(Message mensagem) throws RemoteException {
         int idagenda = getAgendaId(mensagem.dataint);

@@ -76,5 +76,7 @@ public interface RmiInterface extends Remote {
     public Message onlineUsers(Message mensagem) throws RemoteException;
 
     public List listMyMeetingsForWeb(String username) throws RemoteException;
+
+    public List listAgendaItemsForWeb(int idmeeting) throws RemoteException;
 }
 
