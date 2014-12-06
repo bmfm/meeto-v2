@@ -123,5 +123,13 @@ public class MeetingBean {
 
 
     }
+
+    public List myMeetingsList() throws RemoteException {
+
+        RmiInterface c = utility.connectoToRmiServer();
+        return c.listMyMeetingsForWeb(username);
+    }
+
+
 }
 

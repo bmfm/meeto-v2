@@ -30,8 +30,26 @@ public class MeetingAction extends ActionSupport implements SessionAware {
     private String location = null;
     private String users = null;
     private String meetingOverviewID;
+    private String joinmymeetingid;
     private List allMeetings;
     private String idmeeting = null;
+    private List myMeetingsList;
+
+    public String getJoinmymeetingid() {
+        return joinmymeetingid;
+    }
+
+    public void setJoinmymeetingid(String joinmymeetingid) {
+        this.joinmymeetingid = joinmymeetingid;
+    }
+
+    public List getMyMeetingsList() {
+        return myMeetingsList;
+    }
+
+    public void setMyMeetingsList(List myMeetingsList) {
+        this.myMeetingsList = myMeetingsList;
+    }
 
     public List getAllMeetings() {
         return allMeetings;
@@ -191,7 +209,7 @@ public class MeetingAction extends ActionSupport implements SessionAware {
 
         participantsList = meetingBean.participantsList(Integer.parseInt(meetingOverviewID));
 
-        return "success";
+        return SUCCESS;
     }
 
     public String getMeetingOverviewID() {
@@ -200,5 +218,21 @@ public class MeetingAction extends ActionSupport implements SessionAware {
 
     public void setMeetingOverviewID(String meetingOverviewID) {
         this.meetingOverviewID = meetingOverviewID;
+    }
+
+    public String mymeetings() throws Exception {
+
+        meetingBean.setUsername((String) session.get("username"));
+
+        myMeetingsList = meetingBean.myMeetingsList();
+
+
+        return SUCCESS;
+    }
+
+    public String meetingroom() throws Exception {
+
+
+        return SUCCESS;
     }
 }

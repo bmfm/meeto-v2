@@ -21,10 +21,9 @@ $(function () {
 
 $(function () {
 
-    $('#menuJoinMeeting').click(function () {
+    $('#websockettest').click(function () {
         $('#pagecontainer').load('websocket.jsp');
     });
-
 
 });
 
@@ -70,6 +69,55 @@ $(function () {
 });
 
 
+//Enter 'join meeting' menu
+$(function () {
+    $('#menuJoinMeeting').click(function () {
+
+        $('#pagecontainer').html('<img src="loading.gif" /> Now loading...');
+        $.ajax({
+            url: 'listMyMeetings',
+            type: 'POST',
+            dataType: 'html',
+            success: function (html) {
+                $('#pagecontainer').html(html);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('An error occurred! ' + thrownError);
+            }
+        });
+    });
+});
+
+
+/*$('#formViewDetails').submit(function() { // catch the form's submit event
+ $.ajax({ // create an AJAX call...
+ data: $(this).serialize(), // get the form data
+ type: $(this).attr('POST'), // GET or POST
+ url: $(this).attr('openMeetingDetails'), // the file to call
+ success: function(response) { // on success..
+ $('#meetingsmaindiv').html(response); // update the DIV
+ }
+ });
+ return false; // cancel original event to prevent form submitting
+ });*/
+
+
+
+/*$('#formViewDetails').submit(function() { // catch the form's submit event
+ $.ajax({ // create an AJAX call...
+ data: $(this).serialize(), // get the form data
+ type: $(this).attr('POST'), // GET or POST
+ url: $(this).attr('openMeetingDetails'), // the file to call
+ success: function(response) { // on success..
+ $('#meetingsmaindiv').html(response); // update the DIV
+ }
+ });
+ return false; // cancel original event to prevent form submitting
+ });*/
+
+
+
+
 //open meetingdetails.jsp
 /*$(function () {
  $('#viewDetails').click(function () {
@@ -92,7 +140,7 @@ $(function () {
 
 //set datetimepicker preferenes
 $(function () {
-    $(".form_datetime").datetimepicker({
+    $('.form_datetime').datetimepicker({
         format: "yyyy-MM-dd hh:ii",
         weekStart: 1,
         todayBtn: 1,

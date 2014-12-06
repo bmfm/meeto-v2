@@ -71,8 +71,16 @@ public class InvitationBean {
 
     }
 
-    public Boolean declineInvitation() {
-        return null;
+    public Boolean declineInvitation() throws RemoteException {
+        RmiInterface c = utility.connectoToRmiServer();
+
+        Message mensagem = new Message(username, null, null, "declineMeetings");
+
+        mensagem.list = meetings;
+        mensagem = c.declineMeeting(mensagem);
+
+
+        return mensagem.result;
     }
 
 

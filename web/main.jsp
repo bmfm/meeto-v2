@@ -76,6 +76,7 @@
                             <li><a id="menuListMeetings" href="#" data-toggle="tab">List meetings</a></li>
                             <li><a id="menuPendingInvitations" href="#" data-toggle="tab">Pending Invitations</a></li>
                             <li><a id="menuJoinMeeting" href="#" data-toggle="tab">Join meeting</a></li>
+                            <li><a id="websockettest" href="#" data-toggle="tab">Websocket test</a></li>
 
 
                         </ul>
