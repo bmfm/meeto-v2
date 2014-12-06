@@ -21,7 +21,9 @@ $(function () {
 
 $(function () {
 
-    $('#pagecontainer').load('websocket.jsp');
+    $('#menuJoinMeeting').click(function () {
+        $('#pagecontainer').load('websocket.jsp');
+    });
 
 
 });
@@ -88,7 +90,6 @@ $(function () {
     });
  });*/
 
-
 //set datetimepicker preferenes
 $(function () {
     $(".form_datetime").datetimepicker({
@@ -102,26 +103,3 @@ $(function () {
 
     });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                      
-
-
-
-
-

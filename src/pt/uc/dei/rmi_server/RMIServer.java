@@ -840,7 +840,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
     public synchronized int getUsernameIdForWeb(String username) throws RemoteException {
 
         ResultSet rs = sql.doQuery("SELECT idmember from member where username='" + username + "'");
-        System.out.println("SELECT idmember from member where username='" + username + "'");
+
         try {
             rs.next();
             return rs.getInt(1);
