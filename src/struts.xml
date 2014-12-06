@@ -110,6 +110,40 @@
             <result name="login">login.jsp</result>
             <result name="error">main.jsp</result>
 
+        </action>
+
+        <action name="deleteItem" class="pt.uc.dei.actions.ItemAction" method="deleteItem">
+            <result name="success">main.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">main.jsp</result>
+
+        </action>
+
+        <action name="addItem" class="pt.uc.dei.actions.ItemAction" method="addItem">
+            <result name="success">main.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">main.jsp</result>
+
+        </action>
+
+        <action name="modifyItem" class="pt.uc.dei.actions.ItemAction" method="modifyItem">
+            <result name="success">main.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">main.jsp</result>
+
+        </action>
+
+        <action name="addKeyDecision" class="pt.uc.dei.actions.ItemAction" method="addKeyDecision">
+            <result name="success">main.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">main.jsp</result>
+
+        </action>
+
+        <action name="assignTask" class="pt.uc.dei.actions.ItemAction" method="assignTask">
+            <result name="success">main.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">main.jsp</result>
 
         </action>
 

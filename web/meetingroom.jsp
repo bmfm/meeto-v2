@@ -23,7 +23,13 @@
 <div class="row clearfix">
     <div class="panel panel-default">
         <div class="panel-body">
-            <div class="col-md-11 column" id="meetingsmaindiv">
+
+
+            <div class="col-md-11 column">
+
+                <h3>Agenda items</h3>
+
+                <button type="submit" id="addItemBtn" value="ADD"></button>
 
 
                 <table class="table table-striped">
@@ -31,16 +37,15 @@
                     <tr>
 
                         <th>#</th>
-                        <th>Meeting Description</th>
-                        <th>Objective</th>
-                        <th>Date</th>
-                        <th>Location</th>
-                        <th>Details</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Key Decision</th>
+
                     </tr>
                     </thead>
                     <tbody>
 
-                    <s:iterator value="allMeetings" status="status" var="listContent">
+                    <s:iterator value="itemList" status="status" var="listContent">
 
 
                         <tr>
@@ -48,16 +53,16 @@
 
                             <td><s:property value="id"/></td>
                             <td><s:property value="title"/></td>
-                            <td><s:property value="objective"/></td>
-                            <td><s:property value="date"/></td>
-                            <td><s:property value="location"/></td>
+                            <td><s:property value="description"/></td>
+                            <td><s:property value="keydecision"/></td>
+
                             <td><s:form role="form" theme="simple" id="formViewDetails" target="meetingdetails"
                                         action="openMeetingDetails">
-                                <s:hidden name="meetingOverviewID" value="%{#listContent.id}"/>
+                                <s:hidden name="itemID" value="%{#listContent.id}"/>
                                 <s:hidden name="req" value="hiddenreq"/>
                                 <%--<td><button id="sta" class="btn btn-primary">View</button></td>--%>
 
-                                <sj:submit theme="simple" id="viewDetails" cssClass="btn btn-primary" value="View"/>
+                                <s:submit theme="simple" id="viewDetails" cssClass="btn btn-primary" value="View"/>
 
                             </s:form>
                             </td>
