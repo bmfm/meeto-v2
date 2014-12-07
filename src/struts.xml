@@ -6,7 +6,8 @@
     <constant name="struts.devMode" value="false"/>
     <constant name="struts.mapper.action.prefix.enabled" value="true"/>
 
-    <constant name="struts.action.excludePattern" value="/ws"/>
+    <constant name="struts.action.excludePattern" value="/ws,/calendar"/>
+
 
     <package name="pt.uc.dei" extends="struts-default">
 
@@ -118,6 +119,7 @@
             <result name="error">main.jsp</result>
 
         </action>
+
 
         <action name="addItem" class="pt.uc.dei.actions.ItemAction" method="addItem">
             <result name="success">main.jsp</result>
