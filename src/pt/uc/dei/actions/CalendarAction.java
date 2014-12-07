@@ -11,15 +11,13 @@ import org.scribe.oauth.OAuthService;
  */
 public class CalendarAction extends ActionSupport {
 
-    private String authorizationUrl;
-
     private static final String NETWORK_NAME = "Google";
     private static final String AUTHORIZE_URL = "https://www.google.com/accounts/OAuthAuthorizeToken?oauth_token=";
     private static final String PROTECTED_RESOURCE_URL = "https://docs.google.com/feeds/default/private/full/";
     private static final String SCOPE = "https://docs.google.com/feeds/";
     private static final Token EMPTY_TOKEN = null;
     private static final String CALLBACK_URL = "http://localhost:8080/meeto/calendar.jsp";
-
+    private String authorizationUrl;
 
     public String goToLogin() {
         try {
@@ -54,5 +52,11 @@ public class CalendarAction extends ActionSupport {
 
     public void setAuthorizationUrl(String authorizationUrl) {
         this.authorizationUrl = authorizationUrl;
+    }
+
+    public String finishGoogleLogin() throws Exception {
+
+
+        return "success";
     }
 }

@@ -8,6 +8,34 @@ public class ItemAction extends ActionSupport {
     ItemBean itemBean = new ItemBean();
     private String agendaItemID;
     private Boolean outcome;
+    private String req;
+    private String meetingid;
+    private String itemname;
+    private String itemdescription;
+
+    public String getItemdescription() {
+        return itemdescription;
+    }
+
+    public void setItemdescription(String itemdescription) {
+        this.itemdescription = itemdescription;
+    }
+
+    public String getItemname() {
+        return itemname;
+    }
+
+    public void setItemname(String itemname) {
+        this.itemname = itemname;
+    }
+
+    public String getMeetingid() {
+        return meetingid;
+    }
+
+    public void setMeetingid(String meetingid) {
+        this.meetingid = meetingid;
+    }
 
     public String getAgendaItemID() {
         return agendaItemID;
@@ -18,6 +46,19 @@ public class ItemAction extends ActionSupport {
     }
 
     public String addItem() throws Exception {
+
+        itemBean.setIdmeeting(Integer.parseInt(meetingid));
+
+        outcome = itemBean.addItem();
+
+        if (outcome) {
+            addActionMessage("Agenda item added");
+
+        } else {
+            addActionError("Not added, something went wrong. Please try again");
+        }
+
+
         return SUCCESS;
     }
 
@@ -45,5 +86,13 @@ public class ItemAction extends ActionSupport {
 
 
         return SUCCESS;
+    }
+
+    public String getReq() {
+        return req;
+    }
+
+    public void setReq(String req) {
+        this.req = req;
     }
 }

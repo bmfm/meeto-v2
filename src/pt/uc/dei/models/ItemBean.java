@@ -1,6 +1,7 @@
 package pt.uc.dei.models;
 
 import pt.uc.dei.rmi_server.RmiInterface;
+import pt.uc.dei.tcp_server.Message;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -12,6 +13,11 @@ public class ItemBean {
 
     private UtilityBean utility = new UtilityBean();
     private int idmeeting;
+    private String itemname;
+    private String itemdescription;
+    private String username;
+    private int idagenda;
+
 
     public int getIdmeeting() {
         return idmeeting;
@@ -27,7 +33,6 @@ public class ItemBean {
 
         return c.listAgendaItemsForWeb(idmeeting);
 
-
     }
 
 
@@ -35,4 +40,16 @@ public class ItemBean {
 
         return null;
     }
+
+
+    public Boolean addItem() {
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        Message mensagem = new Message(username, null, null, "createMeeting");
+
+
+        return mensagem.result;
+    }
+
 }

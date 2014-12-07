@@ -32,6 +32,10 @@
 
                 <h3>Agenda items</h3>
 
+                <s:hidden name="meetingidfromroom" value="%{joinmymeetingid}"/>
+
+
+
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -85,9 +89,9 @@
     </div>
 
     <div class="panel panel-default">
-        <div class="panel-body">
+        <div class="panel-body" id="meetingroomcontainer">
 
-            <s:if test="hasActionMessages()">
+        <s:if test="hasActionMessages()">
                 <div class="alert alert-success alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert"><span
                             aria-hidden="true">&times;</span><span
@@ -107,10 +111,7 @@
 
         </div>
 
-        <div class="col-md-9 column" id="meetingroomcontainer">
 
-
-        </div>
 
     </div>
     </div>

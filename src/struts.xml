@@ -68,6 +68,11 @@
 
         </action>
 
+        <action name="finishGoogleLogin" class="pt.uc.dei.actions.CalendarAction" method="finishGoogleLogin">
+            <result name="success">main.jsp</result>
+            <result name="error">index.jsp</result>
+        </action>
+
         <action name="acceptInvitation" class="pt.uc.dei.actions.InvitationAction" method="acceptInvitation">
 
             <result name="success">main.jsp</result>

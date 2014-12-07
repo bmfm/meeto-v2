@@ -11,10 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-
-/**
- * Created by bruno on 22/11/14.
- */
 public class MeetingAction extends ActionSupport implements SessionAware {
     private static final long serialVersionUID = 4L;
     public List<String> list;
