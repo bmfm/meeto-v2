@@ -26,7 +26,7 @@
 
         <p><a class="btn btn-primary btn-lg" onClick="parent.location='login.jsp'">Login</a>
             <a class="btn btn-primary btn-lg" onClick="parent.location='register.jsp'">Register</a>
-            <a class="btn btn-primary btn-lg" onClick="">Google Calendar</a>
+            <s:a theme="simple" cssClass="btn btn-primary btn-lg" action="goToGoogleLogin">Google Calendar</s:a>
 
         </p>
     </div>

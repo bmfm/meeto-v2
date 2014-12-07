@@ -61,6 +61,13 @@
 
         </action>
 
+        <action name="goToGoogleLogin" class="pt.uc.dei.actions.CalendarAction" method="goToLogin">
+            <interceptor-ref name="defaultStack"/>
+            <result name="success" type="redirect">${authorizationUrl}</result>
+            <result name="error">index.jsp</result>
+
+        </action>
+
         <action name="acceptInvitation" class="pt.uc.dei.actions.InvitationAction" method="acceptInvitation">
 
             <result name="success">main.jsp</result>
