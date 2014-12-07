@@ -5,11 +5,7 @@ import org.scribe.builder.api.GoogleApi;
 import org.scribe.model.Token;
 import org.scribe.oauth.OAuthService;
 
-import java.util.Scanner;
 
-/**
- * Created by Vasco on 07/12/2014.
- */
 public class GoogleLogin {
 
     private static final String NETWORK_NAME = "Google";
