@@ -17,24 +17,25 @@ public class GoogleLogin {
 
 
     public String goToLogin(){
-        OAuthService service = new ServiceBuilder()
-                .provider(GoogleApi.class)
-                .apiKey("159167502512-9c66e9am5lj9lrq33v3dant27fjt5k4d.apps.googleusercontent.com")
-                .apiSecret("jtsOyhazWTJUnQjf2FZklf1Q")
-                .callback(CALLBACK_URL)
-                .scope(SCOPE)
-                .build();
 
+            OAuthService service = new ServiceBuilder()
+                    .provider(GoogleApi.class)
+                    .apiKey("159167502512-9c66e9am5lj9lrq33v3dant27fjt5k4d.apps.googleusercontent.com")
+                    .apiSecret("jtsOyhazWTJUnQjf2FZklf1Q")
+                    .callback(CALLBACK_URL)
+                    .scope(SCOPE)
+                    .build();
 
-        System.out.println("=== " + NETWORK_NAME + "'s OAuth Workflow ===");
-        System.out.println();
+            System.out.println("=== " + NETWORK_NAME + "'s OAuth Workflow ===");
+            System.out.println();
 
-        System.out.println("Fetching the Authorization URL...");
-        String authorizationUrl = service.getAuthorizationUrl(EMPTY_TOKEN);
-        System.out.println("Got the Authorization URL!");
-        System.out.println("Now go and authorize Scribe here:");
-        System.out.println(authorizationUrl);
+            System.out.println("Fetching the Authorization URL...");
+            String authorizationUrl = service.getAuthorizationUrl(EMPTY_TOKEN);
+            System.out.println("Got the Authorization URL!");
+            System.out.println("Now go and authorize Scribe here:");
+            System.out.println(authorizationUrl);
 
-        return authorizationUrl;
+            return authorizationUrl;
+
     }
 }
