@@ -11,6 +11,7 @@ import org.scribe.oauth.OAuthService;
  */
 public class CalendarAction extends ActionSupport {
 
+    private String authorizationUrl;
 
     private static final String NETWORK_NAME = "Google";
     private static final String AUTHORIZE_URL = "https://www.google.com/accounts/OAuthAuthorizeToken?oauth_token=";
@@ -21,27 +22,37 @@ public class CalendarAction extends ActionSupport {
 
 
     public String goToLogin() {
+        try {
+            OAuthService service = new ServiceBuilder()
+                    .provider(GoogleApi.class)
+                    .apiKey("159167502512-9c66e9am5lj9lrq33v3dant27fjt5k4d.apps.googleusercontent.com")
+                    .apiSecret("jtsOyhazWTJUnQjf2FZklf1Q")
+                    .callback(CALLBACK_URL)
+                    .scope(SCOPE)
+                    .build();
 
-        OAuthService service = new ServiceBuilder()
-                .provider(GoogleApi.class)
-                .apiKey("159167502512-9c66e9am5lj9lrq33v3dant27fjt5k4d.apps.googleusercontent.com")
-                .apiSecret("jtsOyhazWTJUnQjf2FZklf1Q")
-                .callback(CALLBACK_URL)
-                .scope(SCOPE)
-                .build();
 
+            System.out.println("=== " + NETWORK_NAME + "'s OAuth Workflow ===");
+            System.out.println();
 
-        System.out.println("=== " + NETWORK_NAME + "'s OAuth Workflow ===");
-        System.out.println();
+            System.out.println("Fetching the Authorization URL...");
+            String authorizationUrl = service.getAuthorizationUrl(EMPTY_TOKEN);
+            System.out.println("Got the Authorization URL!");
+            System.out.println("Now go and authorize Scribe here:");
+            System.out.println(authorizationUrl);
 
-        System.out.println("Fetching the Authorization URL...");
-        String authorizationUrl = service.getAuthorizationUrl(EMPTY_TOKEN);
-        System.out.println("Got the Authorization URL!");
-        System.out.println("Now go and authorize Scribe here:");
-        System.out.println(authorizationUrl);
+            this.authorizationUrl = authorizationUrl;
+            return SUCCESS;
+        } catch (Exception ex) {
+            return ERROR;
+        }
+    }
 
+    public String getAuthorizationUrl() {
         return authorizationUrl;
     }
 
-
+    public void setAuthorizationUrl(String authorizationUrl) {
+        this.authorizationUrl = authorizationUrl;
+    }
 }
