@@ -16,8 +16,17 @@ public class CalendarAction extends ActionSupport {
     private static final String PROTECTED_RESOURCE_URL = "https://docs.google.com/feeds/default/private/full/";
     private static final String SCOPE = "https://docs.google.com/feeds/";
     private static final Token EMPTY_TOKEN = null;
-    private static final String CALLBACK_URL = "http://localhost:8080/meeto/calendar.jsp";
+    private static final String CALLBACK_URL = "http://localhost:8080/meeto/finishGoogleLogin.action";
     private String authorizationUrl;
+    private String code;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String goToLogin() {
         try {
@@ -55,6 +64,9 @@ public class CalendarAction extends ActionSupport {
     }
 
     public String finishGoogleLogin() throws Exception {
+
+
+        System.out.println(code);
 
 
         return "success";

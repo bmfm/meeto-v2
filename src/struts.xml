@@ -69,7 +69,8 @@
         </action>
 
         <action name="finishGoogleLogin" class="pt.uc.dei.actions.CalendarAction" method="finishGoogleLogin">
-            <result name="success">main.jsp</result>
+            <interceptor-ref name="defaultStack"/>
+            <result name="success" type="redirectAction">home</result>
             <result name="error">index.jsp</result>
         </action>
 
