@@ -1,10 +1,13 @@
 package pt.uc.dei.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
+import pt.uc.dei.models.ItemBean;
 
 public class ItemAction extends ActionSupport {
 
+    ItemBean itemBean = new ItemBean();
     private String agendaItemID;
+    private Boolean outcome;
 
     public String getAgendaItemID() {
         return agendaItemID;
@@ -31,6 +34,16 @@ public class ItemAction extends ActionSupport {
     }
 
     public String deleteItem() throws Exception {
+
+        outcome = itemBean.deleteItem();
+
+        if (outcome) {
+            addActionMessage("Deleted!");
+        } else {
+            addActionError("Not deleted, something's wrong");
+        }
+
+
         return SUCCESS;
     }
 }

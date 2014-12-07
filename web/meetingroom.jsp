@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
 
-    <title>meetings</title>
+    <title>meetingroom</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -52,10 +52,9 @@
                             <td><s:property value="itemdescription"/></td>
                             <td><s:property value="keydecision"/></td>
 
-                            <td><s:form role="form" theme="simple" id="formViewDetails">
+                            <td><s:form role="form" theme="simple">
                                 <s:hidden name="agendaItemID" value="%{#listContent.id}"/>
                                 <s:hidden name="req" value="hiddenreq"/>
-                                <%--<td><button id="sta" class="btn btn-primary">View</button></td>--%>
 
                                 <s:submit id="modifyItemBtn" theme="simple" cssClass="btn btn-primary"
                                           action="modifyItem"

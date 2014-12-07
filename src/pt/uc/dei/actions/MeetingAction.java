@@ -6,6 +6,7 @@ import pt.uc.dei.models.ItemBean;
 import pt.uc.dei.models.MeetingBean;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -236,8 +237,14 @@ public class MeetingAction extends ActionSupport implements SessionAware {
 
     public String meetingroom() throws Exception {
 
+        itemBean.setIdmeeting(Integer.parseInt(joinmymeetingid));
 
-        agendaItemsList = itemBean.agendaList(Integer.parseInt(joinmymeetingid));
+        agendaItemsList = itemBean.agendaList();
+
+        if (agendaItemsList == null) {
+            agendaItemsList = new ArrayList<>();
+
+        }
 
         return SUCCESS;
     }

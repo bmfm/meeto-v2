@@ -89,54 +89,52 @@ $(function () {
 });
 
 
-/*$('#formViewDetails').submit(function() { // catch the form's submit event
- $.ajax({ // create an AJAX call...
- data: $(this).serialize(), // get the form data
- type: $(this).attr('POST'), // GET or POST
- url: $(this).attr('openMeetingDetails'), // the file to call
- success: function(response) { // on success..
- $('#meetingsmaindiv').html(response); // update the DIV
+$(function () {
+    $('#deleteItemBtn').submit(function () { // catch the form's submit event
+        $.ajax({ // create an AJAX call...
+            data: $(this).serialize(), // get the form data
+            type: $(this).attr('POST'), // GET or POST
+            url: $(this).attr('deleteItem'), // the file to call
+            success: function (response) { // on success..
+                $('#pagecontainer').html(response); // update the DIV
+            }
+        });
+        return false; // cancel original event to prevent form submitting
+    });
+});
+
+
+/*$(document).on('submit', '#formEnterMeeting', function(e) {
+ $.ajax({
+ url: $(this).attr('/meeto/openMeetingRoom.action'),
+ type: $(this).attr('POST'),
+ data: $(this).serialize(),
+ success: function(html) {
+ $('#pagecontainer').html(html)
+
  }
  });
- return false; // cancel original event to prevent form submitting
+ e.preventDefault();
  });*/
 
 
-
-/*$('#formViewDetails').submit(function() { // catch the form's submit event
- $.ajax({ // create an AJAX call...
- data: $(this).serialize(), // get the form data
- type: $(this).attr('POST'), // GET or POST
- url: $(this).attr('openMeetingDetails'), // the file to call
- success: function(response) { // on success..
- $('#meetingsmaindiv').html(response); // update the DIV
- }
- });
- return false; // cancel original event to prevent form submitting
- });*/
-
-
-
-
-//open meetingdetails.jsp
-/*$(function () {
- $('#viewDetails').click(function () {
-
-        $('#pagecontainer').html('<img src="loading.gif" /> Now loading...');
-        $.ajax({
-            url: 'openMeetingDetails',
- data: $("#hiddenlabel"),
- type: 'POST',
-            dataType: 'html',
-            success: function (html) {
-                $('#pagecontainer').html(html);
+$(function () {
+    $('#formEnterMeeting').submit(function () { // catch the form's submit event
+        $.ajax({ // create an AJAX call...
+            data: $(this).serialize(), // get the form data
+            type: $(this).attr('POST'), // GET or POST
+            url: $(this).attr('/meeto/openMeetingRoom.action'), // the file to call
+            success: function (response) { // on success..
+                $('#pagecontainer').html(response); // update the DIV
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('An error occurred! ' + thrownError);
             }
         });
+        return false; // cancel original event to prevent form submitting
     });
- });*/
+});
+
 
 //set datetimepicker preferenes
 $(function () {

@@ -10,10 +10,18 @@ import java.util.List;
  */
 public class ItemBean {
 
-    UtilityBean utility = new UtilityBean();
+    private UtilityBean utility = new UtilityBean();
+    private int idmeeting;
 
+    public int getIdmeeting() {
+        return idmeeting;
+    }
 
-    public List agendaList(int idmeeting) throws RemoteException {
+    public void setIdmeeting(int idmeeting) {
+        this.idmeeting = idmeeting;
+    }
+
+    public List agendaList() throws RemoteException {
 
         RmiInterface c = utility.connectoToRmiServer();
 
@@ -23,4 +31,8 @@ public class ItemBean {
     }
 
 
+    public Boolean deleteItem() {
+
+        return null;
+    }
 }
