@@ -117,23 +117,23 @@ $(function () {
  e.preventDefault();
  });*/
 
-
-$(function () {
-    $('#formEnterMeeting').submit(function () { // catch the form's submit event
+/*$(function () {
+ $('#formEnterMeeting').submit(function () { // catch the form's submit event
         $.ajax({ // create an AJAX call...
             data: $(this).serialize(), // get the form data
             type: $(this).attr('POST'), // GET or POST
             url: $(this).attr('/meeto/openMeetingRoom.action'), // the file to call
-            success: function (response) { // on success..
-                $('#pagecontainer').html(response); // update the DIV
-            },
+ dataType: 'html',
+ success: function (html) { // on success..
+ $('#pagecontainer').html(html); // update the DIV
+ },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('An error occurred! ' + thrownError);
             }
         });
         return false; // cancel original event to prevent form submitting
     });
-});
+ });*/
 
 
 //set datetimepicker preferenes

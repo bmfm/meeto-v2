@@ -14,9 +14,7 @@
     <link href="css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="css/font-awesome.min.css" rel="stylesheet" media="screen">
 
-
 </head>
-
 
 <body>
 
@@ -36,22 +34,20 @@
                             <th>Objective</th>
                             <th>Date</th>
                             <th>Location</th>
-
                         </tr>
                         </thead>
                         <tbody>
 
                         <s:iterator value="myMeetingsList" status="status" var="listContent">
-
                             <tr>
-
                                 <td><s:property value="id"/></td>
                                 <td><s:property value="title"/></td>
                                 <td><s:property value="objective"/></td>
                                 <td><s:property value="date"/></td>
                                 <td><s:property value="location"/></td>
                                 <td>
-                                    <s:form role="form" theme="simple" id="formEnterMeeting" action="openMeetingRoom">
+                                    <s:form role="form" theme="simple" id="formEnterMeeting" action="openMeetingRoom"
+                                            target="_blank">
                                         <s:hidden name="joinmymeetingid" value="%{#listContent.id}"/>
                                         <s:hidden name="req" value="hiddenreq"/>
 
@@ -62,7 +58,6 @@
                                     </s:form>
 
                             </tr>
-
 
                         </s:iterator>
                         </tbody>
@@ -82,7 +77,6 @@
 
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
-<script type="text/javascript" src="js/functionsjquery.js"></script>
 
 
 </body>

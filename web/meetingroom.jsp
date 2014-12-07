@@ -20,15 +20,17 @@
 
 <body>
 
-<div class="row clearfix">
+<div class="container">
+    <div class="row clearfix">
     <div class="panel panel-default">
         <div class="panel-body">
 
 
-            <div class="col-md-11 column">
+            <div class="col-md-12 column">
+
+                <button id="closeMyMeeting" onclick="window.close()" class="btn btn-primary">CLOSE</button>
 
                 <h3>Agenda items</h3>
-
 
                 <table class="table table-striped">
                     <thead>
@@ -44,9 +46,7 @@
                     <tbody>
 
                     <s:iterator value="agendaItemsList" status="status" var="listContent">
-
                         <tr>
-
                             <td><s:property value="id"/></td>
                             <td><s:property value="itemname"/></td>
                             <td><s:property value="itemdescription"/></td>
@@ -60,14 +60,13 @@
                                           action="modifyItem"
                                           value="Modify"/>
 
-
                                 <s:submit id="deleteItemBtn" theme="simple" cssClass="btn btn-primary"
                                           action="deleteItem"
                                           value="Delete"/>
 
                                 <s:submit id="addKeyDecisionBtn" theme="simple" cssClass="btn btn-primary"
                                           action="addKeyDecision"
-                                          value="Add Key Decicion"/>
+                                          value="Add Key Decision"/>
 
                                 <s:submit id="assignTaskBtn" theme="simple" cssClass="btn btn-primary"
                                           action="assignTask"
@@ -75,39 +74,53 @@
 
                             </s:form>
                             </td>
-
-
                         </tr>
-
-
                     </s:iterator>
-
                     </tbody>
                 </table>
 
                 <button type="submit" id="addItemBtn" class="btn btn-primary">ADD</button>
-
             </div>
-
-
         </div>
-
     </div>
 
     <div class="panel panel-default">
-        <div class="panel-body" id="meetingdetails">
+        <div class="panel-body">
+
+            <s:if test="hasActionMessages()">
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span
+                            aria-hidden="true">&times;</span><span
+                            class="sr-only">Close</span></button>
+                    <strong>Success!</strong> <s:actionmessage/>
+                </div>
+            </s:if>
+
+            <s:elseif test="hasActionErrors()">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span
+                            aria-hidden="true">&times;</span><span
+                            class="sr-only">Close</span></button>
+                    <strong>Error!</strong> <s:actionerror/>
+                </div>
+            </s:elseif>
+
+        </div>
+
+        <div class="col-md-9 column" id="meetingroomcontainer">
 
 
         </div>
-    </div>
 
+    </div>
+    </div>
 
 </div>
 
 
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
-<script type="text/javascript" src="js/functionsjquery.js"></script>
+<script type="text/javascript" src="js/jquery-meetingroom.js"></script>
 
 
 </body>
