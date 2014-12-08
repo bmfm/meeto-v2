@@ -13,9 +13,16 @@ public class LoginBean {
 
     private String userName;
     private String password;
-
+    private String token;
     private UtilityBean utility = new UtilityBean();
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public Boolean validate() throws RemoteException {
 
@@ -23,11 +30,32 @@ public class LoginBean {
         RmiInterface c = utility.connectoToRmiServer();
 
         Message mensagem = new Message(userName, password, null, "log");
-        mensagem = c.login(mensagem);
 
+        mensagem = c.login(mensagem);
 
         return mensagem.result;
 
+
+    }
+
+
+    public String[] getGoogleCredentials() throws RemoteException {
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        return c.getGoogleCredentials(userName);
+
+    }
+
+    public void updateGoogleToken() {
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        try {
+            c.updateGoogleToken(userName, token);
+        } catch (RemoteException e) {
+
+        }
 
     }
 
@@ -41,6 +69,13 @@ public class LoginBean {
 
             return mensagem.result;
 
+    }
+
+    public String verifyGoogleID(String id) throws RemoteException {
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        return c.verifyGoogleID(id);
     }
 
 
@@ -58,6 +93,13 @@ public class LoginBean {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean associateLogin(String normalUserLogin, String googleId, String email) throws RemoteException {
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        return c.associateLogin(normalUserLogin, googleId, email);
     }
 }
 

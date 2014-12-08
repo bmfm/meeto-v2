@@ -37,9 +37,6 @@ public class Message implements Serializable {
     public static final String JOINMEETING = "joinmeeting";
     public static final String LOGOUT = "logout";
     public static final String LISTAGENDAITEMS = "listagendaitems";
-
-
-    private String tipo = "";
     public String username = "";
     public String password = "";
     public String mail = "";
@@ -59,6 +56,9 @@ public class Message implements Serializable {
     public String name;
     public String description;
     public String keydecision;
+    public String googleid;
+    public String accesstoken;
+    private String tipo = "";
 
     //mensagem para o user ser colocado na Hashtable (juntamente com o seu socket)
     public Message(String username, Socket socket, String tipo) {
@@ -75,6 +75,7 @@ public class Message implements Serializable {
         this.username = username;
         this.password = password;
         this.mail = mail;
+
     }
 
 

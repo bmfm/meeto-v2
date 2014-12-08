@@ -130,6 +130,24 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         return mensagem;
     }
 
+    @Override
+    public String verifyGoogleID(String id) throws RemoteException {
+
+        String user;
+        ResultSet rs = sql.doQuery("SELECT username from member where googleid='" + id + "'");
+        try {
+            rs.next();
+            user = rs.getString("username");
+
+        } catch (Exception e) {
+            System.out.println("Error in verifyGoogleID");
+
+            return null;
+        }
+
+        return user;
+    }
+
 
     public synchronized String getUserById(String id) throws RemoteException {
         ResultSet rs = sql.doQuery("SELECT username from member where idmember='" + id + "'");
@@ -815,6 +833,38 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         return mensagem;
 
+
+    }
+
+    public synchronized String[] getGoogleCredentials(String user) throws RemoteException {
+        String[] result = new String[2];
+        ResultSet rs = sql.doQuery("select googleid,token from member where username = '" + user + "'");
+        try {
+            rs.next();
+            result[0] = rs.getString(1);
+            result[1] = rs.getString(2);
+
+        } catch (SQLException e) {
+            return new String[]{null, null};
+        }
+
+        return result;
+
+    }
+
+    @Override
+    public void updateGoogleToken(String username, String token) {
+        try {
+            sql.doUpdate("UPDATE member SET token='" + token + "' where username='" + username + "'");
+        } catch (Exception e) {
+
+        }
+    }
+
+    @Override
+    public boolean associateLogin(String user, String googleId, String email) throws RemoteException {
+
+        return (sql.doUpdate("UPDATE member SET googleid='" + googleId + "', email='" + email + "' where username='" + user + "'") == 1);
 
     }
 

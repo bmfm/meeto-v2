@@ -41,9 +41,19 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li>
 
-                            <p class="navbar-text">Logged in as ${session.username} <a id="portfolio" href="#"
-                                                                                       class="navbar-link">
-                            </a></p>
+                            <p class="navbar-text">Logged in as ${session.username}</p>
+                        </li>
+
+                        <li>
+
+                            <s:if test="%{#session.googleid == null}">
+                                <p class="navbar-text"><a href="<s:url action="goToGoogleLogin"/>" class="navbar-link">Associate
+                                    with Google</a></p>
+
+                            </s:if>
+                            <s:else><p class="navbar-text">Google ID: ${session.googleid}</p></s:else>
+
+
                         </li>
 
                         <li>

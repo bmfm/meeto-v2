@@ -22,6 +22,8 @@ public class LoginAction extends ActionSupport implements SessionAware {
 
     public String execute() {
 
+        String[] google = new String[2];
+
 
         this.getLoginBean().setPassword(password);
         this.getLoginBean().setUserName(userName);
@@ -33,10 +35,16 @@ public class LoginAction extends ActionSupport implements SessionAware {
         }
 
         if (outcome) {
-
+            try {
+                google = this.getLoginBean().getGoogleCredentials();
+            } catch (RemoteException e) {
+                session.put("googleid", null);
+                session.put("token", null);
+            }
+            session.put("googleid", google[0]);
+            session.put("token", google[1]);
             session.put("username", userName);
             session.put("loggedin", true); // this marks the user as logged in
-
 
             return SUCCESS;
 
