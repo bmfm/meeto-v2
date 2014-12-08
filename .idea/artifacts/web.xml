@@ -14,6 +14,7 @@
           <element id="library" level="project" name="asm-3.3" />
           <element id="library" level="project" name="commons-logging-1.1.1" />
           <element id="library" level="project" name="struts2-jquery-plugin-4.0.0-20141123.115729-8" />
+          <element id="library" level="project" name="google" />
         </element>
       </element>
     </root>

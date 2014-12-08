@@ -1,11 +1,17 @@
 package pt.uc.dei.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.interceptor.SessionAware;
 import pt.uc.dei.models.ItemBean;
+import pt.uc.dei.models.MeetingBean;
 
-public class ItemAction extends ActionSupport {
+import java.util.List;
+import java.util.Map;
+
+public class ItemAction extends ActionSupport implements SessionAware {
 
     ItemBean itemBean = new ItemBean();
+    MeetingBean meetingBean = new MeetingBean();
     private String agendaItemID;
     private Boolean outcome;
     private String req;
@@ -13,6 +19,46 @@ public class ItemAction extends ActionSupport {
     private String itemname;
     private String itemdescription;
     private String meetingidhidden;
+    private String agendaitemidhidden;
+    private String keydecision;
+    private List list;
+    private Map<String, Object> session;
+    private String userToAssignAction;
+    private String meetingidhiddenforaction;
+    private String meetingidfromroomform;
+    private String actionname;
+
+    public List getList() {
+        return list;
+    }
+
+    public void setList(List list) {
+        this.list = list;
+    }
+
+    public String getMeetingidfromroomform() {
+        return meetingidfromroomform;
+    }
+
+    public void setMeetingidfromroomform(String meetingidfromroomform) {
+        this.meetingidfromroomform = meetingidfromroomform;
+    }
+
+    public String getActionname() {
+        return actionname;
+    }
+
+    public void setActionname(String actionname) {
+        this.actionname = actionname;
+    }
+
+    public String getKeydecision() {
+        return keydecision;
+    }
+
+    public void setKeydecision(String keydecision) {
+        this.keydecision = keydecision;
+    }
 
     public String getItemdescription() {
         return itemdescription;
@@ -70,10 +116,45 @@ public class ItemAction extends ActionSupport {
     }
 
     public String addKeyDecision() throws Exception {
+
+        itemBean.setAgendaItemID(agendaitemidhidden);
+
+        itemBean.setKeydecision(keydecision);
+
+        outcome = itemBean.addKeyDecision();
+
+        if (outcome) {
+            addActionMessage("Key decision added");
+
+        } else {
+            addActionError("Not added, something went wrong. Please try again");
+        }
+
         return SUCCESS;
     }
 
     public String assignTask() throws Exception {
+
+        String aux = userToAssignAction.split("\t\t")[0];
+
+        itemBean.setUserToAssignAction(aux);
+        itemBean.setActionname(actionname);
+        itemBean.setIdmeeting(Integer.parseInt(meetingidhiddenforaction));
+
+        outcome = itemBean.assignTask();
+
+
+        if (outcome) {
+            addActionMessage("Action assigned!");
+
+        } else {
+            addActionError("Not assigned, something went wrong. Please try again");
+        }
+
+
+
+
+
         return SUCCESS;
     }
 
@@ -105,5 +186,47 @@ public class ItemAction extends ActionSupport {
 
     public void setMeetingidhidden(String meetingidhidden) {
         this.meetingidhidden = meetingidhidden;
+    }
+
+    public String getAgendaitemidhidden() {
+        return agendaitemidhidden;
+    }
+
+    public void setAgendaitemidhidden(String agendaitemidhidden) {
+        this.agendaitemidhidden = agendaitemidhidden;
+    }
+
+    public String openChat() throws Exception {
+        return "success";
+    }
+
+    public String getMemberList() throws Exception {
+
+        meetingBean.setUsername((String) session.get("username"));
+
+        list = meetingBean.getInviteeList();
+
+        return SUCCESS;
+    }
+
+    @Override
+    public void setSession(Map<String, Object> stringObjectMap) {
+        this.session = stringObjectMap;
+    }
+
+    public String getUserToAssignAction() {
+        return userToAssignAction;
+    }
+
+    public void setUserToAssignAction(String userToAssignAction) {
+        this.userToAssignAction = userToAssignAction;
+    }
+
+    public String getMeetingidhiddenforaction() {
+        return meetingidhiddenforaction;
+    }
+
+    public void setMeetingidhiddenforaction(String meetingidhiddenforaction) {
+        this.meetingidhiddenforaction = meetingidhiddenforaction;
     }
 }

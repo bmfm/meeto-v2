@@ -131,5 +131,21 @@ public class MeetingBean {
     }
 
 
+    public List getTodoList() throws RemoteException {
+        RmiInterface c = utility.connectoToRmiServer();
+
+        return c.showToDoListForWeb(username);
+    }
+
+    public Boolean completeTask() throws RemoteException {
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        String idm = String.valueOf(idmeeting);
+
+        return c.completeActionForWeb(username, idm);
+
+
+    }
 }
 

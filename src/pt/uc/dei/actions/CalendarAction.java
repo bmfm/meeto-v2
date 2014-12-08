@@ -27,14 +27,15 @@ public class CalendarAction extends ActionSupport implements SessionAware {
     private static final String SCOPE = "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar";
     private static final Token EMPTY_TOKEN = null;
     private static final String CALLBACK_URL = "http://localhost:8080/meeto/finishGoogleLogin.action";
+    private static final String apiKey = "159167502512-9c66e9am5lj9lrq33v3dant27fjt5k4d.apps.googleusercontent.com";
+    private static final String apiSecret = "jtsOyhazWTJUnQjf2FZklf1Q";
     private String authorizationUrl;
     private String code;
     private Map<String, Object> session;
-
     private OAuthService service = new ServiceBuilder()
             .provider(GoogleApi.class)
-            .apiKey("159167502512-9c66e9am5lj9lrq33v3dant27fjt5k4d.apps.googleusercontent.com")
-            .apiSecret("jtsOyhazWTJUnQjf2FZklf1Q")
+            .apiKey(apiKey)
+            .apiSecret(apiSecret)
             .callback(CALLBACK_URL)
             .scope(SCOPE)
             .build();
@@ -126,7 +127,11 @@ public class CalendarAction extends ActionSupport implements SessionAware {
             session.put("googleid", id);
             session.put("googletoken", accessToken);
 
+            try {
+                createCalendar();
+            } catch (Exception e) {
 
+            }
             //TODO obter registo do user que contem o email da google e marcar como online
 
         } catch (Exception e) {
@@ -165,5 +170,18 @@ public class CalendarAction extends ActionSupport implements SessionAware {
 
     public void setLoginBean(LoginBean loginBean) {
         this.session.put("loginBean", loginBean);
+    }
+
+    public String createCalendar() {
+        String url = "https://www.googleapis.com/calendar/v3/users/me/calendarList";
+        OAuthRequest request = new OAuthRequest(Verb.GET, url);
+        service.signRequest((Token) session.get("googletoken"), request);
+        Response response = request.send();
+        System.out.println(response.getBody());
+        System.out.println(response.getCode());
+
+        return SUCCESS;
+
+
     }
 }

@@ -17,6 +17,7 @@ public class DataStructure implements Serializable {
     private String status;
     private String usernameaction;
 
+
     public String getUsername() {
         return username;
     }

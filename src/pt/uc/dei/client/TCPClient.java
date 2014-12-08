@@ -697,7 +697,6 @@ public class TCPClient {
                     }
                     break;
 
-
                 //assign action
 
                 case "3":

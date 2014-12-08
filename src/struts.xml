@@ -148,15 +148,50 @@
 
         </action>
 
+        <action name="openKeyDecision" class="pt.uc.dei.actions.ItemAction">
+            <result>addkeydecision.jsp</result>
+
+        </action>
+
         <action name="addKeyDecision" class="pt.uc.dei.actions.ItemAction" method="addKeyDecision">
-            <result name="success">main.jsp</result>
+            <result name="success">addkeydecision.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">addkeydecision.jsp</result>
+
+        </action>
+
+        <action name="assignTask" class="pt.uc.dei.actions.ItemAction" method="assignTask">
+        <result name="success">main.jsp</result>
             <result name="login">login.jsp</result>
             <result name="error">main.jsp</result>
 
         </action>
 
-        <action name="assignTask" class="pt.uc.dei.actions.ItemAction" method="assignTask">
-            <result name="success">main.jsp</result>
+        <action name="openChat" class="pt.uc.dei.actions.ItemAction" method="openChat">
+            <result name="success">chat.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">main.jsp</result>
+
+        </action>
+
+        <action name="openAssignTask" class="pt.uc.dei.actions.ItemAction" method="getMemberList">
+            <result name="success">assignaction.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">main.jsp</result>
+
+
+        </action>
+
+        <action name="openTodoList" class="pt.uc.dei.actions.MeetingAction" method="getTodoList">
+            <param name="req">openTodoList</param>
+            <result name="success">todolist.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">main.jsp</result>
+
+        </action>
+
+        <action name="completeTask" class="pt.uc.dei.actions.MeetingAction" method="completeTask">
+        <result name="success">main.jsp</result>
             <result name="login">login.jsp</result>
             <result name="error">main.jsp</result>
 

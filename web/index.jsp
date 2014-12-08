@@ -12,7 +12,7 @@
     <link href="css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="css/font-awesome.min.css" rel="stylesheet" media="screen">
     <link href="css/signin.css" rel="stylesheet">
-    <title>Welcome to Meeto v0.5</title>
+    <title>Welcome to Meeto v1.0</title>
 
 </head>
 
@@ -20,7 +20,7 @@
 
 <div class="jumbotron">
     <div class="container">
-        <h1>Welcome to Meeto v0.1!</h1>
+        <h1>Welcome to Meeto v1.0!</h1>
 
         <p>Please select one of the options below to begin your journey</p>
 

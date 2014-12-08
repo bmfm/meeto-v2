@@ -12,10 +12,13 @@ public interface RmiInterface extends Remote {
 
     public Message createMeeting(Message mensagem) throws RemoteException;
 
-
     public String verifyGoogleID(String id) throws RemoteException;
 
     public String[] getGoogleCredentials(String user) throws RemoteException;
+
+    public Boolean completeActionForWeb(String username, String idmeeting) throws RemoteException;
+
+    public List showToDoListForWeb(String username) throws RemoteException;
 
     public void updateGoogleToken(String username, String token) throws RemoteException;
 

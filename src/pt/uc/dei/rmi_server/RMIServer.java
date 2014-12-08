@@ -527,7 +527,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             e.printStackTrace();
         }
 
-
         return mensagem;
     }
 
@@ -551,11 +550,10 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         mensagem.result = false;
 
 
-        if ((sql.doUpdate("INSERT INTO action (idmeeting,idmember,description,completed) VALUES ('" + mensagem.dataint + "','" + mensagem.dataint2 + "','" + mensagem.data + "') where iditem = '" + mensagem.dataint + "'")) == 1) {
+        if ((sql.doUpdate("INSERT INTO action (idmeeting,idmember,description) VALUES ('" + mensagem.dataint + "','" + mensagem.dataint2 + "','" + mensagem.data + "')")) == 1) {
 
             mensagem.result = true;
         }
-
 
         return mensagem;
 
@@ -589,6 +587,32 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
     }
 
+    public synchronized List showToDoListForWeb(String username) throws RemoteException {
+        List<DataStructure> dsList = new ArrayList<>();
+        int userid = getUsernameIdForWeb(username);
+
+        ResultSet rs = sql.doQuery("select distinct action.idaction,action.description,action.completed from (action,meeting,member) where action.idmember ='" + userid + "' and action.idmember=member.idmember");
+        try {
+            while (rs.next()) {
+                DataStructure ds = new DataStructure();
+                ds.setId(rs.getInt("idaction"));
+                ds.setDescription(rs.getString("description"));
+                String status = String.valueOf(rs.getInt("completed"));
+                if ("0".equals(status)) {
+                    ds.setStatus("Not yet completed");
+                } else {
+                    ds.setStatus("Closed");
+                }
+                dsList.add(ds);
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+
+        return dsList;
+
+    }
+
     @Override
     public synchronized Message completeAction(Message mensagem) throws RemoteException {
         Message msgid = getUsernameId(mensagem);
@@ -597,9 +621,9 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         List<String> completelist = Arrays.asList(mensagem.list.split(","));
 
         mensagem.result = false;
-        //aceitar as meetings escolhidas
+        //marcar como done
         for (int i = 0; i < completelist.size(); i++) {
-            if ((sql.doUpdate("UPDATE action SET completed='1' where idmember='" + mensagem.dataint + "'and idmeeting='" + completelist.get(i) + "'")) == 1)
+            if ((sql.doUpdate("UPDATE action SET completed='1' where idmember='" + mensagem.dataint + "'and idaction='" + completelist.get(i) + "'")) == 1)
 
             {
 
@@ -608,9 +632,22 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         }
 
-
         return mensagem;
     }
+
+    public synchronized Boolean completeActionForWeb(String username, String idmeeting) throws RemoteException {
+        int userid = getUsernameIdForWeb(username);
+
+
+        if ((sql.doUpdate("UPDATE action SET completed='1' where idmember='" + userid + "'and idaction='" + idmeeting + "'")) == 1)
+
+        {
+
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public synchronized Message viewPendingInvitations(Message mensagem) throws RemoteException {
@@ -946,7 +983,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         }
 
     }
-
 
 
     public synchronized int getAgendaId(int idmeeting) throws RemoteException {

@@ -88,18 +88,21 @@ $(function () {
     });
 });
 
-
 $(function () {
-    $('#deleteItemBtn').submit(function () { // catch the form's submit event
-        $.ajax({ // create an AJAX call...
-            data: $(this).serialize(), // get the form data
-            type: $(this).attr('POST'), // GET or POST
-            url: $(this).attr('deleteItem'), // the file to call
-            success: function (response) { // on success..
-                $('#pagecontainer').html(response); // update the DIV
+    $('#menuTodoList').click(function () {
+
+        $('#pagecontainer').html('<img src="loading.gif" /> Now loading...');
+        $.ajax({
+            url: 'openTodoList',
+            type: 'POST',
+            dataType: 'html',
+            success: function (html) {
+                $('#pagecontainer').html(html);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('An error occurred! ' + thrownError);
             }
         });
-        return false; // cancel original event to prevent form submitting
     });
 });
 

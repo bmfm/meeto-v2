@@ -59,6 +59,8 @@
                             <td><s:form role="form" theme="simple">
                                 <s:hidden name="agendaItemID" value="%{#listContent.id}"/>
                                 <s:hidden name="req" value="hiddenreq"/>
+                                <s:hidden name="meetingidfromroomform" value="%{joinmymeetingid}"/>
+
 
                                 <s:submit id="modifyItemBtn" theme="simple" cssClass="btn btn-primary"
                                           action="modifyItem"
@@ -68,13 +70,16 @@
                                           action="deleteItem"
                                           value="Delete"/>
 
-                                <s:submit id="addKeyDecisionBtn" theme="simple" cssClass="btn btn-primary"
-                                          action="addKeyDecision"
+                                <s:submit id="openKeyDecisionBtn" theme="simple" cssClass="btn btn-primary"
+                                          action="openKeyDecision"
                                           value="Add Key Decision"/>
 
                                 <s:submit id="assignTaskBtn" theme="simple" cssClass="btn btn-primary"
-                                          action="assignTask"
+                                          action="openAssignTask"
                                           value="Assign Task"/>
+
+                                <s:submit id="enterChatBtn" theme="simple" cssClass="btn btn-primary" action="openChat"
+                                          value="Chat"/>
 
                             </s:form>
                             </td>

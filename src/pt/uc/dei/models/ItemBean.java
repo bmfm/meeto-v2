@@ -17,6 +17,42 @@ public class ItemBean {
     private String itemdescription;
     private String username;
     private int idagenda;
+    private String keydecision;
+    private String actionname;
+    private String agendaItemID;
+    private String userToAssignAction;
+
+    public String getUserToAssignAction() {
+        return userToAssignAction;
+    }
+
+    public void setUserToAssignAction(String userToAssignAction) {
+        this.userToAssignAction = userToAssignAction;
+    }
+
+    public String getActionname() {
+        return actionname;
+    }
+
+    public void setActionname(String actionname) {
+        this.actionname = actionname;
+    }
+
+    public String getAgendaItemID() {
+        return agendaItemID;
+    }
+
+    public void setAgendaItemID(String agendaItemID) {
+        this.agendaItemID = agendaItemID;
+    }
+
+    public String getKeydecision() {
+        return keydecision;
+    }
+
+    public void setKeydecision(String keydecision) {
+        this.keydecision = keydecision;
+    }
 
     public int getIdagenda() {
         return idagenda;
@@ -88,4 +124,36 @@ public class ItemBean {
         return mensagem.result;
     }
 
+
+    public Boolean addKeyDecision() throws RemoteException {
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        Message mensagem = new Message(username, null, null, "addKeyDecision");
+
+        mensagem.keydecision = keydecision;
+
+        mensagem.dataint = Integer.parseInt(agendaItemID);
+
+        mensagem = c.addKeyDecision(mensagem);
+
+        return mensagem.result;
+    }
+
+    public Boolean assignTask() throws RemoteException {
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        Message mensagem = new Message(username, null, null, "assignAction");
+
+        mensagem.dataint = idmeeting;
+        mensagem.dataint2 = Integer.parseInt(userToAssignAction);
+        mensagem.data = actionname;
+
+        mensagem = c.assignAction(mensagem);
+
+        return mensagem.result;
+
+
+    }
 }

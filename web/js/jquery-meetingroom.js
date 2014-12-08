@@ -9,11 +9,22 @@ $(function () {
 
 
 $(function () {
+    $('#addKeyDecisionBtn').click(function () {
+
+        $('#meetingroomcontainer').load('addkeydecision.jsp');
+
+    });
+});
+
+
+$(function () {
 
     var id = $('#meetingidfromroom').val();
     $('#meetingidhidden').val(id);
     $('#meetingid').val(id);
 
 });
+
+
 
 

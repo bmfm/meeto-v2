@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
 
-    <title>meetings</title>
+    <title>Todo List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -22,7 +22,7 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="col-md-12 column">
-                <h2>Here's a list of your accepted meetings:</h2>
+                <h2>Here's a list of your tasks:</h2>
 
                 <div class="form-group">
                     <table class="table table-striped">
@@ -30,30 +30,29 @@
                         <tr>
 
                             <th>#</th>
-                            <th>Meeting Description</th>
-                            <th>Objective</th>
-                            <th>Date</th>
-                            <th>Location</th>
+                            <th>Action Description</th>
+                            <th>Status</th>
+                            <th>Options</th>
+
                         </tr>
                         </thead>
                         <tbody>
 
-                        <s:iterator value="myMeetingsList" status="status" var="listContent">
+                        <s:iterator value="todolist" status="status" var="listContent">
                             <tr>
                                 <td><s:property value="id"/></td>
-                                <td><s:property value="title"/></td>
-                                <td><s:property value="objective"/></td>
-                                <td><s:property value="date"/></td>
-                                <td><s:property value="location"/></td>
+                                <td><s:property value="description"/></td>
+                                <td><s:property value="status"/></td>
+
                                 <td>
-                                    <s:form role="form" theme="simple" id="formEnterMeeting" action="openMeetingRoom"
-                                            target="_blank">
-                                        <s:hidden name="joinmymeetingid" value="%{#listContent.id}"/>
+                                    <s:form role="form" theme="simple" id="formCompleteTask" action="completeTask">
+
+                                        <s:hidden name="idmeeting" value="%{#listContent.id}"/>
                                         <s:hidden name="req" value="hiddenreq"/>
 
 
-                                    <s:submit theme="simple" cssClass="btn btn-primary"
-                                                  value="View"/>
+                                        <s:submit theme="simple" cssClass="btn btn-primary"
+                                                  value="Mark as Done"/>
 
                                     </s:form>
                                 </td>

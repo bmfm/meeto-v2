@@ -17,10 +17,10 @@ public class MeetingAction extends ActionSupport implements SessionAware {
     public List participantsList;
     public List agendaItemsList;
     public List actionsList;
+    public List todolist;
     Boolean outcome;
     MeetingBean meetingBean = new MeetingBean();
     ItemBean itemBean = new ItemBean();
-
     private String req = null;
     private String checkboxes;
     private String meetingTitle = null;
@@ -35,6 +35,13 @@ public class MeetingAction extends ActionSupport implements SessionAware {
     private String idmeeting = null;
     private List myMeetingsList;
 
+    public List getTodolist() {
+        return todolist;
+    }
+
+    public void setTodolist(List todolist) {
+        this.todolist = todolist;
+    }
 
     public String getJoinmymeetingid() {
         return joinmymeetingid;
@@ -240,6 +247,32 @@ public class MeetingAction extends ActionSupport implements SessionAware {
         if (agendaItemsList == null) {
             agendaItemsList = new ArrayList<>();
 
+        }
+
+        return SUCCESS;
+    }
+
+    public String getTodoList() throws Exception {
+
+        meetingBean.setUsername((String) session.get("username"));
+
+        todolist = meetingBean.getTodoList();
+
+
+        return SUCCESS;
+    }
+
+    public String completeTask() throws Exception {
+
+        meetingBean.setUsername((String) session.get("username"));
+        meetingBean.setIdmeeting(Integer.parseInt(idmeeting));
+
+        outcome = meetingBean.completeTask();
+
+        if (outcome) {
+            addActionMessage("Task completed. Well done!");
+        } else {
+            addActionError("Task not completed, something's wrong. Please try again");
         }
 
         return SUCCESS;
