@@ -14,7 +14,7 @@ public class CalendarAction extends ActionSupport {
     private static final String NETWORK_NAME = "Google";
     private static final String AUTHORIZE_URL = "https://www.google.com/accounts/OAuthAuthorizeToken?oauth_token=";
     private static final String PROTECTED_RESOURCE_URL = "https://docs.google.com/feeds/default/private/full/";
-    private static final String SCOPE = "https://docs.google.com/feeds/";
+    private static final String SCOPE = "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar";
     private static final Token EMPTY_TOKEN = null;
     private static final String CALLBACK_URL = "http://localhost:8080/meeto/finishGoogleLogin.action";
     private String authorizationUrl;
