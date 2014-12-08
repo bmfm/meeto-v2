@@ -18,6 +18,37 @@ public class ItemBean {
     private String username;
     private int idagenda;
 
+    public int getIdagenda() {
+        return idagenda;
+    }
+
+    public void setIdagenda(int idagenda) {
+        this.idagenda = idagenda;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getItemdescription() {
+        return itemdescription;
+    }
+
+    public void setItemdescription(String itemdescription) {
+        this.itemdescription = itemdescription;
+    }
+
+    public String getItemname() {
+        return itemname;
+    }
+
+    public void setItemname(String itemname) {
+        this.itemname = itemname;
+    }
 
     public int getIdmeeting() {
         return idmeeting;
@@ -42,12 +73,17 @@ public class ItemBean {
     }
 
 
-    public Boolean addItem() {
+    public Boolean addItem() throws RemoteException {
 
         RmiInterface c = utility.connectoToRmiServer();
 
-        Message mensagem = new Message(username, null, null, "createMeeting");
+        Message mensagem = new Message(username, null, null, "addItem");
 
+        mensagem.name = itemname;
+        mensagem.description = itemdescription;
+        mensagem.dataint = idmeeting;
+
+        mensagem = c.addAgendaItem(mensagem);
 
         return mensagem.result;
     }

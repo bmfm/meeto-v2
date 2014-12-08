@@ -12,6 +12,7 @@ public class ItemAction extends ActionSupport {
     private String meetingid;
     private String itemname;
     private String itemdescription;
+    private String meetingidhidden;
 
     public String getItemdescription() {
         return itemdescription;
@@ -47,7 +48,10 @@ public class ItemAction extends ActionSupport {
 
     public String addItem() throws Exception {
 
-        itemBean.setIdmeeting(Integer.parseInt(meetingid));
+
+        itemBean.setIdmeeting(Integer.parseInt(meetingidhidden));
+        itemBean.setItemname(itemname);
+        itemBean.setItemdescription(itemdescription);
 
         outcome = itemBean.addItem();
 
@@ -57,7 +61,6 @@ public class ItemAction extends ActionSupport {
         } else {
             addActionError("Not added, something went wrong. Please try again");
         }
-
 
         return SUCCESS;
     }
@@ -94,5 +97,13 @@ public class ItemAction extends ActionSupport {
 
     public void setReq(String req) {
         this.req = req;
+    }
+
+    public String getMeetingidhidden() {
+        return meetingidhidden;
+    }
+
+    public void setMeetingidhidden(String meetingidhidden) {
+        this.meetingidhidden = meetingidhidden;
     }
 }

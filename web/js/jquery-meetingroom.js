@@ -11,9 +11,8 @@ $(function () {
 $(function () {
 
     var id = $('#meetingidfromroom').val();
-
+    $('#meetingidhidden').val(id);
     $('#meetingid').val(id);
-
 
 });
 

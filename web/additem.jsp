@@ -13,6 +13,7 @@
 
     <s:form role="form" class="col-md-12" action="addItem">
         <s:hidden name="req" value="addItem"/>
+        <s:hidden name="meetingidhidden" id="meetingidhidden"/>
 
         <div class="form-group">
             <label for="meetingid">Meeting ID</label>

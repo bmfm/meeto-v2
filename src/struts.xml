@@ -11,7 +11,7 @@
 
     <package name="pt.uc.dei" extends="struts-default">
 
-    <interceptors>
+        <interceptors>
             <interceptor class="pt.uc.dei.interceptors.AuthenticationInterceptor" name="authInterceptor"/>
 
             <interceptor-stack name="authStack">
@@ -120,7 +120,7 @@
         <action name="openMeetingRoom" class="pt.uc.dei.actions.MeetingAction" method="meetingroom">
 
 
-        <result name="success">meetingroom.jsp</result>
+            <result name="success">meetingroom.jsp</result>
             <result name="login">login.jsp</result>
             <result name="error">main.jsp</result>
 
@@ -135,7 +135,7 @@
 
 
         <action name="addItem" class="pt.uc.dei.actions.ItemAction" method="addItem">
-            <result name="success">main.jsp</result>
+            <result name="success">meetingroom.jsp</result>
             <result name="login">login.jsp</result>
             <result name="error">main.jsp</result>
 
