@@ -1,0 +1,14 @@
+\select@language {portuguese}
+\contentsline {section}{\numberline {1}Introdu\IeC {\c c}\IeC {\~a}o}{2}
+\contentsline {section}{\numberline {2}Web-Based Internal Architecture}{3}
+\contentsline {section}{\numberline {3}How Struts (webserver) is integrated with RMIServer}{5}
+\contentsline {section}{\numberline {4}WebSockets integration with Struts}{6}
+\contentsline {section}{\numberline {5}Struts/RMIServer integration with Google Calendar}{7}
+\contentsline {section}{\numberline {6}Description of tests (Table with Pass/Fail)}{8}
+\contentsline {subsection}{\numberline {6.1}Teste de Registo via web}{8}
+\contentsline {subsection}{\numberline {6.2}Teste de Login via web}{9}
+\contentsline {subsection}{\numberline {6.3}Teste de cria\IeC {\c c}\IeC {\~a}o de meeting via web}{10}
+\contentsline {subsection}{\numberline {6.4}Teste de tentativa de acesso directo a actions}{11}
+\contentsline {subsection}{\numberline {6.5}Teste de Associa\IeC {\c c}\IeC {\~a}o da conta com Google Calendar}{11}
+\contentsline {subsection}{\numberline {6.6}Teste de login com Google Calendar}{11}
+\contentsline {section}{\numberline {7}Manual de Instala\IeC {\c c}\IeC {\~a}o}{12}
