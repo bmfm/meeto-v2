@@ -459,7 +459,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             }
             //modificar a descriçao
         } else if (mensagem.dataint2 == 2) {
-            if ((sql.doUpdate("UPDATE item SET description='" + mensagem.data + "' where iditem='" + mensagem.dataint + "")) == 1) {
+            if ((sql.doUpdate("UPDATE item SET description='" + mensagem.data + "' where iditem='" + mensagem.dataint + "'")) == 1) {
                 mensagem.result = true;
             }
 

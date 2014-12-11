@@ -141,8 +141,32 @@
 
         </action>
 
-        <action name="modifyItem" class="pt.uc.dei.actions.ItemAction" method="modifyItem">
-            <result name="success">main.jsp</result>
+
+        <action name="openModifyItemName" class="pt.uc.dei.actions.ItemAction" method="openModifyItemName">
+            <result name="success">modifyitemname.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">main.jsp</result>
+
+        </action>
+
+        <action name="openModifyItemDescription" class="pt.uc.dei.actions.ItemAction"
+                method="openModifyItemDescription">
+            <result name="success">modifyitemdescription.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">main.jsp</result>
+
+        </action>
+
+
+        <action name="modifyItemName" class="pt.uc.dei.actions.ItemAction" method="modifyItemName">
+            <result name="success">meetingroom.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">main.jsp</result>
+
+        </action>
+
+        <action name="modifyItemDescription" class="pt.uc.dei.actions.ItemAction" method="modifyItemDescription">
+            <result name="success">meetingroom.jsp</result>
             <result name="login">login.jsp</result>
             <result name="error">main.jsp</result>
 

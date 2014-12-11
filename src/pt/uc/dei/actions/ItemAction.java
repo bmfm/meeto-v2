@@ -27,6 +27,15 @@ public class ItemAction extends ActionSupport implements SessionAware {
     private String meetingidhiddenforaction;
     private String meetingidfromroomform;
     private String actionname;
+    private String itemid;
+
+    public String getItemid() {
+        return itemid;
+    }
+
+    public void setItemid(String itemid) {
+        this.itemid = itemid;
+    }
 
     public List getList() {
         return list;
@@ -111,10 +120,6 @@ public class ItemAction extends ActionSupport implements SessionAware {
         return SUCCESS;
     }
 
-    public String modifyItem() throws Exception {
-        return SUCCESS;
-    }
-
     public String addKeyDecision() throws Exception {
 
         itemBean.setAgendaItemID(agendaitemidhidden);
@@ -159,6 +164,8 @@ public class ItemAction extends ActionSupport implements SessionAware {
     }
 
     public String deleteItem() throws Exception {
+
+        itemBean.setAgendaItemID(agendaItemID);
 
         outcome = itemBean.deleteItem();
 
@@ -228,5 +235,45 @@ public class ItemAction extends ActionSupport implements SessionAware {
 
     public void setMeetingidhiddenforaction(String meetingidhiddenforaction) {
         this.meetingidhiddenforaction = meetingidhiddenforaction;
+    }
+
+    public String modifyItemName() throws Exception {
+
+        itemBean.setAgendaItemID(itemid);
+        itemBean.setItemname(itemname);
+
+        outcome = itemBean.modifyItemName();
+
+        if (outcome) {
+            addActionMessage("Modified! Go back to see the changes!");
+        } else {
+            addActionError("Not modified, something's wrong");
+        }
+
+
+        return SUCCESS;
+    }
+
+    public String modifyItemDescription() throws Exception {
+
+        itemBean.setAgendaItemID(itemid);
+        itemBean.setItemdescription(itemdescription);
+
+        outcome = itemBean.modifyItemDescription();
+
+        if (outcome) {
+            addActionMessage("Modified! Go back to see the changes!");
+        } else {
+            addActionError("Not modified, something's wrong");
+        }
+        return SUCCESS;
+    }
+
+    public String openModifyItemName() throws Exception {
+        return "success";
+    }
+
+    public String openModifyItemDescription() throws Exception {
+        return "success";
     }
 }

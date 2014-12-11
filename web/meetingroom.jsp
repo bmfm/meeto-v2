@@ -62,9 +62,13 @@
                                 <s:hidden name="meetingidfromroomform" value="%{joinmymeetingid}"/>
 
 
-                                <s:submit id="modifyItemBtn" theme="simple" cssClass="btn btn-primary"
-                                          action="modifyItem"
-                                          value="Modify"/>
+                                <s:submit id="modifyItemNameBtn" theme="simple" cssClass="btn btn-primary"
+                                          action="openModifyItemName"
+                                          value="Modify Name"/>
+
+                                <s:submit id="modifyItemDescriptionBtn" theme="simple" cssClass="btn btn-primary"
+                                          action="openModifyItemDescription"
+                                          value="Modify Description"/>
 
                                 <s:submit id="deleteItemBtn" theme="simple" cssClass="btn btn-primary"
                                           action="deleteItem"

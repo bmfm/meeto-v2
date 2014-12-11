@@ -1,7 +1,6 @@
 $(function () {
     $('#addItemBtn').click(function () {
 
-
         $('#meetingroomcontainer').load('additem.jsp');
 
     });
@@ -24,6 +23,9 @@ $(function () {
     $('#meetingid').val(id);
 
 });
+
+
+
 
 
 

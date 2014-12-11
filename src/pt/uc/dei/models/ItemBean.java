@@ -102,10 +102,17 @@ public class ItemBean {
 
     }
 
+    public Boolean deleteItem() throws RemoteException {
 
-    public Boolean deleteItem() {
+        RmiInterface c = utility.connectoToRmiServer();
 
-        return null;
+        Message mensagem = new Message(username, null, null, "deleteItem");
+
+        mensagem.dataint = Integer.parseInt(agendaItemID);
+
+        mensagem = c.deleteAgendaItem(mensagem);
+
+        return mensagem.result;
     }
 
 
@@ -154,6 +161,39 @@ public class ItemBean {
 
         return mensagem.result;
 
+
+    }
+
+    public Boolean modifyItemName() throws RemoteException {
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        Message mensagem = new Message(username, null, null, "modifyItem");
+
+        mensagem.dataint = Integer.parseInt(agendaItemID);
+        mensagem.dataint2 = 1;
+        mensagem.data = itemname;
+
+        mensagem = c.modifyAgendaItem(mensagem);
+
+        return mensagem.result;
+
+
+    }
+
+    public Boolean modifyItemDescription() throws RemoteException {
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        Message mensagem = new Message(username, null, null, "modifyItem");
+
+        mensagem.data = itemdescription;
+        mensagem.dataint = Integer.parseInt(agendaItemID);
+        mensagem.dataint2 = 2;
+
+        mensagem = c.modifyAgendaItem(mensagem);
+
+        return mensagem.result;
 
     }
 }
