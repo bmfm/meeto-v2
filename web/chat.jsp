@@ -16,7 +16,7 @@
 
 <div>
     <s:div id="chatlog">
-        <s:property value="%{chatlog}"/>
+        <s:property value="%{chatLog}"/>
     </s:div>
 </div>
 

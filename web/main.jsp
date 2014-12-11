@@ -89,7 +89,6 @@
                             <li><a id="menuTodoList" href="#" data-toggle="tab">TODO List</a></li>
                             <li><a id="websockettest" href="#" data-toggle="tab">Websocket test</a></li>
 
-
                         </ul>
                     </div>
                 </div>

@@ -196,4 +196,17 @@ public class ItemBean {
         return mensagem.result;
 
     }
+
+    public String getChatLog() throws RemoteException {
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        Message mensagem = new Message(username, null, null, "listChat");
+
+        mensagem.dataint = (idagenda);
+
+        mensagem = c.listChat(mensagem);
+
+        return mensagem.data;
+    }
 }

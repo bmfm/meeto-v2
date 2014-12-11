@@ -30,6 +30,10 @@ public class ItemAction extends ActionSupport implements SessionAware {
     private String itemid;
     private String chatLog;
 
+    public void setChatLog(String chatLog) {
+        this.chatLog = chatLog;
+    }
+
     public String getItemid() {
         return itemid;
     }
@@ -98,9 +102,11 @@ public class ItemAction extends ActionSupport implements SessionAware {
         return agendaItemID;
     }
 
+
     public void setAgendaItemID(String agendaItemID) {
         this.agendaItemID = agendaItemID;
     }
+
 
     public String addItem() throws Exception {
 
@@ -278,11 +284,13 @@ public class ItemAction extends ActionSupport implements SessionAware {
         return "success";
     }
 
-    public String getChatLog() throws Exception {
 
+    public String getChatList() throws Exception {
         itemBean.setIdagenda(Integer.parseInt(agendaItemID));
 
+        chatLog = itemBean.getChatLog();
 
         return SUCCESS;
+
     }
 }
