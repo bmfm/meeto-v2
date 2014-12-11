@@ -28,6 +28,7 @@ public class ItemAction extends ActionSupport implements SessionAware {
     private String meetingidfromroomform;
     private String actionname;
     private String itemid;
+    private String chatLog;
 
     public String getItemid() {
         return itemid;
@@ -275,5 +276,13 @@ public class ItemAction extends ActionSupport implements SessionAware {
 
     public String openModifyItemDescription() throws Exception {
         return "success";
+    }
+
+    public String getChatLog() throws Exception {
+
+        itemBean.setIdagenda(Integer.parseInt(agendaItemID));
+
+
+        return SUCCESS;
     }
 }

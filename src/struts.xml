@@ -95,6 +95,15 @@
 
         </action>
 
+        <action name="openChat" class="pt.uc.dei.actions.ItemAction" method="getChatLog">
+            <param name="req">openChat</param>
+            <result name="success">chat.jsp</result>
+            <result name="login">login.jsp</result>
+            <result name="error">main.jsp</result>
+
+        </action>
+
+
         <action name="openMeetings" class="pt.uc.dei.actions.MeetingAction" method="meetingsoverview">
             <param name="req">openMeetings</param>
             <result name="success">meetings.jsp</result>
@@ -191,12 +200,7 @@
 
         </action>
 
-        <action name="openChat" class="pt.uc.dei.actions.ItemAction" method="openChat">
-            <result name="success">chat.jsp</result>
-            <result name="login">login.jsp</result>
-            <result name="error">main.jsp</result>
 
-        </action>
 
         <action name="openAssignTask" class="pt.uc.dei.actions.ItemAction" method="getMemberList">
             <result name="success">assignaction.jsp</result>

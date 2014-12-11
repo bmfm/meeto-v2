@@ -74,6 +74,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
     public LoginBean getLoginBean() {
         if (!session.containsKey("loginBean"))
             this.setLoginBean(new LoginBean());
+
         return (LoginBean) session.get("loginBean");
     }
 
