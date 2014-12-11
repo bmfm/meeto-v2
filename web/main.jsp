@@ -100,7 +100,9 @@
                 </div>
                 <div class="panel-body">
 
-                    <div class="tabbable" id="notifications">
+                    <div class="tabbable" id="notificationsdiv">
+
+                        <p id="notifications"></p>
 
                     </div>
                 </div>
@@ -156,6 +158,7 @@
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/functionsjquery.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
+<%--<script type="text/javascript" src="js/jquery-notificationsWebsocket.js"></script>--%>
 
 
 </body>

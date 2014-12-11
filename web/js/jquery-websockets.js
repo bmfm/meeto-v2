@@ -19,7 +19,9 @@ function connect(host) { // connect to the host websocket
     websocket.onclose = onClose;
     websocket.onmessage = onMessage;
     websocket.onerror = onError;
+
 }
+
 
 function onOpen(event) {
     writeToHistory('Connected to ' + window.location.host + '.');

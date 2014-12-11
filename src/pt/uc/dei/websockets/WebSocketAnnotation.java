@@ -43,8 +43,8 @@ public class WebSocketAnnotation {
     public void receiveMessage(String message) {
         // one should never trust the client, and sensitive HTML
         // characters should be replaced with &lt; &gt; &quot; &amp;
-        String reversedMessage = new StringBuffer(message).reverse().toString();
-        sendMessage("[" + username + "] " + reversedMessage);
+
+        sendMessage("[" + username + "] " + message);
     }
 
     @OnError

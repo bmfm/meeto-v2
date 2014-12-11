@@ -1,10 +1,10 @@
 package pt.uc.dei.websockets;
 
-import org.h2.engine.Session;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,6 +19,22 @@ public class NotificationsWebSocket {
 
     public NotificationsWebSocket() {
 
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
     }
 
     @OnOpen
@@ -50,6 +66,11 @@ public class NotificationsWebSocket {
 
     private void sendMessage(String text) {
         // uses *this* object's session to call sendText()
-        this.session.getBasicRemote().sendText(text);
+        try {
+            this.session.getBasicRemote().sendText(text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

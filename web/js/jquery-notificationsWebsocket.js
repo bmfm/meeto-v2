@@ -44,10 +44,10 @@ function onError(event) {
 }
 
 function doSend() {
-    var message = document.getElementById('chat').value;
+    var message = document.getElementById('notifications').value;
     if (message != '')
         websocket.send(message); // send the message
-    document.getElementById('chat').value = '';
+    document.getElementById('notifications').value = '';
 }
 
 function writeToHistory(text) {
