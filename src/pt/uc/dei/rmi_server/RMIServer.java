@@ -4,6 +4,7 @@ import pt.uc.dei.models.DataStructure;
 import pt.uc.dei.tcp_server.Message;
 import pt.uc.dei.tcp_server.NotMasterException;
 import pt.uc.dei.tcp_server.TCPServer;
+import pt.uc.dei.websockets.NotificationsWebSocket;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -121,6 +122,19 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
                 tcpServer.msgToMany(mensagem, usersList.toArray(usersArray));
             } catch (NotMasterException e) {
                 e.printStackTrace();
+            }
+
+            // percorre os users para enviar a notificação
+            // percorre os webSockets dos users online
+            // se o user que se quer notificar está na lista de users online
+            // chama o metodo sendText para esse user (confirmar se é o sendText() que se usa)
+
+            for (String user : inviteeslist) {
+                for (NotificationsWebSocket userWebSocket : NotificationsWebSocket.users) {
+                    if (userWebSocket.username.equals(user)) {  //fazer getUsername()
+                        userWebSocket.session.getBasicRemote().sendText(mensagem); //fazer get do text da mensagem que é para enviar
+                    }
+                }
             }
             return mensagem;
 
