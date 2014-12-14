@@ -1,8 +1,13 @@
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+//JAVASCRIPT FOR THE NOTIFICATIONS PANNEL//////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
 var websocket = null;
 
 $(function () { // URI = ws://10.16.0.165:8080/WebSocket/ws
-    connect('ws://' + 'localhost:8080/meeto' + '/notifications');
-    document.getElementById("chat").focus();
+    connect('ws://' + window.location.host + '/meeto/notifications');
+    //document.getElementById("chat").focus();
 });
 
 function connect(host) { // connect to the host websocket
@@ -22,7 +27,7 @@ function connect(host) { // connect to the host websocket
 }
 
 function onOpen(event) {
-    writeToHistory('Connected to ' + window.location.host + '.');
+    writeToHistory('Notifications connected to ' + window.location.host + '.');
     document.getElementById('chat').onkeydown = function (key) {
         if (key.keyCode == 13)
             doSend(); // call doSend() on enter key
@@ -31,7 +36,7 @@ function onOpen(event) {
 
 function onClose(event) {
     writeToHistory('WebSocket closed.');
-    document.getElementById('chat').onkeydown = null;
+    //document.getElementById('chat').onkeydown = null;
 }
 
 function onMessage(message) { // print the received message
@@ -40,7 +45,7 @@ function onMessage(message) { // print the received message
 
 function onError(event) {
     writeToHistory('WebSocket error (' + event.data + ').');
-    document.getElementById('chat').onkeydown = null;
+    //document.getElementById('chat').onkeydown = null;
 }
 
 function doSend() {
@@ -58,3 +63,7 @@ function writeToHistory(text) {
     history.appendChild(line);
     history.scrollTop = history.scrollHeight;
 }
+
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////

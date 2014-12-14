@@ -507,7 +507,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
             mensagem.result = true;
 
-            List<String> meetingMembers = Arrays.asList(getMeetingMembers(mensagem).data.split(" "));
+           /* List<String> meetingMembers = Arrays.asList(getMeetingMembers(mensagem).data.split(" "));
 
             List<String> usersList = new ArrayList<>();
             for (String user : meetingMembers) {
@@ -520,7 +520,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
                 tcpServer.msgToMany(mensagem, usersList.toArray(usersArray));
             } catch (NotMasterException e) {
                 e.printStackTrace();
-            }
+            }*/
 
         }
 

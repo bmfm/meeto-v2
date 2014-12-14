@@ -30,6 +30,10 @@ public class ItemAction extends ActionSupport implements SessionAware {
     private String itemid;
     private String chatLog;
 
+    public String getChatLog() {
+        return chatLog;
+    }
+
     public void setChatLog(String chatLog) {
         this.chatLog = chatLog;
     }
@@ -289,6 +293,8 @@ public class ItemAction extends ActionSupport implements SessionAware {
         itemBean.setIdagenda(Integer.parseInt(agendaItemID));
 
         chatLog = itemBean.getChatLog();
+
+        session.put("itemid", agendaItemID);
 
         return SUCCESS;
 

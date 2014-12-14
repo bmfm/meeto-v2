@@ -1,7 +1,7 @@
 var websocket = null;
 
 $(function () { // URI = ws://10.16.0.165:8080/WebSocket/ws
-    connect('ws://' + 'localhost:8080/meeto' + '/ws');
+    connect('ws://' + window.location.host + '/meeto/ws');
     document.getElementById("chat").focus();
 });
 

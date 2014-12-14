@@ -14,7 +14,6 @@
     <meta name="author" content="">
     <link href="css/bootstrap.css" rel="stylesheet" media="screen">
 
-
 </head>
 
 <body>
@@ -32,9 +31,6 @@
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-
-                        <%--<li><a href="<%=session.getAttribute("fbURL")%>" id="fbloginlabel">Facebook login</a></li>--%>
-
 
                     </ul>
 
@@ -154,11 +150,10 @@
     </div>
 </div>
 
-
 <script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/functionsjquery.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
-<%--<script type="text/javascript" src="js/jquery-notificationsWebsocket.js"></script>--%>
+<script type="text/javascript" src="js/functionsjquery.js"></script>
+<script type="text/javascript" src="js/jquery-notifications.js"></script>
 
 
 </body>

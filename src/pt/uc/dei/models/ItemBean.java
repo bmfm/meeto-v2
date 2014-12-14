@@ -2,6 +2,7 @@ package pt.uc.dei.models;
 
 import pt.uc.dei.rmi_server.RmiInterface;
 import pt.uc.dei.tcp_server.Message;
+import pt.uc.dei.tcp_server.NotMasterException;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -21,6 +22,15 @@ public class ItemBean {
     private String actionname;
     private String agendaItemID;
     private String userToAssignAction;
+    private String chatline;
+
+    public String getChatline() {
+        return chatline;
+    }
+
+    public void setChatline(String chatline) {
+        this.chatline = chatline;
+    }
 
     public String getUserToAssignAction() {
         return userToAssignAction;
@@ -208,5 +218,20 @@ public class ItemBean {
         mensagem = c.listChat(mensagem);
 
         return mensagem.data;
+    }
+
+    public void addToChatLog() throws RemoteException, NotMasterException {
+
+
+        RmiInterface c = utility.connectoToRmiServer();
+
+        Message mensagem = new Message(username, null, null, "addChat");
+
+        mensagem.dataint = (idagenda);
+        mensagem.data = chatline;
+
+        mensagem = c.addChatMessage(mensagem);
+
+
     }
 }

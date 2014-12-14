@@ -15,9 +15,10 @@
 <noscript>JavaScript must be enabled for WebSockets to work.</noscript>
 
 <div>
-    <s:div id="chatlog">
-        <s:property value="%{chatLog}"/>
-    </s:div>
+
+    <pre>${chatLog}</pre>
+
+
 </div>
 
 
