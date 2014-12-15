@@ -27,7 +27,7 @@ function connect(host) { // connect to the host websocket
 }
 
 function onOpen(event) {
-    writeToHistory('Notifications connected to ' + window.location.host + '.');
+    //writeToHistory('Notifications connected to ' + window.location.host + '.');
     document.getElementById('chat').onkeydown = function (key) {
         if (key.keyCode == 13)
             doSend(); // call doSend() on enter key

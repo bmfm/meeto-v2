@@ -28,7 +28,7 @@ public class NotificationsWebSocket {
             for (String s : u) {
                 if (userWebSocket.username.equals(s)) {
                     try {
-                        userWebSocket.getSession().getBasicRemote().sendText("You have been invited! Check you pending invitations"); //fazer get do text da mensagem que é para enviar
+                        userWebSocket.getSession().getBasicRemote().sendText("You've been invited! Check your pending invitations!"); //fazer get do text da mensagem que é para enviar
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
