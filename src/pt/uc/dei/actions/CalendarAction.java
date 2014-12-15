@@ -26,7 +26,7 @@ public class CalendarAction extends ActionSupport implements SessionAware {
     private static final String PROTECTED_RESOURCE_URL_GET_PROFILE = "https://www.googleapis.com/userinfo/v2/me";
     private static final String SCOPE = "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar";
     private static final Token EMPTY_TOKEN = null;
-    private static final String CALLBACK_URL = "http://localhost:8080/meeto/finishGoogleLogin.action";
+    private static final String CALLBACK_URL = "http://10.0.0.1:8080/meeto/finishGoogleLogin.action";
     private static final String apiKey = "159167502512-9c66e9am5lj9lrq33v3dant27fjt5k4d.apps.googleusercontent.com";
     private static final String apiSecret = "jtsOyhazWTJUnQjf2FZklf1Q";
     private String authorizationUrl;
