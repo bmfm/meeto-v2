@@ -13,7 +13,7 @@ public class GoogleLogin {
     private static final String PROTECTED_RESOURCE_URL = "https://docs.google.com/feeds/default/private/full/";
     private static final String SCOPE = "https://docs.google.com/feeds/";
     private static final Token EMPTY_TOKEN = null;
-    private static final String CALLBACK_URL = "http://localhost:8080/meeto/calendar.jsp";
+    private static final String CALLBACK_URL = "http://10.0.0.1:8080/meeto/calendar.jsp";
 
 
     public String goToLogin(){
