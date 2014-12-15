@@ -73,53 +73,6 @@
                 </s:form>
                 <p>&nbsp;</p>
 
-                <%-- <div class="col-md-4">
-
-     <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-         Add topic
-     </button>
-     <!-- Modal -->
-     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-          aria-hidden="true">
-         <div class="modal-dialog">
-             <div class="modal-content">
-                 <div class="modal-header">
-                     <button type="button" class="close" data-dismiss="modal"
-                             aria-hidden="true">&times;</button>
-                     <h4 class="modal-title" id="myModalLabel">Please insert new topic</h4>
-                 </div>
-                 <div class="modal-body">
-
-                     <form role="form" method="post" action="/ProjectSD2/TopicsServlet">
-                         <div class="form-group">
-                             <label for="topic">Topic</label>
-                             <input type="text" class="form-control" id="topic" name="newtopic"
-                                    maxlength="50" placeholder="Enter new topic">
-                         </div>
-
-                         <button type="submit" class="btn btn-primary">Submit</button>
-                     </form>
-
-                 </div>
-                 <div class="modal-footer">
-                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-                 </div>
-             </div>
-             <!-- /.modal-content -->
-         </div>
-         <!-- /.modal-dialog -->
-     </div>
-     <!-- /.modal -->
-
-     <button class="btn btn-primary" id="listalltopics">
-         List All
-     </button>
-
-
- </div>--%>
-
-
             </div>
         </div>
     </div>

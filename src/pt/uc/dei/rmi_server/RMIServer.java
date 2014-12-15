@@ -108,8 +108,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             }
 
 
-            //TODO Distinguir entre chamada de método por Web e por CLI. Por web o RMI não tem ligação nenhuma a tcp servers nem threads de events
-
           /*  List<String> usersList = new ArrayList<>();
             for (String user : inviteeslist) {
                 usersList.add(getUserById(user));
@@ -123,17 +121,6 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
                 e.printStackTrace();
             }*/
 
-            // percorre os users para enviar a notificação
-            // percorre os webSockets dos users online
-            // se o user que se quer notificar está na lista de users online
-            // chama o metodo sendText para esse user (confirmar se é o sendText() que se usa)
-
-         /*   List usernameArray = new ArrayList<>();
-
-            for (String user : inviteeslist) {
-                String u = getUserById(user);
-                usernameArray.add(u);
-            }*/
 
             return mensagem;
 
