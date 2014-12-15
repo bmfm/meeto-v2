@@ -139,7 +139,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         ResultSet rs = sql.doQuery("SELECT MAX(idagenda) from agenda");
         try {
             rs.next();
-            id = rs.getInt("idagenda");
+            id = rs.getInt("MAX(idagenda)");
         } catch (Exception e) {
             System.out.println("Error in insertAllOtherBusinessess");
 
