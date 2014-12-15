@@ -19,15 +19,6 @@ $(function () {
 });
 
 
-$(function () {
-
-    $('#websockettest').click(function () {
-        $('#pagecontainer').load('websocket.jsp');
-    });
-
-});
-
-
 //open invitations.jsp - pending invitations
 $(function () {
     $('#menuPendingInvitations').click(function () {

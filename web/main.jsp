@@ -83,7 +83,7 @@
                             <li><a id="menuPendingInvitations" href="#" data-toggle="tab">Pending Invitations</a></li>
                             <li><a id="menuJoinMeeting" href="#" data-toggle="tab">Join meeting</a></li>
                             <li><a id="menuTodoList" href="#" data-toggle="tab">TODO List</a></li>
-                            <li><a id="websockettest" href="#" data-toggle="tab">Websocket test</a></li>
+
 
                         </ul>
                     </div>
@@ -152,8 +152,8 @@
 
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
-<script type="text/javascript" src="js/functionsjquery.js"></script>
 <script type="text/javascript" src="js/jquery-notifications.js"></script>
+<script type="text/javascript" src="js/functionsjquery.js"></script>
 
 
 </body>

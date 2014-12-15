@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,6 +19,26 @@ public class NotificationsWebSocket {
     private Session session;
 
     public NotificationsWebSocket() {
+
+    }
+
+    public static void sendInvitations(List<String> u) {
+
+        for (NotificationsWebSocket userWebSocket : users) {
+            for (String s : u) {
+                if (userWebSocket.username.equals(s)) {
+                    try {
+                        userWebSocket.getSession().getBasicRemote().sendText("You have been invited! Check you pending invitations"); //fazer get do text da mensagem que é para enviar
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+
+        }
+
 
     }
 

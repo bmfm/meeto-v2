@@ -96,8 +96,6 @@
         </action>
 
 
-
-
         <action name="openMeetings" class="pt.uc.dei.actions.MeetingAction" method="meetingsoverview">
             <param name="req">openMeetings</param>
             <result name="success">meetings.jsp</result>

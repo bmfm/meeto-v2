@@ -4,7 +4,6 @@ import pt.uc.dei.models.DataStructure;
 import pt.uc.dei.tcp_server.Message;
 import pt.uc.dei.tcp_server.NotMasterException;
 import pt.uc.dei.tcp_server.TCPServer;
-import pt.uc.dei.websockets.NotificationsWebSocket;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -129,17 +128,13 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
             // se o user que se quer notificar está na lista de users online
             // chama o metodo sendText para esse user (confirmar se é o sendText() que se usa)
 
+         /*   List usernameArray = new ArrayList<>();
+
             for (String user : inviteeslist) {
-                for (NotificationsWebSocket userWebSocket : NotificationsWebSocket.users) {
-                    if (userWebSocket.getUsername().equals(user)) {  //fazer getUsername()
-                        try {
-                            userWebSocket.getSession().getBasicRemote().sendText(mensagem.data); //fazer get do text da mensagem que é para enviar
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
+                String u = getUserById(user);
+                usernameArray.add(u);
+            }*/
+
             return mensagem;
 
 
@@ -147,6 +142,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
         return mensagem;
     }
+
 
     @Override
     public String verifyGoogleID(String id) throws RemoteException {
@@ -178,6 +174,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         }
         return null;
     }
+
 
     @Override
     public synchronized Message sendInvitations(Message mensagem) throws RemoteException {

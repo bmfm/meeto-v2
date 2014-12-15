@@ -4,6 +4,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.SessionAware;
 import pt.uc.dei.models.ItemBean;
 import pt.uc.dei.models.MeetingBean;
+import pt.uc.dei.websockets.NotificationsWebSocket;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -170,13 +171,19 @@ public class MeetingAction extends ActionSupport implements SessionAware {
 
         String membersToInvite = "";
 
-        String aux = "";
+        String aux, aux1 = "";
         List<String> check = Arrays.asList(checkboxes.split(","));
+
+
+        List<String> usernameArray = new ArrayList<>();
+
 
 
         for (String checkbox : check) {
             aux = checkbox.split("\t\t")[0];
+            aux1 = checkbox.split("\t\t")[1];
             membersToInvite += aux;
+            usernameArray.add(aux1);
         }
 
         meetingBean.setMeetingTitle(meetingTitle);
@@ -188,8 +195,11 @@ public class MeetingAction extends ActionSupport implements SessionAware {
 
         outcome = meetingBean.createMeeting();
 
+
         if (outcome) {
             addActionMessage("Meeting created!");
+            NotificationsWebSocket.sendInvitations(usernameArray);
+
         } else {
             addActionError("Meeting not created, something's wrong");
         }
@@ -197,7 +207,6 @@ public class MeetingAction extends ActionSupport implements SessionAware {
 
         return "success";
     }
-
 
     public String meetingsoverview() throws Exception {
 
