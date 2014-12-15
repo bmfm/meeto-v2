@@ -39,6 +39,26 @@ public class NotificationsWebSocket {
 
         }
 
+    }
+
+    public static void sendTaskAssignment(List<String> u) {
+
+        for (NotificationsWebSocket userWebSocket : users) {
+            for (String s : u) {
+                if (userWebSocket.username.equals(s)) {
+                    try {
+                        userWebSocket.getSession().getBasicRemote().sendText("You've been assigned to a task. Check your TODO list!"); //fazer get do text da mensagem que é para enviar
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+
+        }
+
+
 
     }
 

@@ -4,7 +4,9 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.SessionAware;
 import pt.uc.dei.models.ItemBean;
 import pt.uc.dei.models.MeetingBean;
+import pt.uc.dei.websockets.NotificationsWebSocket;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -152,6 +154,11 @@ public class ItemAction extends ActionSupport implements SessionAware {
     public String assignTask() throws Exception {
 
         String aux = userToAssignAction.split("\t\t")[0];
+        String aux1 = userToAssignAction.split("\t\t")[1];
+
+        List<String> usernameArray = new ArrayList<>();
+
+        usernameArray.add(aux1);
 
         itemBean.setUserToAssignAction(aux);
         itemBean.setActionname(actionname);
@@ -162,6 +169,7 @@ public class ItemAction extends ActionSupport implements SessionAware {
 
         if (outcome) {
             addActionMessage("Action assigned!");
+            NotificationsWebSocket.sendTaskAssignment(usernameArray);
 
         } else {
             addActionError("Not assigned, something went wrong. Please try again");
