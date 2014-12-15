@@ -93,6 +93,8 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
 
             //criar uma agenda vazia, só para gerar um idagenda
             sql.doUpdate("INSERT INTO agenda (idmeeting) VALUES ('" + idmeeting + "');");
+
+
             //colocar o criador da meeting na tabela meeting_member (como accepted naturalmente) antes de tratar dos outros
             sql.doUpdate("INSERT INTO meeting_member (idmeeting,idmember,accepted) VALUES ('" + idmeeting + "','" + mensagem.dataint + "','1');");
 
@@ -121,6 +123,7 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
                 e.printStackTrace();
             }*/
 
+            insertAllOtherBusinessess();
 
             return mensagem;
 
@@ -128,6 +131,23 @@ public class RMIServer extends UnicastRemoteObject implements RmiInterface, Runn
         }
 
         return mensagem;
+    }
+
+    private void insertAllOtherBusinessess() {
+
+        int id = 0;
+        ResultSet rs = sql.doQuery("SELECT MAX(idagenda) from agenda");
+        try {
+            rs.next();
+            id = rs.getInt("idagenda");
+        } catch (Exception e) {
+            System.out.println("Error in insertAllOtherBusinessess");
+
+        }
+
+        sql.doUpdate("INSERT INTO item (idagenda,name,description) VALUES ('" + id + "','All other business','Discussion of other topics')");
+
+
     }
 
 
